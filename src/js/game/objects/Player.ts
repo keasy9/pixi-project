@@ -1,6 +1,7 @@
 import {SPRITE_SHIPS} from '@/const.ts';
 import Vector2 = Phaser.Math.Vector2;
 
+// todo rewrite
 export default class Player extends Phaser.GameObjects.Container {
     protected cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
     protected shipSprite: Phaser.GameObjects.Sprite;

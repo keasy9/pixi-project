@@ -1,14 +1,15 @@
-import {SCENE_MAIN} from '@/const.ts';
 import ParallaxBg from '@/game/objects/ParallaxBg.ts';
 import Player from '@/game/objects/Player.ts';
+import AbstractScene from '@/game/scenes/AbstractScene.ts';
 
-export default class Main extends Phaser.Scene {
+// todo rewrite
+export default class Main extends AbstractScene {
     protected player?: Player;
     protected bg?: ParallaxBg;
 
     constructor ()
     {
-        super(SCENE_MAIN);
+        super('main');
     }
 
     public create()

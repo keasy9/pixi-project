@@ -1,8 +1,8 @@
-// сцены
-export const SCENE_LOAD = 'load';
-export const SCENE_MAIN = 'menu';
+
+// разрешение игры
+export const GAME_WIDTH = 128;
+export const GAME_HEIGHT = 256;
 
 // спрайты
 export const SPRITE_BG = 'bg-layers';
 export const SPRITE_SHIPS = 'ships';
-
