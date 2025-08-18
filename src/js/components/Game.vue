@@ -55,7 +55,3 @@
 
     defineExpose({game: game});
 </script>
-
-<style scoped lang="less">
-
-</style>

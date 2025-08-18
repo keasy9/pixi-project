@@ -1,6 +1,6 @@
 import {SCENE_MAIN} from '@/const.ts';
 import ParallaxBg from '@/game/objects/ParallaxBg.ts';
-import Player from '@/game/objects/Player.ts';
+import Player from '@/game/objects/player/Player.ts';
 
 export default class Main extends Phaser.Scene {
     protected player?: Player;
