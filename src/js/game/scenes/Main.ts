@@ -29,13 +29,13 @@ export default class Main extends Phaser.Scene {
 
             this.bg.setHorizontalOffset(offset);
 
-            this.bg.setSpeed(5);
+            this.bg.setSpeed(3);
 
             const verticalVelocity = this.player.getVelocity().y;
             if (verticalVelocity < 0) {
-                this.bg.setSpeed(6);
-            } else if (verticalVelocity > 0) {
                 this.bg.setSpeed(4);
+            } else if (verticalVelocity > 0) {
+                this.bg.setSpeed(2);
             }
         }
     }

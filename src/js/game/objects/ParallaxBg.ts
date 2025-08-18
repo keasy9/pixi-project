@@ -38,7 +38,7 @@ export default class ParallaxBg extends Phaser.GameObjects.Container {
 
             this.layers.push({
                 container: container,
-                speed: i * .01,
+                speed: (3 - i) * .01,
             });
         }
     }
