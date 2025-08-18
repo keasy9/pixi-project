@@ -47,7 +47,7 @@
         }
 
         // чтобы движение было плавным несмотря на пиксельную графику, каждый объект придётся ресайзить по-отдельности
-        game.value?.registry.set('gameScale', (gameConfig.value.width / dimentionWidth).toFixed(2));
+        game.value?.registry.set('gameScale', Math.ceil(gameConfig.value.width / dimentionWidth));
         game.value?.events.emit('resize', game.value?.registry.get('gameScale'));
     });
 

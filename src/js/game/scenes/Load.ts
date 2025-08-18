@@ -1,4 +1,4 @@
-import {SCENE_LOAD, SCENE_MAIN, SPRITE_BG, SPRITE_EXHAUST, SPRITE_SHIPS} from '@/const.ts';
+import {SCENE_LOAD, SCENE_MAIN, SPRITE_BG, SPRITE_BULLETS, SPRITE_EXHAUST, SPRITE_SHIPS} from '@/const.ts';
 
 export default class Load extends Phaser.Scene {
     constructor ()
@@ -26,6 +26,12 @@ export default class Load extends Phaser.Scene {
             SPRITE_EXHAUST,
             '/assets/sprites/exhaust.png',
             {frameWidth: 4, frameHeight: 5},
+        );
+
+        this.load.spritesheet(
+            SPRITE_BULLETS,
+            '/assets/sprites/bullets.png',
+            {frameWidth: 3, frameHeight: 6},
         );
 
         this.load.once('complete', () => {

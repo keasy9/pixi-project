@@ -23,6 +23,7 @@ export default class Main extends Phaser.Scene {
     public update(time: number, delta: number) {
         super.update(time, delta);
 
+        // todo фон дрожжит когда игрок упирается в верхнюю или нижнюю границу
         if (this.player && this.bg) {
             const center = this.cameras.main.width / 2;
             const offset = Math.floor(center - this.player.x);
@@ -33,7 +34,7 @@ export default class Main extends Phaser.Scene {
 
             const verticalVelocity = this.player.getVelocity().y;
             if (verticalVelocity < 0) {
-                this.bg.setSpeed(4);
+                this.bg.setSpeed(5);
             } else if (verticalVelocity > 0) {
                 this.bg.setSpeed(2);
             }

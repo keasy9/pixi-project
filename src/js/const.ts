@@ -1,11 +1,12 @@
 // сцены
 export const SCENE_LOAD = 'load';
-export const SCENE_MAIN = 'menu';
+export const SCENE_MAIN = 'main';
 
 // спрайты
 export const SPRITE_BG = 'bg-layers';
 export const SPRITE_SHIPS = 'ships';
 export const SPRITE_EXHAUST = 'exhaust';
+export const SPRITE_BULLETS = 'bullets';
 
 
 // анимации

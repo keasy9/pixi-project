@@ -4,10 +4,14 @@ import {Exhaust, EXHAUST_SIZE} from '@/game/objects/player/Exhaust';
 
 export default class Player extends Phaser.GameObjects.Container {
     protected cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+    protected fireKey?: Phaser.Input.Keyboard.Key;
+
     protected ship: Ship;
     protected exhaust: Exhaust[] = [];
 
     protected speed = .4;
+
+    protected fireTimer: Phaser.Time.TimerEvent;
 
     constructor(scene: Phaser.Scene, x: number, y :number) {
         super(scene, x, y);
@@ -20,15 +24,22 @@ export default class Player extends Phaser.GameObjects.Container {
         this.add(exhaust.setPosition(1, 5));
 
 
+        this.setScale(scene.game.registry.get('gameScale'));
+
+
         this.setSize(this.ship.displayWidth, this.ship.displayHeight);
         scene.physics.add.existing(this);
         (this.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
 
-
-        this.setScale(scene.game.registry.get('gameScale'));
-
-
         this.cursors = scene.input.keyboard?.createCursorKeys();
+        this.fireKey = scene.input.keyboard?.addKey('space');
+
+        this.fireTimer = scene.time.addEvent({
+            delay: 500, // ms
+            callback: this.fire.bind(this),
+            loop: true,
+            paused: true,
+        });
     }
 
     protected preUpdate(_time: number, _dt: number) {
@@ -57,10 +68,16 @@ export default class Player extends Phaser.GameObjects.Container {
         }
 
         body.setVelocity(velocity.x, velocity.y);
+
+        this.fireTimer.paused = !this.fireKey?.isDown;
     }
 
     public getVelocity(): Vector2
     {
         return (this.body as Phaser.Physics.Arcade.Body).velocity;
+    }
+
+    protected fire(): void {
+        
     }
 }
