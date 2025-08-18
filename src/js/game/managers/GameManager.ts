@@ -2,16 +2,18 @@ import type {Application} from 'pixi.js';
 import {Scene} from '@/game/managers/SceneManager.ts';
 import {EBus} from '@/utils/EventBus.ts';
 import Load from '@/game/scenes/Load.ts';
-import {TexturePool, TextureSource} from 'pixi.js';
+import {TextureSource} from 'pixi.js';
+import {GAME_HEIGHT, GAME_WIDTH} from '@/const';
 
 export class GameManager {
     protected app?: Application
     protected ready: boolean = false;
     protected _scale: number = 1;
+    protected _width: number = GAME_WIDTH;
+    protected _height: number = GAME_HEIGHT;
 
     public event: typeof EBus;
     public scene: typeof Scene;
-
 
     constructor() {
         this.event = EBus;
@@ -22,12 +24,26 @@ export class GameManager {
         return this._scale;
     }
 
+    public get width(): number {
+        return this._width;
+    }
+
+    public get height(): number {
+        return this._height;
+    }
+
     public isReady(): boolean {
         return this.ready;
     }
 
     public init(app: Application) {
         this.app = app;
+
+        // debug
+        globalThis.__PIXI_APP__ = app;
+
+        this._width = app.renderer.width;
+        this._height = app.renderer.height;
 
         TextureSource.defaultOptions.scaleMode = 'nearest';
 
@@ -47,6 +63,8 @@ export class GameManager {
     public resize(width: number, height: number, scale: number): this {
         this.app?.renderer.resize(width, height);
 
+        this._width = width;
+        this._height = height;
         this._scale = scale;
 
         return this;

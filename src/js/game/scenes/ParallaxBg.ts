@@ -6,7 +6,7 @@ import {Game} from '@/game/managers/GameManager.ts';
 import {EBus} from '@/utils/EventBus.ts';
 
 export default class ParallaxBg extends AbstractScene {
-    protected speed: number = .5;
+    protected speed: number = .1;
 
     constructor() {
         super('bg');
@@ -50,7 +50,7 @@ export default class ParallaxBg extends AbstractScene {
 
     public update(dt: number): void {
         this.children.forEach((layer, index) => {
-            layer.y += (index + 1) * this.speed * dt;
+            layer.y += (index + 1 * (index + 1)) * this.speed * dt;
 
             if (layer.y >= GAME_HEIGHT) layer.y -= GAME_HEIGHT;
         });
