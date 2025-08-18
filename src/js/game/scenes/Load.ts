@@ -3,7 +3,6 @@ import AbstractScene from '@/game/scenes/AbstractScene.ts';
 import {Assets} from 'pixi.js';
 import {Scene} from '@/game/managers/SceneManager.ts';
 import ParallaxBg from '@/game/scenes/ParallaxBg.ts';
-import Main from '@/game/scenes/Main';
 
 export default class Load extends AbstractScene {
     constructor ()
@@ -24,6 +23,9 @@ export default class Load extends AbstractScene {
                 src: '/assets/sprites/ships.png',
             }),
 
-        ]).then(() => Scene.load(Main));
+        ]).then(() => {
+            // todo other scene
+            console.log('loaded');
+        })
     }
 }

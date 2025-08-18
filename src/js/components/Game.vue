@@ -41,8 +41,6 @@
         Game.init(app);
 
         gameScale.value = parseFloat((props.width / GAME_WIDTH).toFixed(2));
-
-        EBus.emit('resize', props.width, props.height, gameScale.value);
     }
 
     function handleResize() {

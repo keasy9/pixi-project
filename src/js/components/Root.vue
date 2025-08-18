@@ -1,7 +1,6 @@
 <template>
     <div class="root">
         <Game
-            v-if="width !== 0 && height !== 0"
             :width="width"
             :height="height"
             class="root__layer root__layer--game"

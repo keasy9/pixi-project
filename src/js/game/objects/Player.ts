@@ -1,30 +1,63 @@
-import {Assets, Container, Sprite} from 'pixi.js';
-import {SPRITE_SHIPS} from '@/const';
-import FramedSprite from '@/game/objects/abstract/FramedSprite';
-import type {GameObject} from '@/utils/Types';
-import {Game} from '@/game/managers/GameManager';
-import {EBus} from '@/utils/EventBus';
+import {SPRITE_SHIPS} from '@/const.ts';
+import Vector2 = Phaser.Math.Vector2;
 
 // todo rewrite
-export default class Player extends Container implements GameObject {
-    protected shipSprite: Sprite;
+export default class Player extends Phaser.GameObjects.Container {
+    protected cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+    protected shipSprite: Phaser.GameObjects.Sprite;
 
-    constructor(x: number, y :number) {
-        super();
+    protected speed = .4;
+    protected shipSpriteBaseFrame = 13;
 
-        this.shipSprite = new FramedSprite(Assets.get(SPRITE_SHIPS), { width: 8, height: 8 }, 13);
+    constructor(scene: Phaser.Scene, x: number, y :number) {
+        super(scene, x, y);
 
-        this.x = x - this.shipSprite.width/2;
-        this.y = y - this.shipSprite.height/2;
+        const scale = scene.game.registry.get('gameScale');
 
-        this.addChild(this.shipSprite);
+        this.shipSprite = new Phaser.GameObjects.Sprite(scene, 0, 0, SPRITE_SHIPS, this.shipSpriteBaseFrame);
+        this.shipSprite.setDisplaySize(this.shipSprite.width * scale, this.shipSprite.height * scale);
 
-        this.scale.set(Game.scale);
+        this.setSize(this.shipSprite.displayWidth, this.shipSprite.displayHeight);
 
-        EBus.on('resize', (_w, _h, scale) => this.scale.set(scale));
+        this.add(this.shipSprite);
+
+        this.cursors = scene.input.keyboard?.createCursorKeys();
+
+        scene.physics.add.existing(this);
+
+        (this.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
     }
 
-    public update(_dt: number) {
+    protected preUpdate(_time: number, _dt: number) {
+        const body = this.body as Phaser.Physics.Arcade.Body;
 
+        const velocity = new Vector2(0, 0);
+
+        if (this.cursors) {
+
+            if (this.cursors.left.isDown) {
+                velocity.x = -1;
+                this.shipSprite.setFrame(this.shipSpriteBaseFrame - 1);
+
+            } else if (this.cursors.right.isDown) {
+                velocity.x = 1;
+                this.shipSprite.setFrame(this.shipSpriteBaseFrame + 1);
+
+            } else {
+                this.shipSprite.setFrame(this.shipSpriteBaseFrame);
+            }
+
+            if (this.cursors.up.isDown) velocity.y = -1;
+            else if (this.cursors.down.isDown) velocity.y = 1;
+
+            velocity.normalize().scale(this.scene.cameras.main.width * this.speed);
+        }
+
+        body.setVelocity(velocity.x, velocity.y);
+    }
+
+    public getVelocity(): Vector2
+    {
+        return (this.body as Phaser.Physics.Arcade.Body).velocity;
     }
 }

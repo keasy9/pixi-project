@@ -6,10 +6,6 @@ export default abstract class AbstractScene extends Container {
     }
 
     public update(dt: number): void {
-        this.children?.forEach(child => {
-            if ('update' in child && (typeof child.update === 'function')) {
-                child.update(dt);
-            }
-        })
+        // todo update children
     }
 }
