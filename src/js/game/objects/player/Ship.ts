@@ -18,8 +18,6 @@ export default class Ship extends Phaser.GameObjects.Sprite {
 
         this.rightFrame = mainFrame + 1;
         this.leftFrame = mainFrame - 1;
-
-        this.setOrigin(0, 0);
     }
 
     public toLeft(): this

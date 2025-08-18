@@ -1,10 +1,11 @@
 import Vector2 = Phaser.Math.Vector2;
 import Ship from '@/game/objects/player/Ship';
-import {Container} from '@/game/objects/common/Container';
+import {Exhaust, EXHAUST_SIZE} from '@/game/objects/player/Exhaust';
 
-export default class Player extends Container {
+export default class Player extends Phaser.GameObjects.Container {
     protected cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
     protected ship: Ship;
+    protected exhaust: Exhaust[] = [];
 
     protected speed = .4;
 
@@ -12,18 +13,22 @@ export default class Player extends Container {
         super(scene, x, y);
 
         this.ship = new Ship(scene, 0, 0);
-
-        this.setSize(this.ship.displayWidth, this.ship.displayHeight);
-
         this.add(this.ship);
 
-        this.cursors = scene.input.keyboard?.createCursorKeys();
 
+        const exhaust = new Exhaust(scene, 0, 0, EXHAUST_SIZE.DOUBLE);
+        this.add(exhaust.setPosition(1, 5));
+
+
+        this.setSize(this.ship.displayWidth, this.ship.displayHeight);
         scene.physics.add.existing(this);
-
         (this.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
 
+
         this.setScale(scene.game.registry.get('gameScale'));
+
+
+        this.cursors = scene.input.keyboard?.createCursorKeys();
     }
 
     protected preUpdate(_time: number, _dt: number) {
