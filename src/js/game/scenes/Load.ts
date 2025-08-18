@@ -1,31 +1,32 @@
-import {SPRITE_BG, SPRITE_SHIPS} from '@/const.ts';
-import AbstractScene from '@/game/scenes/AbstractScene.ts';
-import {Assets} from 'pixi.js';
-import {Scene} from '@/game/managers/SceneManager.ts';
-import ParallaxBg from '@/game/scenes/ParallaxBg.ts';
+import {SCENE_LOAD, SCENE_MAIN, SPRITE_BG, SPRITE_SHIPS} from '@/const.ts';
 
-export default class Load extends AbstractScene {
+export default class Load extends Phaser.Scene {
     constructor ()
     {
-        super('load');
+        super(SCENE_LOAD);
+    }
 
+    create ()
+    {
         // todo progressbar, intro
 
-        Promise.all([
+        this.load.spritesheet(
+            SPRITE_BG,
+            '/assets/sprites/space_layers.png',
+            {frameWidth: 128, frameHeight: 256, spacing: 1},
+        );
 
-            Assets.load({
-                alias: SPRITE_BG,
-                src: '/assets/sprites/space_layers.png',
-            }).then(() => Scene.load(ParallaxBg, false)),
+        this.load.spritesheet(
+            SPRITE_SHIPS,
+            '/assets/sprites/ships.png',
+            {frameWidth: 8, frameHeight: 8},
+        );
 
-            Assets.load({
-                alias: SPRITE_SHIPS,
-                src: '/assets/sprites/ships.png',
-            }),
+        this.load.once('complete', () => {
+            this.scene.start(SCENE_MAIN);
+            this.scene.stop(SCENE_LOAD);
+        });
 
-        ]).then(() => {
-            // todo other scene
-            console.log('loaded');
-        })
+        this.load.start();
     }
 }
