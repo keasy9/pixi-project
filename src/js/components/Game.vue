@@ -27,6 +27,7 @@
             height: props.height,
             canvas: canvas.value,
             physics: {
+
                 default: 'arcade',
                 arcade: {debug: import.meta.env.DEV},
             },
@@ -48,5 +49,5 @@
         Game.resize(props.width, props.height);
     });
 
-    onBeforeUnmount(() => game.value?.destroy(false));
+    onBeforeUnmount(() => Game.destroy());
 </script>

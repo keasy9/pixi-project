@@ -50,6 +50,13 @@ class GameState {
 
         this.game?.events.emit('resize', this.scale);
     }
+
+    public destroy(): void {
+        this.game?.destroy(false);
+
+        //@ts-ignore
+        delete this.game;
+    }
 }
 
 export const Game = new GameState();
