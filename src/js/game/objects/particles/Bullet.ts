@@ -1,5 +1,6 @@
 import {SPRITE_BULLETS} from '@/const.ts';
 import Point = Phaser.Geom.Point;
+import {Game} from '@/game/GameState';
 
 // значение - фрейм в спрайте
 export enum BULLET_TYPE {
@@ -33,7 +34,7 @@ export class Bullet extends Phaser.GameObjects.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number, bulletType: BULLET_TYPE = BULLET_TYPE.STICK) {
         super(scene, x, y, SPRITE_BULLETS, bulletType);
 
-        this.setScale(scene.game.registry.get('gameScale'));
+        this.setScale(Game.scale);
 
         scene.physics.add.existing(this);
 

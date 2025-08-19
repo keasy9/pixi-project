@@ -23,9 +23,8 @@ export default class ParallaxBg extends Phaser.GameObjects.Container {
                 .setOrigin(0, 0)
                 .setDisplaySize(bgWidth, bgHeight);
 
-            const secondSprite = new Phaser.GameObjects.Sprite(scene, -halfWidth, -bgHeight, SPRITE_BG, i)
-                .setOrigin(0, 0)
-                .setDisplaySize(bgWidth, bgHeight);
+            const secondSprite = (Phaser.Utils.Objects.Clone(firstSprite) as Phaser.GameObjects.Sprite)
+                .setX(-halfWidth).setY(-bgHeight);
 
             container.add([
                 firstSprite,
@@ -44,7 +43,7 @@ export default class ParallaxBg extends Phaser.GameObjects.Container {
     }
 
     public setSpeed(speed: number) {
-        // todo inertia
+        // todo inertia?
         this.speed = speed;
     }
 

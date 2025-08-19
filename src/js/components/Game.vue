@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-    import {computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch} from 'vue';
+    import {computed, onBeforeUnmount, ref, useTemplateRef, watch} from 'vue';
     import Load from '@/game/scenes/Load.ts';
     import Main from '@/game/scenes/Main.ts';
     import {Game} from '@/game/GameState';
@@ -19,7 +19,6 @@
 
     const props = defineProps<TSize>();
 
-    const dimentionWidth = 128;
 
     const gameConfig = computed<Phaser.Types.Core.GameConfig & TSize>(() => {
         return {
@@ -30,7 +29,6 @@
             canvas: canvas.value,
             physics: {
                 default: 'arcade',
-                arcade: {debug: true},
             },
             scene: [Load, Main],
         } as Phaser.Types.Core.GameConfig;
@@ -41,19 +39,13 @@
     const canvas = useTemplateRef<HTMLCanvasElement|null>('canvas');
 
     watch(gameConfig, () => {
-        game.value?.scale.resize(gameConfig.value.width, gameConfig.value.height);
-
         if (!game.value && gameConfig.value.width !== 0 && gameConfig.value.height !== 0) {
             game.value = new Phaser.Game(gameConfig.value);
             Game.init(game.value);
         }
 
         // чтобы движение было плавным несмотря на пиксельную графику, каждый объект придётся ресайзить по-отдельности
-        game.value?.registry.set('gameScale', Math.ceil(gameConfig.value.width / dimentionWidth));
-        game.value?.events.emit('resize', game.value?.registry.get('gameScale'));
-    });
-
-    onMounted(() => {
+        Game.resize(props.width, props.height);
     });
 
     onBeforeUnmount(() => game.value?.destroy(false));

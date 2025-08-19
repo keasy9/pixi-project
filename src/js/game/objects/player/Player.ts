@@ -3,6 +3,7 @@ import Ship from '@/game/objects/player/Ship';
 import {Exhaust, EXHAUST_SIZE} from '@/game/objects/player/Exhaust';
 import {Pool} from '@/game/managers/PoolManager';
 import {Bullet} from '@/game/objects/particles/Bullet';
+import {Game} from '@/game/GameState';
 
 export default class Player extends Phaser.GameObjects.Container {
     protected cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -26,7 +27,7 @@ export default class Player extends Phaser.GameObjects.Container {
         this.add(exhaust.setPosition(1, 5));
 
 
-        this.setScale(scene.game.registry.get('gameScale'));
+        this.setScale(Game.scale);
 
 
         this.setSize(this.ship.displayWidth, this.ship.displayHeight);
@@ -81,6 +82,6 @@ export default class Player extends Phaser.GameObjects.Container {
 
     protected fire(): void {
         Pool.get(Bullet).make({x: this.x, y: this.y - 1}).fire();
-        Pool.get(Bullet).make({x: this.x + 2 * this.scene.game.registry.get('gameScale'), y: this.y - 1}).fire();
+        Pool.get(Bullet).make({x: this.x + 2 * Game.scale, y: this.y - 1}).fire();
     }
 }

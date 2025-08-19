@@ -35,7 +35,7 @@ export default class Load extends Phaser.Scene {
             {frameWidth: 3, frameHeight: 6},
         );
 
-        this.load.once('complete', () => Game.loadScene(SCENE.MAIN).unloadScene(SCENE.LOAD));
+        this.load.once('complete', () => Game.playScene(SCENE.MAIN).stopScene(SCENE.LOAD));
 
         this.load.start();
     }
