@@ -1,9 +1,10 @@
-import {SCENE_LOAD, SCENE_MAIN, SPRITE_BG, SPRITE_BULLETS, SPRITE_EXHAUST, SPRITE_SHIPS} from '@/const.ts';
+import {SPRITE_BG, SPRITE_BULLETS, SPRITE_EXHAUST, SPRITE_SHIPS} from '@/const.ts';
+import {Game, SCENE} from '@/game/GameState';
 
 export default class Load extends Phaser.Scene {
     constructor ()
     {
-        super(SCENE_LOAD);
+        super(SCENE.LOAD);
     }
 
     create ()
@@ -34,10 +35,7 @@ export default class Load extends Phaser.Scene {
             {frameWidth: 3, frameHeight: 6},
         );
 
-        this.load.once('complete', () => {
-            this.scene.start(SCENE_MAIN);
-            this.scene.stop(SCENE_LOAD);
-        });
+        this.load.once('complete', () => Game.loadScene(SCENE.MAIN).unloadScene(SCENE.LOAD));
 
         this.load.start();
     }

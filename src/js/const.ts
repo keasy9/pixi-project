@@ -1,7 +1,3 @@
-// сцены
-export const SCENE_LOAD = 'load';
-export const SCENE_MAIN = 'main';
-
 // спрайты
 export const SPRITE_BG = 'bg-layers';
 export const SPRITE_SHIPS = 'ships';
