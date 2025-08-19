@@ -49,9 +49,7 @@ export default class ParallaxBg extends Phaser.GameObjects.Container {
 
     public setHorizontalOffset(offset: number) {
         offset = Math.max(Math.min(offset, 100), -100);
-        this.layers.forEach(layer => {
-            layer.container.x = layer.speed * this.speed * offset;
-        });
+        this.layers.forEach(layer => layer.container.x = layer.speed * offset * 10);
     }
 
     public preUpdate(_: number, dt: number) {

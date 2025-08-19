@@ -29,6 +29,7 @@
             canvas: canvas.value,
             physics: {
                 default: 'arcade',
+                arcade: {debug: true},
             },
             scene: [Load, Main],
         } as Phaser.Types.Core.GameConfig;
