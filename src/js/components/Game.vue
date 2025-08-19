@@ -19,7 +19,6 @@
 
     const props = defineProps<TSize>();
 
-
     const gameConfig = computed<Phaser.Types.Core.GameConfig & TSize>(() => {
         return {
             type: Phaser.WEBGL,
@@ -29,10 +28,10 @@
             canvas: canvas.value,
             physics: {
                 default: 'arcade',
-                arcade: {debug: true},
+                arcade: {debug: import.meta.env.DEV},
             },
             scene: [Load, Main],
-        } as Phaser.Types.Core.GameConfig;
+        } as Phaser.Types.Core.GameConfig & TSize;
     });
 
     const game = ref<Phaser.Game|null>(null);
@@ -42,7 +41,7 @@
     watch(gameConfig, () => {
         if (!game.value && gameConfig.value.width !== 0 && gameConfig.value.height !== 0) {
             game.value = new Phaser.Game(gameConfig.value);
-            Game.init(game.value);
+            Game.init(game.value as Phaser.Game);
         }
 
         // чтобы движение было плавным несмотря на пиксельную графику, каждый объект придётся ресайзить по-отдельности
