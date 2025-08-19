@@ -1,6 +1,6 @@
-import {SPRITE_BULLETS} from '@/const.ts';
+import {SPRITE_BULLETS, SPRITE_SHIPS} from '@/const.ts';
 import Point = Phaser.Geom.Point;
-import {Game} from '@/game/GameState';
+import VariableSprite from '@/game/objects/VariableSprite.ts';
 
 // значение - фрейм в спрайте
 export enum BULLET_TYPE {
@@ -28,51 +28,26 @@ type TFireOptions = {
 const DEFAULT_ANGLE = 0;
 const DEFAULT_SPEED = 800;
 
-export class Bullet extends Phaser.GameObjects.Sprite {
-    public speed: number = 0;
-
-    constructor(scene: Phaser.Scene, x: number, y: number, bulletType: BULLET_TYPE = BULLET_TYPE.STICK) {
-        super(scene, x, y, SPRITE_BULLETS, bulletType);
-
-        this.setScale(Game.scale);
-
-        scene.physics.add.existing(this);
-
-        this.correctBody(bulletType);
+export class Bullet extends VariableSprite<BULLET_TYPE> {
+    constructor(scene: Phaser.Scene, x: number, y: number, variant: BULLET_TYPE = BULLET_TYPE.STICK) {
+        super(scene, x, y, variant);
     }
 
-    //@ts-ignore используется в пуле объектов
-    public set bulletType(bulletType: BULLET_TYPE): void {
-        this.setFrame(bulletType, true, true);
-        this.correctBody(bulletType);
+    protected getTextureKey(): string {
+        return SPRITE_BULLETS;
     }
 
-    protected correctBody(type: BULLET_TYPE): void {
-
-        const defaultWidth = 3;
-        const typesWidth: {[K in BULLET_TYPE]?: number} = {
-            [BULLET_TYPE.BRICK]: 2,
-            [BULLET_TYPE.STICK]: 1,
-            [BULLET_TYPE.SMALL]: 1,
-            [BULLET_TYPE.TINY]: 1,
+    protected getSizesMap() {
+        return {
+            [BULLET_TYPE.BRICK]:  {width: 2, height: 3},
+            [BULLET_TYPE.STICK]:  {width: 1, height: 3},
+            [BULLET_TYPE.SMALL]:  {width: 1, height: 2},
+            [BULLET_TYPE.TINY]:   {width: 1, height: 1},
+            [BULLET_TYPE.CROSS]:  {          height: 5},
+            [BULLET_TYPE.ROCKET]: {          height: 4},
+            [BULLET_TYPE.BALL]:   {          height: 3},
+            [BULLET_TYPE.PURPLE]: {          height: 2},
         };
-
-        const defaultHeight = 6;
-        const typesHeight: {[K in BULLET_TYPE]?: number} = {
-            [BULLET_TYPE.CROSS]: 5,
-            [BULLET_TYPE.ROCKET]: 4,
-            [BULLET_TYPE.BRICK]: 3,
-            [BULLET_TYPE.STICK]: 3,
-            [BULLET_TYPE.BALL]: 3,
-            [BULLET_TYPE.PURPLE]: 2,
-            [BULLET_TYPE.SMALL]: 2,
-            [BULLET_TYPE.TINY]: 1,
-        };
-
-        (this.body as Phaser.Physics.Arcade.Body).setSize(
-            typesWidth[type] ?? defaultWidth,
-            typesHeight[type] ?? defaultHeight,
-        ).setOffset(0, 0);
     }
 
     public fire(options?: TFireOptions): this {

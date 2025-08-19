@@ -26,7 +26,9 @@ export class Exhaust extends Phaser.GameObjects.Sprite {
         protected color: EXHAUST_COLOR = EXHAUST_COLOR.ORANGE,
         play: boolean = true,
     ) {
-        super(scene, x, y, SPRITE_EXHAUST, 0);
+        const frame = size + color;
+
+        super(scene, x, y, SPRITE_EXHAUST, frame);
 
         this.animKey = `${ANIM_EXHAUST}_${size}_${color}`;
 
@@ -37,7 +39,7 @@ export class Exhaust extends Phaser.GameObjects.Sprite {
                 duration: 200,
                 frames: scene.anims.generateFrameNumbers(
                     SPRITE_EXHAUST,
-                    {start: size + color, end: size + color + FRAMES_COUNT},
+                    {start: frame, end: frame + FRAMES_COUNT},
                 ),
             });
         }

@@ -1,11 +1,11 @@
-import type {Class} from '@/utils/Types';
+import type {TClass} from '@/utils/Types';
 
 export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser.GameObjects.GameObject> extends Phaser.GameObjects.Group {
     declare children: Phaser.Structs.Set<T>;
 
     constructor(
         scene: Phaser.Scene,
-        protected objectType: Class<T>,
+        protected objectType: TClass<T>,
     ) {
         super(scene);
 

@@ -11,11 +11,7 @@
     import Load from '@/game/scenes/Load.ts';
     import Main from '@/game/scenes/Main.ts';
     import {Game} from '@/game/GameState';
-
-    type TSize = {
-        width: number,
-        height: number,
-    }
+    import type {TSize} from '@/utils/Types.ts';
 
     const props = defineProps<TSize>();
 

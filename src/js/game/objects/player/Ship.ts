@@ -1,7 +1,8 @@
 import {SPRITE_SHIPS} from '@/const';
+import VariableSprite from '@/game/objects/VariableSprite.ts';
 
 // значение - основной фрейм спрайта для корабля определённого типа
-export enum SHIP_TYPE {
+export enum SHIP_VARIANT {
     WHITE = 1,
     YELLOW = 4,
     GREEN = 7,
@@ -9,16 +10,22 @@ export enum SHIP_TYPE {
     RED = 13,
 }
 
-export default class Ship extends Phaser.GameObjects.Sprite {
+export default class Ship extends VariableSprite<SHIP_VARIANT> {
+
     protected rightFrame: number;
     protected leftFrame: number;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, protected mainFrame: SHIP_TYPE = SHIP_TYPE.WHITE) {
-        super(scene, x, y, SPRITE_SHIPS, mainFrame);
+    constructor(scene: Phaser.Scene, x: number, y: number, protected mainFrame: SHIP_VARIANT = SHIP_VARIANT.WHITE) {
+        super(scene, x, y, mainFrame, false, false);
 
         this.rightFrame = mainFrame + 1;
         this.leftFrame = mainFrame - 1;
     }
+
+    protected getTextureKey(): string {
+        return SPRITE_SHIPS;
+    }
+
 
     public toLeft(): this
     {

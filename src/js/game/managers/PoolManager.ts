@@ -1,16 +1,16 @@
 import ObjectPool from '@/game/objects/pools/ObjectPool';
 import {Game} from '@/game/GameState';
-import type {Class} from '@/utils/Types';
+import type {TClass} from '@/utils/Types';
 import {BulletPool} from '@/game/objects/pools/BulletPool';
 import {Bullet} from '@/game/objects/particles/Bullet';
 
-const poolMap: Map<Class<Phaser.GameObjects.GameObject>, Class<ObjectPool>> = new Map();
+const poolMap: Map<TClass<Phaser.GameObjects.GameObject>, TClass<ObjectPool>> = new Map();
 poolMap.set(Bullet, BulletPool);
 
 class PoolManager {
-    protected pools: Map<Class, ObjectPool> = new Map;
+    protected pools: Map<TClass, ObjectPool> = new Map;
 
-    public get<T extends Phaser.GameObjects.GameObject = Phaser.GameObjects.GameObject>(objectType: Class<T>): ObjectPool<T> {
+    public get<T extends Phaser.GameObjects.GameObject = Phaser.GameObjects.GameObject>(objectType: TClass<T>): ObjectPool<T> {
         if (!this.pools.has(objectType)) {
             const pool = poolMap.get(objectType) ?? ObjectPool;
             this.pools.set(objectType, new pool(Game.scene, objectType));
@@ -19,7 +19,7 @@ class PoolManager {
         return this.pools.get(objectType)! as ObjectPool<T>;
     }
 
-    public forget(objectType: Class): this {
+    public forget(objectType: TClass): this {
         this.pools.delete(objectType);
 
         return this;
