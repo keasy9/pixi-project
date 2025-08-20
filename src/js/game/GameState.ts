@@ -11,9 +11,16 @@ class GameState {
     protected game: Phaser.Game;
     protected mainScene: SCENE = SCENE.LOAD;
     protected _scale: number = 1;
+    protected sceneStates: Record<string, Map<string, any>> = {};
 
     public get scene(): Phaser.Scene {
         return this.game.scene.getScene(this.mainScene);
+    }
+
+    public get sceneState(): Map<string, any> {
+        if (!(this.mainScene in this.sceneStates)) this.sceneStates[this.mainScene] = new Map();
+
+        return this.sceneStates[this.mainScene]
     }
 
     public get scale(): number {

@@ -10,7 +10,7 @@ export class BulletPool extends ObjectPool<Enemy> {
     ) {
         super(scene, objectType);
 
-        this.runChildUpdate = true;
+        // this.runChildUpdate = true; ?
     }
 
     public preUpdate(time: number, delta: number) {
