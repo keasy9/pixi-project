@@ -1,6 +1,6 @@
 import {SPRITE_BULLETS, SPRITE_SHIPS} from '@/const.ts';
 import Point = Phaser.Geom.Point;
-import VariableSprite from '@/game/objects/VariableSprite.ts';
+import VariableSprite from '@/game/objects/abstract/VariableSprite.ts';
 
 // значение - фрейм в спрайте
 export enum BULLET_TYPE {

@@ -1,5 +1,5 @@
 import {SPRITE_SHIPS} from '@/const';
-import VariableSprite from '@/game/objects/VariableSprite.ts';
+import VariableSprite from '@/game/objects/abstract/VariableSprite.ts';
 
 // значение - основной фрейм спрайта для корабля определённого типа
 export enum SHIP_VARIANT {

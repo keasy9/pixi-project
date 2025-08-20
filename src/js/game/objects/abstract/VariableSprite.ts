@@ -9,6 +9,8 @@ export default abstract class VariableSprite<TVariant extends number> extends Ph
     protected defaultWidth?: number = undefined;
     protected defaultHeight?: number = undefined;
 
+    declare body: Phaser.Physics.Arcade.Body|null;
+
     constructor(scene: Phaser.Scene, x: number, y: number, variant: TVariant, withBody: boolean = true, scale: boolean = true) {
         super(scene, x, y, '');
 
@@ -28,7 +30,7 @@ export default abstract class VariableSprite<TVariant extends number> extends Ph
      * Вариант внешнего вида спрайта
      * @param variant
      */
-    public set variant(variant: TVariant): void {
+    public set variant(variant: TVariant) {
         this.setFrame(variant, true, true);
         if (this.body) this.correctBody(variant);
     }
