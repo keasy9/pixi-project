@@ -8,7 +8,14 @@ const poolMap: Map<TClass<Phaser.GameObjects.GameObject>, TClass<ObjectPool>> = 
 poolMap.set(Bullet, BulletPool);
 
 class PoolManager {
-    protected pools: Map<TClass, ObjectPool> = new Map;
+    protected get pools(): Map<TClass, ObjectPool>
+    {
+        if (!Game.sceneState.has('object-pools')) {
+            Game.sceneState.set('object-pools', new Map());
+        }
+
+        return Game.sceneState.get('object-pools');
+    }
 
     public get<T extends Phaser.GameObjects.GameObject = Phaser.GameObjects.GameObject>(objectType: TClass<T>): ObjectPool<T> {
         if (!this.pools.has(objectType)) {

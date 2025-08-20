@@ -6,25 +6,30 @@ export enum COLLIDER {
 }
 
 class CollisionManager {
-    protected groups: {[K in COLLIDER]?: Phaser.GameObjects.Group} = {};
 
-    protected getColliderMap(): {[K in COLLIDER]?: COLLIDER[]} {
-        return {
-            [COLLIDER.PLAYER]: [COLLIDER.ENEMY],
-            [COLLIDER.ENEMY]: [COLLIDER.PLAYER],
+    protected get groups(): {[K in COLLIDER]: Phaser.GameObjects.Group} {
+        if (!Game.sceneState.has('collisions')) {
+            const collisionGroups = {
+                [COLLIDER.PLAYER]: new Phaser.GameObjects.Group(Game.scene),
+                [COLLIDER.ENEMY]: new Phaser.GameObjects.Group(Game.scene),
+            }
+
+            Game.scene.physics.add.collider(collisionGroups[COLLIDER.PLAYER], collisionGroups[COLLIDER.ENEMY]);
+
+            Game.sceneState.set('collisions', collisionGroups);
         }
+
+        return Game.sceneState.get('collisions');
     }
 
     public add(object: Phaser.GameObjects.GameObject, colliderType: COLLIDER): this {
-        if (!(colliderType in this.groups)) {
-            this.groups[colliderType] = new Phaser.GameObjects.Group(Game.scene);
+        this.groups[colliderType]!.add(object);
 
-            this.getColliderMap()[colliderType]?.forEach(collideWith => {
-                if (collideWith in this.groups) {
-                    //Game.scene.physics.add.collider()
-                }
-            })
-        }
+        return this;
+    }
+
+    public remove(object: Phaser.GameObjects.GameObject, colliderType: COLLIDER): this {
+        this.groups[colliderType]!.remove(object);
 
         return this;
     }
