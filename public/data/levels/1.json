@@ -1,0 +1,21 @@
+{
+    "timeline": [
+        {
+            "type": "wave",
+            "delay": 0,
+            "data": {
+                "enemyType": 0,
+                "enemyCount": 6,
+                "spawnPoint": [0.3, 0],
+                "shape": {
+                    "type": "grid",
+                    "gap": 0.1
+                },
+                "movement": {
+                    "pattern": "linear",
+                    "speed": 10
+                }
+            }
+        }
+    ]
+}

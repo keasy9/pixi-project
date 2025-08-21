@@ -1,6 +1,6 @@
 import ObjectPool from '@/game/objects/pools/ObjectPool';
 import type {TClass} from '@/utils/Types';
-import Enemy from '@/game/objects/Enemy';
+import Enemy from '@/game/objects/enemy/Enemy';
 
 export class BulletPool extends ObjectPool<Enemy> {
 
