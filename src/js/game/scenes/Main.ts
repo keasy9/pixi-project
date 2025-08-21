@@ -1,6 +1,7 @@
 import ParallaxBg from '@/game/objects/ParallaxBg.ts';
 import Player from '@/game/objects/player/Player.ts';
 import {SCENE} from '@/game/GameState';
+import {COLLIDER, Collider} from '@/game/managers/CollisionManager';
 
 export default class Main extends Phaser.Scene {
     protected player?: Player;
@@ -18,6 +19,8 @@ export default class Main extends Phaser.Scene {
 
         this.add.existing(this.bg);
         this.add.existing(this.player);
+
+        Collider.add(this.player, COLLIDER.PLAYER);
     }
 
     public update(time: number, delta: number) {

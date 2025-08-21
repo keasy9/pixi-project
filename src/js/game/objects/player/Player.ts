@@ -1,9 +1,10 @@
 import Vector2 = Phaser.Math.Vector2;
 import Ship from '@/game/objects/player/Ship';
 import {Exhaust, EXHAUST_SIZE} from '@/game/objects/player/Exhaust';
-import {Pool} from '@/game/managers/PoolManager';
+import {POOL, Pool} from '@/game/managers/PoolManager';
 import {Bullet} from '@/game/objects/particles/Bullet';
 import {Game} from '@/game/GameState';
+import {COLLIDER, Collider} from '@/game/managers/CollisionManager';
 
 export default class Player extends Phaser.GameObjects.Container {
     protected cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -81,7 +82,12 @@ export default class Player extends Phaser.GameObjects.Container {
     }
 
     protected fire(): void {
-        Pool.get(Bullet).make({x: this.x, y: this.y - 1}).fire();
-        Pool.get(Bullet).make({x: this.x + 2 * Game.scale, y: this.y - 1}).fire();
+        let bullet = Pool.get(POOL.PLAYER_BULLET, Bullet).make({x: this.x, y: this.y - 1});
+        Collider.add(bullet, COLLIDER.PLAYER_BULLET);
+        bullet.fire();
+
+        bullet = Pool.get(POOL.PLAYER_BULLET, Bullet).make({x: this.x + 2 * Game.scale, y: this.y - 1});
+        Collider.add(bullet, COLLIDER.PLAYER_BULLET);
+        bullet.fire();
     }
 }
