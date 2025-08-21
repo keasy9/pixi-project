@@ -43,8 +43,9 @@ export enum ENEMY_TYPE {
 }
 
 export default class Enemy extends VariableSprite<ENEMY_TYPE> {
-
     declare body: Phaser.Physics.Arcade.Body;
+
+    public static readonly SIZE_IN_GRID: number = 8;
 
     constructor(scene: Phaser.Scene, x: number, y: number, variant: ENEMY_TYPE = ENEMY_TYPE.WHITE) {
         super(scene, x, y, variant);

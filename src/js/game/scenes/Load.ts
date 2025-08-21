@@ -35,6 +35,8 @@ export default class Load extends Phaser.Scene {
             {frameWidth: 3, frameHeight: 6},
         );
 
+        this.load.json('level_1', 'data/levels/1.json');
+
         this.load.once('complete', () => Game.playScene(SCENE.MAIN).stopScene(SCENE.LOAD));
 
         this.load.start();

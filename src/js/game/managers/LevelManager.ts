@@ -1,20 +1,20 @@
-import type {TEnemyWaveConfig} from '@/game/objects/factories/EnemyWaveFactory';
+import {EnemyWaveFactory, type TEnemyWaveConfig} from '@/game/objects/factories/EnemyWaveFactory';
 
 type TLevel = {
     timeline: TLevelEvent[],
 };
 
-enum TIMELINE_ITEM_TYPE {
+enum EVENT_TYPE {
     WAVE = 'wave',
 }
 
 interface BaseLevelEvent {
-    type: TIMELINE_ITEM_TYPE;
+    type: EVENT_TYPE;
     delay: number,
 }
 
 interface LevelWave extends BaseLevelEvent {
-    type: TIMELINE_ITEM_TYPE.WAVE;
+    type: EVENT_TYPE.WAVE;
     data: TEnemyWaveConfig,
 }
 
@@ -30,20 +30,24 @@ export default class LevelManager {
 
     constructor(protected scene: Phaser.Scene) {}
 
-    public load(level: number): this|Promise<this> {
-        // 1) уровень уже загружен
-        if (this.loaded[level]) {
-            this.current = this.loaded[level];
-            return this;
-        }
-
-        // 2) файл уровня уже был загружен ранее, но используется впервые
-        const jsonDataKey = `level_${level}`;
-        this.loaded[level] = this.current = this.scene.cache.json.get(jsonDataKey);
-        if (this.current) return this;
-
-        // 3) уровень ещё не был загружен
+    public load(level: number): Promise<this> {
         return new Promise((resolve) => {
+            // 1) уровень уже загружен
+            if (this.loaded[level]) {
+                this.current = this.loaded[level];
+                resolve(this);
+                return;
+            }
+
+            // 2) файл уровня уже был загружен ранее, но используется впервые
+            const jsonDataKey = `level_${level}`;
+            this.loaded[level] = this.current = this.scene.cache.json.get(jsonDataKey);
+            if (this.current) {
+                resolve(this);
+                return;
+            }
+
+            // 3) уровень ещё не был загружен
             this.scene.load.json(jsonDataKey, `data/levels/${level}.json`);
             this.scene.load.once(Phaser.Loader.Events.COMPLETE, () => {
                 this.loaded[level] = this.current = this.scene.cache.json.get(jsonDataKey);
@@ -90,6 +94,10 @@ export default class LevelManager {
     }
 
     protected runEvent(event: TLevelEvent): void {
-        // todo
+        switch (event.type) {
+            case EVENT_TYPE.WAVE:
+                EnemyWaveFactory.make(this.scene, event.data);
+                break;
+        }
     }
 }

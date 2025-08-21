@@ -15,6 +15,8 @@ export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser
     public make(options: Record<string, any>): T {
         let instance: T;
 
+        options.scene ??= this.scene;
+
         instance = this.getFirstDead();
         if (instance) {
             instance.setActive(true);
@@ -24,7 +26,7 @@ export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser
                 (instance.body as Phaser.Physics.Arcade.Body).reset(options.x ?? 0, options.y ?? 0);
             }
         } else {
-            instance = new this.objectType(this.scene, ...Object.values(options));
+            instance = new this.objectType(...Object.values(options));
         }
 
         for (let key in options) {

@@ -7,8 +7,6 @@ type TBaseMovement = {
     speed: number,
 }
 
-type TLinearMovement = TBaseMovement & {
-    angle: number,
-}
+type TLinearMovement = TBaseMovement & {};
 
 export type TMovement = TLinearMovement;

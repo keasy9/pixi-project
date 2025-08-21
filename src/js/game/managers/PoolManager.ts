@@ -9,6 +9,7 @@ poolMap.set(Bullet, BulletPool);
 
 export enum POOL {
     PLAYER_BULLET,
+    ENEMY,
     ENEMY_BULLET,
 }
 

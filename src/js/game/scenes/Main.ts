@@ -2,14 +2,18 @@ import ParallaxBg from '@/game/objects/ParallaxBg.ts';
 import Player from '@/game/objects/player/Player.ts';
 import {SCENE} from '@/game/GameState';
 import {COLLIDER, Collider} from '@/game/managers/CollisionManager';
+import LevelManager from '@/game/managers/LevelManager';
 
 export default class Main extends Phaser.Scene {
     protected player?: Player;
     protected bg?: ParallaxBg;
+    protected level: LevelManager;
 
     constructor ()
     {
         super(SCENE.MAIN);
+
+        this.level = new LevelManager(this);
     }
 
     public create()
@@ -21,6 +25,8 @@ export default class Main extends Phaser.Scene {
         this.add.existing(this.player);
 
         Collider.add(this.player, COLLIDER.PLAYER);
+
+        this.level.load(1).then(level => level.start());
     }
 
     public update(time: number, delta: number) {
