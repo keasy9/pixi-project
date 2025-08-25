@@ -1,7 +1,7 @@
 import Enemy, {type ENEMY_TYPE} from '@/game/objects/enemy/Enemy';
 import {type TShape, WAVE_SHAPE} from '@/game/objects/factories/types/TShape';
-import type {TMovement} from '@/game/objects/factories/types/TMovement';
-import {EnemyWave} from '@/game/objects/enemy/EnemyWave';
+import {MOVEMENT_PATTERN, type TMovement} from '@/game/objects/factories/types/TMovement';
+import {type EnemyMovementFunc, EnemyWave} from '@/game/objects/enemy/EnemyWave';
 import {POOL, Pool} from '@/game/managers/PoolManager';
 import {Game} from '@/game/GameState';
 
@@ -27,6 +27,8 @@ export class EnemyWaveFactory {
         wave.addMultiple(this.makeEnemies(scene, config));
 
         this.placeEnemies(wave, config);
+
+        wave.movementFunc = this.getMovementFunc(config);
     }
 
     /**
@@ -144,6 +146,27 @@ export class EnemyWaveFactory {
                 });
 
                 break;
+        }
+    }
+
+    /**
+     * Получить функцию движения врага в зависимости от параметров волны
+     *
+     * @param config параметры волны
+     * @protected
+     */
+    protected static getMovementFunc(config: TEnemyWaveConfig): EnemyMovementFunc {
+        const angleRad = Phaser.Math.DegToRad(config.angle);
+
+        switch (config.movement.pattern) {
+            case MOVEMENT_PATTERN.LINEAR:
+                const deltaX = Math.cos(angleRad) * config.movement.speed;
+                const deltaY = Math.sin(angleRad) * config.movement.speed;
+
+                return (enemy: Enemy, dt: number) => {
+                    enemy.x += deltaX * dt;
+                    enemy.y += deltaY * dt;
+                };
         }
     }
 }

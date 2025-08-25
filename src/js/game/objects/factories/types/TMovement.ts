@@ -1,4 +1,4 @@
-enum MOVEMENT_PATTERN {
+export enum MOVEMENT_PATTERN {
     LINEAR = 'linear',
 }
 
