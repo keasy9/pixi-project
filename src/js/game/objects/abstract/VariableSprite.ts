@@ -47,10 +47,12 @@ export default abstract class VariableSprite<TVariant extends number> extends Ph
 
         const sizesMap = this.getSizesMap();
 
-        (this.body as Phaser.Physics.Arcade.Body).setSize(
-            sizesMap[variant]?.width ?? this.defaultWidth,
-            sizesMap[variant]?.height ?? this.defaultHeight,
-        ).setOffset(0, 0);
+        const width = sizesMap[variant]?.width ?? this.defaultWidth;
+        const height = sizesMap[variant]?.height ?? this.defaultHeight;
+
+        (this.body as Phaser.Physics.Arcade.Body).setSize(width, height).setOffset(0, 0);
+
+        this.setDisplayOrigin(width/2, height/2);
     }
 
     /**

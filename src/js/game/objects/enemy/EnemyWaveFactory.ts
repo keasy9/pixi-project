@@ -1,6 +1,6 @@
 import Enemy, {type ENEMY_TYPE} from '@/game/objects/enemy/Enemy';
-import {type TShape, WAVE_SHAPE} from '@/game/objects/factories/types/TShape';
-import {MOVEMENT_PATTERN, type TMovement} from '@/game/objects/factories/types/TMovement';
+import {type TShape, WAVE_SHAPE} from '@/game/objects/enemy/types/TShape';
+import {MOVEMENT_PATTERN, type TMovement} from '@/game/objects/enemy/types/TMovement';
 import {type EnemyMovementFunc, EnemyWave} from '@/game/objects/enemy/EnemyWave';
 import {POOL, Pool} from '@/game/managers/PoolManager';
 import {Game} from '@/game/GameState';
@@ -117,6 +117,7 @@ export class EnemyWaveFactory {
 
         switch (config.shape.type) {
             case WAVE_SHAPE.GRID:
+                // todo вместо GridAlign надо расставлять врагов самому, потому что gridAlign не учитывает поворот
 
                 const cellWidth = (Enemy.SIZE_IN_GRID + twiceSize * (config.shape.colGap ?? 0)) * Game.scale;
                 const cellHeight = (Enemy.SIZE_IN_GRID + twiceSize * (config.shape.rowGap ?? 0)) * Game.scale;
@@ -126,16 +127,14 @@ export class EnemyWaveFactory {
                 const groupWidth = cellWidth * width;
                 const groupHeight = cellHeight * Math.ceil(wave.getChildren().length / width);
 
-                const spawnOffset = Phaser.Math.RotateAround(
-                    new Phaser.Geom.Point(groupWidth, groupHeight / 2),
-                    wave.scene.cameras.main.width / 2,
-                    wave.scene.cameras.main.height / 2,
-                    angleRad
+                const spawnOffset = Phaser.Math.Rotate(
+                    new Phaser.Geom.Point(groupHeight / 2, groupWidth / 2),
+                    angleRad,
                 );
 
                 Phaser.Actions.GridAlign(wave.getChildren(), {
-                    x: spawnPoint.x + spawnOffset.x,
-                    y: spawnPoint.y + spawnOffset.y,
+                    x: spawnPoint.x + spawnOffset.x - groupWidth / 2,
+                    y: spawnPoint.y + spawnOffset.y - groupHeight / 2,
                     width,
                     cellWidth,
                     cellHeight,
@@ -144,6 +143,10 @@ export class EnemyWaveFactory {
 
                 break;
         }
+
+        wave.getChildren().forEach(enemy => {
+            (enemy as Enemy).setRotation(angleRad + Math.PI/2);
+        })
     }
 
     /**
@@ -153,7 +156,7 @@ export class EnemyWaveFactory {
      * @protected
      */
     protected static getMovementFunc(config: TEnemyWaveConfig): EnemyMovementFunc {
-        const angleRad = -Phaser.Math.DegToRad(config.angle);
+        const angleRad = Phaser.Math.DegToRad(config.angle - 180);
 
         switch (config.movement.pattern) {
             case MOVEMENT_PATTERN.LINEAR:

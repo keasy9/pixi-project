@@ -1,4 +1,4 @@
-import {EnemyWaveFactory, type TEnemyWaveConfig} from '@/game/objects/factories/EnemyWaveFactory';
+import {EnemyWaveFactory, type TEnemyWaveConfig} from '@/game/objects/enemy/EnemyWaveFactory';
 
 type TLevel = {
     timeline: TLevelEvent[],
