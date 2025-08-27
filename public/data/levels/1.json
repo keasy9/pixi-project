@@ -6,7 +6,7 @@
             "data": {
                 "enemyType": 0,
                 "enemyCount": 6,
-                "angle": 111,
+                "angle": -90,
                 "shape": {
                     "type": "grid",
                     "gap": 0.1
