@@ -29,6 +29,8 @@ export class EnemyWaveFactory {
         this.placeEnemies(wave, config);
 
         wave.movementFunc = this.getMovementFunc(config);
+
+        scene.add.existing(wave);
     }
 
     /**
@@ -41,12 +43,7 @@ export class EnemyWaveFactory {
     protected static makeEnemies(scene: Phaser.Scene, config: TEnemyWaveConfig): Enemy[] {
         const enemies: Enemy[] = [];
         for (let i = 0; i < config.enemyCount; i++) {
-            enemies.push(
-                Pool.get(POOL.ENEMY, Enemy)
-                    .make({scene: scene, x: 0, y: 0, variant: config.enemyType})
-                    .setVisible(false)
-                    .setActive(false)
-            );
+            enemies.push(Pool.get(POOL.ENEMY, Enemy).make({scene: scene, x: 0, y: 0, variant: config.enemyType}));
         }
 
         return enemies;
@@ -156,12 +153,12 @@ export class EnemyWaveFactory {
      * @protected
      */
     protected static getMovementFunc(config: TEnemyWaveConfig): EnemyMovementFunc {
-        const angleRad = Phaser.Math.DegToRad(config.angle);
+        const angleRad = -Phaser.Math.DegToRad(config.angle);
 
         switch (config.movement.pattern) {
             case MOVEMENT_PATTERN.LINEAR:
-                const deltaX = Math.cos(angleRad) * config.movement.speed;
-                const deltaY = Math.sin(angleRad) * config.movement.speed;
+                const deltaX = Math.cos(angleRad) * config.movement.speed * .01;
+                const deltaY = Math.sin(angleRad) * config.movement.speed * .01;
 
                 return (enemy: Enemy, dt: number) => {
                     enemy.x += deltaX * dt;

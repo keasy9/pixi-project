@@ -1,4 +1,4 @@
-import {SPRITE_BG, SPRITE_BULLETS, SPRITE_EXHAUST, SPRITE_SHIPS} from '@/const.ts';
+import {SPRITE_BG, SPRITE_BULLETS, SPRITE_ENEMIES, SPRITE_EXHAUST, SPRITE_SHIPS} from '@/const.ts';
 import {Game, SCENE} from '@/game/GameState';
 
 export default class Load extends Phaser.Scene {
@@ -33,6 +33,12 @@ export default class Load extends Phaser.Scene {
             SPRITE_BULLETS,
             '/assets/sprites/bullets.png',
             {frameWidth: 3, frameHeight: 6},
+        );
+
+        this.load.spritesheet(
+            SPRITE_ENEMIES,
+            '/assets/sprites/enemies.png',
+            {frameWidth: 8, frameHeight: 8},
         );
 
         this.load.json('level_1', 'data/levels/1.json');

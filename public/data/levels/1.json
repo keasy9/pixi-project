@@ -13,7 +13,7 @@
                 },
                 "movement": {
                     "pattern": "linear",
-                    "speed": 10
+                    "speed": 5
                 }
             }
         }
