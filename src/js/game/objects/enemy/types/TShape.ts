@@ -8,7 +8,7 @@ type TGridShape = TBaseShape & {
     type: WAVE_SHAPE.GRID,
     rowGap?: number, // от 0 до 1
     colGap?: number, // от 0 до 1
-    maxRows?: number,
+    maxCols?: number,
 }
 
 export type TShape = TGridShape;

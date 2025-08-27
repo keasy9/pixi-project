@@ -2,9 +2,9 @@ import type {EnemyWave} from '@/game/objects/enemy/EnemyWave';
 import type {TEnemyWaveConfig} from '@/game/objects/enemy/EnemyWaveFactory';
 import Enemy from '@/game/objects/enemy/Enemy';
 import {Game} from '@/game/GameState';
+import {collect} from '@/utils/Collection.ts';
 
 export class EnemyPlacer {
-
 
     /**
      * Получить точку спавна волны с учётом угла движения и перпендикулярного смещения. Точка будет находиться на краю
@@ -24,11 +24,11 @@ export class EnemyPlacer {
         // 1) находим точку с учётом angle
         const toPoint = new Phaser.Geom.Point(
             centerX + Math.cos(angle) * camera.height,
-            centerY + Math.sin(angle) * camera.height
+            centerY + Math.sin(angle) * camera.height,
         );
 
         if (offset !== 0) {
-            // 2) находим первендикулярный угол
+            // 2) находим перпендикулярный угол
             let perpendicularAngle = angle + (Math.PI / 2);
 
             // 3) сдвигаем её на offset по перпендикулярному углу
@@ -54,46 +54,61 @@ export class EnemyPlacer {
         return result;
     }
 
-    // todo вместо GridAlign надо расставлять врагов самому, потому что gridAlign не учитывает поворот
     public static grid(wave: EnemyWave, config: TEnemyWaveConfig): void {
         const angleRad = Phaser.Math.DegToRad(config.angle);
 
+        // это должен быть центр первого ряда сетки
         const spawnPoint = this.getSpawnPoint(
             wave.scene.cameras.main,
             angleRad,
             wave.scene.cameras.main.width / 2 * (config.spawnOffset ?? 0),
         );
 
-        const twiceSize = Enemy.SIZE_IN_GRID * 2;
+        const colGap = Enemy.SIZE_IN_GRID * (config.shape.colGap ?? 0);
+        const rowGap = Enemy.SIZE_IN_GRID * (config.shape.rowGap ?? 0);
 
-        const cellWidth = (Enemy.SIZE_IN_GRID + twiceSize * (config.shape.colGap ?? 0)) * Game.scale;
-        const cellHeight = (Enemy.SIZE_IN_GRID + twiceSize * (config.shape.rowGap ?? 0)) * Game.scale;
+        const cellWidth = (Enemy.SIZE_IN_GRID + colGap) * Game.scale;
+        const cellHeight = (Enemy.SIZE_IN_GRID + rowGap) * Game.scale;
+
+        const halfCellWidth = cellWidth / 2;
+        const halfCellHeight = cellHeight / 2;
+
         const maxWidth = Math.floor(wave.scene.cameras.main.width / cellWidth);
-        const width = config.shape.maxRows ? Math.min(config.shape.maxRows, maxWidth) : maxWidth;
 
-        const groupWidth = cellWidth * width;
-        const groupHeight = cellHeight * Math.ceil(wave.getChildren().length / width);
-
-        const spawnOffset = Phaser.Math.Rotate(
-            new Phaser.Geom.Point(groupHeight / 2, groupWidth / 2),
-            angleRad,
+        const colsCount = Math.min(
+            config.shape.maxCols ? Math.min(config.shape.maxCols, maxWidth) : maxWidth,
+            wave.getChildren().length,
         );
 
-        Phaser.Actions.GridAlign(wave.getChildren(), {
-            x: spawnPoint.x + spawnOffset.x - groupWidth / 2,
-            y: spawnPoint.y + spawnOffset.y - groupHeight / 2,
-            width,
-            cellWidth,
-            cellHeight,
-            position: Phaser.Display.Align.CENTER,
-        });
+        const groupWidth = colsCount * cellWidth;
+
+        // угол 0 это справа, поэтому ширина пойдёт вниз, т.е. откладываем по перпендикулярному углу
+        const perpAngle = angleRad + Math.PI / 2;
+
+        spawnPoint.y += Math.sin(perpAngle) * (groupWidth / 2);
+        spawnPoint.x += Math.cos(perpAngle) * (groupWidth / 2);
+
+        const cos = Math.cos(angleRad);
+        const sin = Math.sin(angleRad);
+
+        collect(wave.getChildren() as Enemy[])
+            .chunk(colsCount)
+            .each((chunk, row) => chunk.each((enemy, col) => {
+                const rowOffset = row * cellHeight;
+                const colOffset = groupWidth * (((colsCount - col) / colsCount) - 1);
+
+                enemy.x = spawnPoint.x + cos * rowOffset - sin * colOffset;
+                enemy.y = spawnPoint.y + sin * rowOffset + cos * colOffset;
+
+                // todo сделать чтобы последняя строка выравнивалась по центру, если в ней меньше элементов чем в остальных
+            }));
     }
 
     public static applyRotation(wave: EnemyWave, config: TEnemyWaveConfig) {
         const angleRad = Phaser.Math.DegToRad(config.angle);
 
         wave.getChildren().forEach(enemy => {
-            (enemy as Enemy).setRotation(angleRad + Math.PI/2);
-        })
+            (enemy as Enemy).setRotation(angleRad + Math.PI / 2);
+        });
     }
 }
