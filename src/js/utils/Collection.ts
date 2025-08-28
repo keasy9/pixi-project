@@ -19,6 +19,14 @@ export class Collection<T = any> {
 
         return this;
     }
+
+    public get last(): T {
+        return this.items[this.items.length-1];
+    }
+
+    public get length(): number {
+        return this.items.length;
+    }
 }
 
 export function collect<T = any>(items: T[]): Collection<T> {

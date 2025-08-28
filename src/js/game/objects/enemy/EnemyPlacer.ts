@@ -53,11 +53,16 @@ export class EnemyPlacer {
         return result;
     }
 
+    /**
+     * Расположить врагов по сетке. Учитывает угол, в отличии от Phaser.Actions.GridAlign
+     * @param wave
+     * @param config
+     */
     public static grid(wave: EnemyWave, config: TEnemyWaveConfig): void {
         const angleRad = Phaser.Math.DegToRad(config.angle);
 
         // это должен быть центр первого ряда сетки
-        const spawnPoint = this.getSpawnPoint(
+        const spawnCenter = this.getSpawnPoint(
             wave.scene.cameras.main,
             angleRad,
             wave.scene.cameras.main.width / 2 * (config.spawnOffset ?? 0),
@@ -81,22 +86,42 @@ export class EnemyPlacer {
         // угол 0 это справа, поэтому ширина пойдёт вниз, т.е. откладываем по перпендикулярному углу
         const perpAngle = angleRad + Math.PI / 2;
 
-        spawnPoint.y += Math.sin(perpAngle) * (groupWidth / 2);
-        spawnPoint.x += Math.cos(perpAngle) * (groupWidth / 2);
+        const spawnPoint = {
+            x: spawnCenter.x + Math.cos(perpAngle) * (groupWidth / 2),
+            y: spawnCenter.y + Math.sin(perpAngle) * (groupWidth / 2),
+        };
 
         const cos = Math.cos(angleRad);
         const sin = Math.sin(angleRad);
 
-        collect(wave.getChildren() as Enemy[])
-            .chunk(colsCount)
-            .each((chunk, row) => chunk.each((enemy, col) => {
+        const chunks = collect(wave.getChildren() as Enemy[]).chunk(colsCount);
+
+        const lastRowWidth = chunks.last.length * cellWidth;
+
+        const lastRowSpawnPoint = {
+            x: spawnCenter.x + Math.cos(perpAngle) * (lastRowWidth / 2),
+            y: spawnCenter.y + Math.sin(perpAngle) * (lastRowWidth / 2),
+        };
+
+        chunks.each((chunk, row) => chunk.each((enemy, col) => {
                 const rowOffset = row * cellHeight;
-                const colOffset = groupWidth * (((colsCount - col) / colsCount) - 1);
+                let colOffset;
 
-                enemy.x = spawnPoint.x + cos * rowOffset - sin * colOffset;
-                enemy.y = spawnPoint.y + sin * rowOffset + cos * colOffset;
+                // для последней строки считаем отдельно, потому что там врагов может быть меньше
+                if (row === chunks.length - 1) {
+                    colOffset = lastRowWidth * (((chunks.last.length - col) / chunks.last.length) - 1);
 
-                // todo сделать чтобы последняя строка выравнивалась по центру, если в ней меньше элементов чем в остальных
+                    enemy.x = lastRowSpawnPoint.x + cos * rowOffset - sin * colOffset;
+                    enemy.y = lastRowSpawnPoint.y + sin * rowOffset + cos * colOffset;
+                } else {
+                    colOffset = groupWidth * (((colsCount - col) / colsCount) - 1);
+
+                    enemy.x = spawnPoint.x + cos * rowOffset - sin * colOffset;
+                    enemy.y = spawnPoint.y + sin * rowOffset + cos * colOffset;
+                }
+
+                enemy.x = Math.round(enemy.x);
+                enemy.y = Math.round(enemy.y);
             }));
     }
 

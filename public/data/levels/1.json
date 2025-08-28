@@ -5,11 +5,12 @@
             "delay": 0,
             "data": {
                 "enemyType": 0,
-                "enemyCount": 6,
+                "enemyCount": 9,
                 "angle": -90,
                 "shape": {
                     "type": "grid",
-                    "gap": 0.1
+                    "gap": 0.1,
+                    "maxCols": 6
                 },
                 "movement": {
                     "pattern": "linear",
