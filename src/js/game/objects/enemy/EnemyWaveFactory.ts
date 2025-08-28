@@ -4,6 +4,7 @@ import {MOVEMENT_PATTERN, type TMovement} from '@/game/objects/enemy/types/TMove
 import {type EnemyMovementFunc, EnemyWave} from '@/game/objects/enemy/EnemyWave';
 import {POOL, Pool} from '@/game/managers/PoolManager';
 import {EnemyPlacer} from '@/game/objects/enemy/EnemyPlacer';
+import {COLLIDER, Collider} from '@/game/managers/CollisionManager';
 
 export type TEnemyWaveConfig = {
     enemyType: ENEMY_TYPE, // todo подумать, а что если в одной волне захочется сделать разных врагов?
@@ -42,7 +43,9 @@ export class EnemyWaveFactory {
     protected static makeEnemies(config: TEnemyWaveConfig): Enemy[] {
         const enemies: Enemy[] = [];
         for (let i = 0; i < config.enemyCount; i++) {
-            enemies.push(Pool.get(POOL.ENEMY, Enemy).make({x: 0, y: 0, frame: config.enemyType}));
+            const enemy = Pool.get(POOL.ENEMY, Enemy).make({x: 0, y: 0, frame: config.enemyType});
+            Collider.add(enemy, COLLIDER.ENEMY);
+            enemies.push(enemy);
         }
 
         return enemies;

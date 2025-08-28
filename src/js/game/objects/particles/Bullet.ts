@@ -1,6 +1,7 @@
 import {SPRITE_BULLETS} from '@/const.ts';
 import Point = Phaser.Geom.Point;
 import VariableSprite from '@/game/objects/abstract/VariableSprite.ts';
+import type {DamageProvider} from '@/game/objects/Types';
 
 // значение - фрейм в спрайте
 export enum BULLET_TYPE {
@@ -23,12 +24,15 @@ export enum BULLET_TYPE {
 type TFireOptions = {
     angle?: number,
     speed?: number,
+    damage?: number,
 }
 
 const DEFAULT_ANGLE = 0;
 const DEFAULT_SPEED = 800;
 
-export class Bullet extends VariableSprite<BULLET_TYPE> {
+export class Bullet extends VariableSprite<BULLET_TYPE> implements DamageProvider {
+    protected _damage: number = 0;
+
     constructor(scene: Phaser.Scene, x: number, y: number, variant: BULLET_TYPE = BULLET_TYPE.STICK) {
         super(scene, x, y, variant);
     }
@@ -53,6 +57,7 @@ export class Bullet extends VariableSprite<BULLET_TYPE> {
     public fire(options?: TFireOptions): this {
         const angle = options?.angle ?? DEFAULT_ANGLE;
         const speed = options?.speed ?? DEFAULT_SPEED;
+        this._damage = options?.damage ?? 0;
 
         this.setRotation(Phaser.Math.DegToRad(angle));
 
@@ -61,5 +66,9 @@ export class Bullet extends VariableSprite<BULLET_TYPE> {
         (this.body as Phaser.Physics.Arcade.Body).setVelocity(velocity.x, velocity.y);
 
         return this;
+    }
+
+    public get damage(): number {
+        return this._damage;
     }
 }

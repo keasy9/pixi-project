@@ -13,7 +13,14 @@ export class EnemyWave extends Phaser.GameObjects.Group {
         super.preUpdate(time, delta);
 
         if (this._movementFunc) {
-            this.getChildren().forEach((enemy) => this._movementFunc!(enemy as Enemy, delta));
+            this.getChildren().forEach((enemy) => {
+                if (!enemy.active) {
+                    this.remove(enemy);
+                    return;
+                }
+
+                this._movementFunc!(enemy as Enemy, delta)
+            });
         }
     }
 }

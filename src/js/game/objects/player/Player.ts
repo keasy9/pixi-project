@@ -84,10 +84,10 @@ export default class Player extends Phaser.GameObjects.Container {
     protected fire(): void {
         let bullet = Pool.get(POOL.PLAYER_BULLET, Bullet).make({x: this.x, y: this.y - 1});
         Collider.add(bullet, COLLIDER.PLAYER_BULLET);
-        bullet.fire();
+        bullet.fire({ damage: 10 });
 
         bullet = Pool.get(POOL.PLAYER_BULLET, Bullet).make({x: this.x + 2 * Game.scale, y: this.y - 1});
         Collider.add(bullet, COLLIDER.PLAYER_BULLET);
-        bullet.fire();
+        bullet.fire({ damage: 10 });
     }
 }
