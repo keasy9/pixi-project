@@ -48,7 +48,13 @@ export class EnemyPlacer {
 
         // 6) находим точку пересечения луча с прямоугольником
         const intersectPoints = Phaser.Geom.Intersects.GetLineToRectangle(ray, screenRect);
-        if (intersectPoints.length > 0) result = intersectPoints[0] as Phaser.Geom.Point;
+        if (intersectPoints.length > 0) {
+            result = intersectPoints[0] as Phaser.Geom.Point;
+
+            // fix js :)
+            result.x = Math.floor(result.x);
+            result.y = Math.floor(result.y);
+        }
 
         return result;
     }
@@ -86,9 +92,10 @@ export class EnemyPlacer {
         // угол 0 это справа, поэтому ширина пойдёт вниз, т.е. откладываем по перпендикулярному углу
         const perpAngle = angleRad + Math.PI / 2;
 
+        const spawnOffset = groupWidth / 2 - cellWidth / 2;
         const spawnPoint = {
-            x: spawnCenter.x + Math.cos(perpAngle) * (groupWidth / 2),
-            y: spawnCenter.y + Math.sin(perpAngle) * (groupWidth / 2),
+            x: spawnCenter.x + Math.cos(perpAngle) * spawnOffset,
+            y: spawnCenter.y + Math.sin(perpAngle) * spawnOffset,
         };
 
         const cos = Math.cos(angleRad);
@@ -98,31 +105,32 @@ export class EnemyPlacer {
 
         const lastRowWidth = chunks.last.length * cellWidth;
 
+        const lastRowSpawnOffset = lastRowWidth / 2 - cellWidth / 2
         const lastRowSpawnPoint = {
-            x: spawnCenter.x + Math.cos(perpAngle) * (lastRowWidth / 2),
-            y: spawnCenter.y + Math.sin(perpAngle) * (lastRowWidth / 2),
+            x: spawnCenter.x + Math.cos(perpAngle) * lastRowSpawnOffset,
+            y: spawnCenter.y + Math.sin(perpAngle) * lastRowSpawnOffset,
         };
 
         chunks.each((chunk, row) => chunk.each((enemy, col) => {
-                const rowOffset = row * cellHeight;
-                let colOffset;
+            const rowOffset = row * cellHeight;
+            let colOffset;
 
-                // для последней строки считаем отдельно, потому что там врагов может быть меньше
-                if (row === chunks.length - 1) {
-                    colOffset = lastRowWidth * (((chunks.last.length - col) / chunks.last.length) - 1);
+            // для последней строки считаем отдельно, потому что там врагов может быть меньше
+            if (row === chunks.length - 1) {
+                colOffset = lastRowWidth * (((chunks.last.length - col) / chunks.last.length) - 1);
 
-                    enemy.x = lastRowSpawnPoint.x + cos * rowOffset - sin * colOffset;
-                    enemy.y = lastRowSpawnPoint.y + sin * rowOffset + cos * colOffset;
-                } else {
-                    colOffset = groupWidth * (((colsCount - col) / colsCount) - 1);
+                enemy.x = lastRowSpawnPoint.x + cos * rowOffset - sin * colOffset;
+                enemy.y = lastRowSpawnPoint.y + sin * rowOffset + cos * colOffset;
+            } else {
+                colOffset = groupWidth * (((colsCount - col) / colsCount) - 1);
 
-                    enemy.x = spawnPoint.x + cos * rowOffset - sin * colOffset;
-                    enemy.y = spawnPoint.y + sin * rowOffset + cos * colOffset;
-                }
+                enemy.x = spawnPoint.x + cos * rowOffset - sin * colOffset;
+                enemy.y = spawnPoint.y + sin * rowOffset + cos * colOffset;
+            }
 
-                enemy.x = Math.round(enemy.x);
-                enemy.y = Math.round(enemy.y);
-            }));
+            enemy.x = Math.round(enemy.x);
+            enemy.y = Math.round(enemy.y);
+        }));
     }
 
     public static applyRotation(wave: EnemyWave, config: TEnemyWaveConfig) {
