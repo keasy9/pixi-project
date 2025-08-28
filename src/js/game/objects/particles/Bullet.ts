@@ -1,4 +1,4 @@
-import {SPRITE_BULLETS, SPRITE_SHIPS} from '@/const.ts';
+import {SPRITE_BULLETS} from '@/const.ts';
 import Point = Phaser.Geom.Point;
 import VariableSprite from '@/game/objects/abstract/VariableSprite.ts';
 

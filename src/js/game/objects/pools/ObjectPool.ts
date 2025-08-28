@@ -15,7 +15,8 @@ export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser
     constructor(
         scene: Phaser.Scene,
         public classType: TClass<T>,
-        protected textureKey: string = '',
+        public defaultKey: string = '',
+        public defaultFrame: number = 0,
     ) {
         super(scene);
 
@@ -23,14 +24,25 @@ export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser
     }
 
     public make(config: TObjectPoolMakeConfig = {}): T {
+        let texture: string|undefined = this.defaultKey;
+        if (this.provideFrameInsteadOfTexture) {
+            texture = String(config.frame ?? this.defaultFrame);
+        }
+
         let instance: T = this.getFirstDead(
             true,
             config.x,
             config.y,
-            this.provideFrameInsteadOfTexture ? String(config.frame) : this.textureKey,
+            texture,
             config.frame,
             true,
         );
+
+        instance.setActive(true);
+
+        if ('setVisible' in instance) {
+            (instance as any).setVisible(true);
+        }
 
         if ('body' in instance) {
             (instance.body as Phaser.Physics.Arcade.Body).reset(config.x ?? 0, config.y ?? 0);

@@ -1,5 +1,5 @@
 import ObjectPool from '@/game/objects/pools/ObjectPool';
-import {Bullet} from '@/game/objects/particles/Bullet';
+import {Bullet, BULLET_TYPE} from '@/game/objects/particles/Bullet';
 import type {TClass} from '@/utils/Types';
 
 export class BulletPool extends ObjectPool<Bullet> {
@@ -9,7 +9,7 @@ export class BulletPool extends ObjectPool<Bullet> {
         scene: Phaser.Scene,
         classType: TClass<Bullet> = Bullet,
     ) {
-        super(scene, classType);
+        super(scene, classType, '', BULLET_TYPE.STICK);
     }
 
     public preUpdate(time: number, delta: number) {
