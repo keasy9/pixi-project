@@ -24,7 +24,7 @@ export class EnemyWaveFactory {
     public static make(scene: Phaser.Scene, config: TEnemyWaveConfig): void {
         const wave = new EnemyWave(scene);
 
-        wave.addMultiple(this.makeEnemies(scene, config));
+        wave.addMultiple(this.makeEnemies(config));
 
         this.placeEnemies(wave, config);
 
@@ -36,14 +36,13 @@ export class EnemyWaveFactory {
     /**
      * Создать врагов
      *
-     * @param scene сцена
      * @param config параметры волны
      * @protected
      */
-    protected static makeEnemies(scene: Phaser.Scene, config: TEnemyWaveConfig): Enemy[] {
+    protected static makeEnemies(config: TEnemyWaveConfig): Enemy[] {
         const enemies: Enemy[] = [];
         for (let i = 0; i < config.enemyCount; i++) {
-            enemies.push(Pool.get(POOL.ENEMY, Enemy).make({scene: scene, x: 0, y: 0, variant: config.enemyType}));
+            enemies.push(Pool.get(POOL.ENEMY, Enemy).make({x: 0, y: 0, frame: config.enemyType}));
         }
 
         return enemies;

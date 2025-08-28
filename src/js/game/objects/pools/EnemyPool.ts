@@ -2,15 +2,14 @@ import ObjectPool from '@/game/objects/pools/ObjectPool';
 import type {TClass} from '@/utils/Types';
 import Enemy from '@/game/objects/enemy/Enemy';
 
-export class BulletPool extends ObjectPool<Enemy> {
+export class EnemyPool extends ObjectPool<Enemy> {
+    protected provideFrameInsteadOfTexture = true;
 
     constructor(
         scene: Phaser.Scene,
-        protected objectType: TClass<Enemy> = Enemy,
+        classType: TClass<Enemy> = Enemy,
     ) {
-        super(scene, objectType);
-
-        // this.runChildUpdate = true; ?
+        super(scene, classType);
     }
 
     public preUpdate(time: number, delta: number) {

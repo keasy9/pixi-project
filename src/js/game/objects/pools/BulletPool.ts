@@ -3,12 +3,13 @@ import {Bullet} from '@/game/objects/particles/Bullet';
 import type {TClass} from '@/utils/Types';
 
 export class BulletPool extends ObjectPool<Bullet> {
+    protected provideFrameInsteadOfTexture = true;
 
     constructor(
         scene: Phaser.Scene,
-        protected objectType: TClass<Bullet> = Bullet,
+        classType: TClass<Bullet> = Bullet,
     ) {
-        super(scene, objectType);
+        super(scene, classType);
     }
 
     public preUpdate(time: number, delta: number) {

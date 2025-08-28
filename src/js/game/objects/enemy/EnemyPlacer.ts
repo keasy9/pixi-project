@@ -5,7 +5,6 @@ import {Game} from '@/game/GameState';
 import {collect} from '@/utils/Collection.ts';
 
 export class EnemyPlacer {
-
     /**
      * Получить точку спавна волны с учётом угла движения и перпендикулярного смещения. Точка будет находиться на краю
      * видимой области игры
@@ -69,9 +68,6 @@ export class EnemyPlacer {
 
         const cellWidth = (Enemy.SIZE_IN_GRID + colGap) * Game.scale;
         const cellHeight = (Enemy.SIZE_IN_GRID + rowGap) * Game.scale;
-
-        const halfCellWidth = cellWidth / 2;
-        const halfCellHeight = cellHeight / 2;
 
         const maxWidth = Math.floor(wave.scene.cameras.main.width / cellWidth);
 

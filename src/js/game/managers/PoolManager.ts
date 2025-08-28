@@ -3,9 +3,12 @@ import {Game} from '@/game/GameState';
 import type {TClass} from '@/utils/Types';
 import {BulletPool} from '@/game/objects/pools/BulletPool';
 import {Bullet} from '@/game/objects/particles/Bullet';
+import Enemy from '@/game/objects/enemy/Enemy';
+import {EnemyPool} from '@/game/objects/pools/EnemyPool';
 
 const poolMap: Map<TClass<Phaser.GameObjects.GameObject>, TClass<ObjectPool>> = new Map();
 poolMap.set(Bullet, BulletPool);
+poolMap.set(Enemy, EnemyPool);
 
 export enum POOL {
     PLAYER_BULLET,
