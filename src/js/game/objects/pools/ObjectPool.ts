@@ -1,4 +1,5 @@
 import type {TClass} from '@/utils/Types';
+import {TypedGroup} from '@/game/objects/abstract/TypedGroup';
 
 type TObjectPoolMakeConfig = {
     x?: number,
@@ -6,8 +7,7 @@ type TObjectPoolMakeConfig = {
     frame?: number
 }
 
-export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser.GameObjects.GameObject> extends Phaser.GameObjects.Group {
-    declare children: Phaser.Structs.Set<T>;
+export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser.GameObjects.GameObject> extends TypedGroup<T> {
 
     // передать в объект при создании фрейм вместо текстуры, на случай если в пуле VariableSprite
     protected provideFrameInsteadOfTexture: boolean = false;
@@ -20,7 +20,7 @@ export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser
     ) {
         super(scene);
 
-        scene.add.existing(this);
+        scene.add.existing(this as Phaser.GameObjects.Group);
     }
 
     public make(config: TObjectPoolMakeConfig = {}): T {

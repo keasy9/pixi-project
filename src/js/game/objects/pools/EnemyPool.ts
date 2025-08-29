@@ -18,8 +18,6 @@ export class EnemyPool extends ObjectPool<Enemy> {
         this.children.iterate(child => {
             if (!child.active) return true;
 
-            if (child.dead) this.killAndHide(child);
-
             if (child.body.checkCollision.none) {
                 if (
                     child.x > -child.displayWidth
