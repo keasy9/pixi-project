@@ -31,7 +31,7 @@ export class EnemyWaveFactory {
 
         wave.movementFunc = this.getMovementFunc(config);
 
-        scene.add.existing(wave);
+        scene.add.existing(wave as Phaser.GameObjects.Group);
     }
 
     /**

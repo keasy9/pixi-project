@@ -15,7 +15,6 @@ export class EnemyWave extends TypedGroup<Enemy> {
 
         if (this._movementFunc) {
             this.getChildren().forEach(enemy => {
-                // todo здесь Enemy определяется как GameObject
                 if (enemy.dead) {
                     this.killAndHide(enemy);
                     this.remove(enemy);
