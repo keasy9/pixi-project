@@ -108,7 +108,7 @@ export class Collection<T = any> extends Map<any, T> {
      * Если коллекция была нестрогой, а потом её сделали строгой - численные ключи-строки преобразуются в числа, что может привести к частичной потере содержимого
      * @param strict
      */
-    public set strict(strict: boolean): void {
+    public set strict(strict: boolean) {
         const oldMode = this._strict;
         this._strict = strict;
 
