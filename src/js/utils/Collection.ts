@@ -70,7 +70,7 @@ export class Collection<T = any> extends Map<any, T> {
      * @param items
      */
     public merge(items: TCollectionMergeTarget<T>): this {
-        Array.from(items.entries()).forEach(entry => this.set(entry[0], entry[1]));
+        Array.from(Object.entries(items)).forEach(entry => this.set(entry[0], entry[1]));
         return this;
     }
 
