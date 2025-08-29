@@ -1,3 +1,4 @@
+// todo в отдельный npm-пакет
 type TCollectionMergeTarget<T = any> = T[]|Map<any, T>|Set<T>|Record<any, T>;
 
 export class Collection<T = any> extends Map<any, T> {
