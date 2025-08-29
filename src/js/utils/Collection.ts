@@ -49,7 +49,13 @@ export class Collection<T = any> extends Map<any, T> {
      * @param value
      */
     public set(key: any, value: T): this {
-        if (this._strict && (typeof key === 'string') && key.length !== 0) {
+        if (
+            this._strict                        // если коллекция строгая,
+            && (typeof key === 'string')        // а ключ строковый,
+            && key.length !== 0                 // непустой,
+            && key.length === key.trim().length // и не имеет пробелов
+        ) {
+            // то пытаемся преобразовать его в численный
             const numericKey = Number(key);
             if (!isNaN(numericKey)) {
                 key = numericKey;
