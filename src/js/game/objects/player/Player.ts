@@ -22,14 +22,11 @@ export default class Player extends Phaser.GameObjects.Container {
 
         this.ship = new Ship(scene, 0, 0);
         this.add(this.ship);
-
-
+        
         const exhaust = new Exhaust(scene, 0, 0, EXHAUST_SIZE.DOUBLE);
         this.add(exhaust.setPosition(1, 5));
 
-
         this.setScale(Game.scale);
-
 
         this.setSize(this.ship.displayWidth, this.ship.displayHeight);
         scene.physics.add.existing(this);

@@ -32,8 +32,6 @@ class CollisionManager {
     public add(object: Phaser.GameObjects.GameObject, colliderType: COLLIDER): this {
         this.groups[colliderType].add(object);
 
-        console.log(this.groups[colliderType].getChildren().length);
-
         return this;
     }
 

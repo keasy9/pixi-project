@@ -103,7 +103,7 @@ export class EnemyPlacer {
 
         const chunks = collect(wave.getChildren() as Enemy[]).chunk(colsCount);
 
-        const lastRowWidth = chunks.last.length * cellWidth;
+        const lastRowWidth = chunks.last!.length * cellWidth;
 
         const lastRowSpawnOffset = lastRowWidth / 2 - cellWidth / 2
         const lastRowSpawnPoint = {
@@ -117,7 +117,7 @@ export class EnemyPlacer {
 
             // для последней строки считаем отдельно, потому что там врагов может быть меньше
             if (row === chunks.length - 1) {
-                colOffset = lastRowWidth * (((chunks.last.length - col) / chunks.last.length) - 1);
+                colOffset = lastRowWidth * (((chunks.last!.length - col) / chunks.last!.length) - 1);
 
                 enemy.x = lastRowSpawnPoint.x + cos * rowOffset - sin * colOffset;
                 enemy.y = lastRowSpawnPoint.y + sin * rowOffset + cos * colOffset;
