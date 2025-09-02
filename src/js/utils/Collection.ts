@@ -2,7 +2,6 @@
 type TCollectionMergeTarget<T = any> = T[]|Map<any, T>|Set<T>|Record<any, T>;
 
 export class Collection<T = any> extends Map<any, T> {
-    public _strict = true;
 
     /**
      * Возвращает новую коллекцию, содержащую коллекции по chunkSize элементов
@@ -45,28 +44,6 @@ export class Collection<T = any> extends Map<any, T> {
     }
 
     /**
-     * Добавить элемент в коллекцию
-     * @param key
-     * @param value
-     */
-    public set(key: any, value: T): this {
-        if (
-            this._strict                        // если коллекция строгая,
-            && (typeof key === 'string')        // а ключ строковый,
-            && key.length !== 0                 // непустой,
-            && key.length === key.trim().length // и не имеет пробелов
-        ) {
-            // то пытаемся преобразовать его в численный
-            const numericKey = Number(key);
-            if (!isNaN(numericKey)) {
-                key = numericKey;
-            }
-        }
-
-        return super.set(key, value);
-    }
-
-    /**
      * Добавить в коллекцию элементы. При совпадении ключей, элементы будут перезаписаны
      * @param items
      */
@@ -95,29 +72,6 @@ export class Collection<T = any> extends Map<any, T> {
      */
     public get length(): number {
         return this.size;
-    }
-
-    /**
-     * Строгая ли коллекция. Если коллекция строгая, все численные ключи преобразуются в number, если переданы как строка
-     */
-    public get strict(): boolean {
-        return this._strict;
-    }
-
-    /**
-     * Если коллекция была нестрогой, а потом её сделали строгой - численные ключи-строки преобразуются в числа, что может привести к частичной потере содержимого
-     * @param strict
-     */
-    public set strict(strict: boolean) {
-        const oldMode = this._strict;
-        this._strict = strict;
-
-        if (!oldMode && strict) {
-            const entries = Array.from(this.entries());
-            this.clear();
-
-            entries.forEach(entry => this.set(entry[0], entry[1]));
-        }
     }
 }
 
