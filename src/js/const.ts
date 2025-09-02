@@ -9,3 +9,4 @@ export const SPRITE_EXPLOSIONS = 'explosions';
 
 // анимации
 export const ANIM_EXHAUST = 'exhaust';
+export const ANIM_EXPLOSION = 'explosion';

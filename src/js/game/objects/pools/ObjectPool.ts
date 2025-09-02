@@ -1,7 +1,7 @@
 import type {TClass} from '@/utils/Types';
 import {TypedGroup} from '@/game/objects/abstract/TypedGroup';
 
-type TObjectPoolMakeConfig = {
+export type TObjectPoolMakeConfig = {
     x?: number,
     y?: number,
     frame?: number
@@ -45,7 +45,7 @@ export default class ObjectPool<T extends Phaser.GameObjects.GameObject = Phaser
         }
 
         if ('body' in instance) {
-            (instance.body as Phaser.Physics.Arcade.Body).reset(config.x ?? 0, config.y ?? 0);
+            (instance.body as Phaser.Physics.Arcade.Body)?.reset(config.x ?? 0, config.y ?? 0);
         }
 
         return instance;

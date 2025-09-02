@@ -13,7 +13,7 @@ export enum EXHAUST_COLOR {
     GREEN = 4,
 }
 
-const FRAMES_COUNT = 3;
+const FRAMES_COUNT = 4-1;
 
 export class Exhaust extends Phaser.GameObjects.Sprite {
     public readonly animKey: string;

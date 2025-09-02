@@ -5,15 +5,19 @@ import {BulletPool} from '@/game/objects/pools/BulletPool';
 import {Bullet} from '@/game/objects/particles/Bullet';
 import Enemy from '@/game/objects/enemy/Enemy';
 import {EnemyPool} from '@/game/objects/pools/EnemyPool';
+import {Explosion} from '@/game/objects/particles/Explosion';
+import {ExplosionPool} from '@/game/objects/pools/ExplosionPool';
 
 const poolMap: Map<TClass<Phaser.GameObjects.GameObject>, TClass<ObjectPool>> = new Map();
 poolMap.set(Bullet, BulletPool);
 poolMap.set(Enemy, EnemyPool);
+poolMap.set(Explosion, ExplosionPool);
 
 export enum POOL {
     PLAYER_BULLET,
     ENEMY,
     ENEMY_BULLET,
+    EXPLOSION,
 }
 
 class PoolManager {
