@@ -1,12 +1,12 @@
 import type Enemy from '@/game/objects/enemy/Enemy';
 import {TypedGroup} from '@/game/objects/abstract/TypedGroup';
 
-export type EnemyMovementFunc = (enemy: Enemy, dt: number) => void;
+export type EnemyVelocityFunc = (enemy: Enemy, dt: number, time: number) => void;
 
 export class EnemyWave extends TypedGroup<Enemy> {
-    protected _movementFunc?: EnemyMovementFunc;
+    protected _movementFunc?: EnemyVelocityFunc;
 
-    public set movementFunc(func: EnemyMovementFunc) {
+    public set movementFunc(func: EnemyVelocityFunc) {
         this._movementFunc = func;
     }
 
@@ -18,10 +18,11 @@ export class EnemyWave extends TypedGroup<Enemy> {
                 if (enemy.dead) {
                     this.killAndHide(enemy);
                     this.remove(enemy);
+                    enemy.body.reset(enemy.x, enemy.y);
                     return;
                 }
 
-                this._movementFunc!(enemy, delta)
+                this._movementFunc!(enemy, delta, time)
             });
         }
     }

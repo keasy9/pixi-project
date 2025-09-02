@@ -1,7 +1,7 @@
 import Enemy, {type ENEMY_TYPE} from '@/game/objects/enemy/Enemy';
 import {type TShape, WAVE_SHAPE} from '@/game/objects/enemy/types/TShape';
 import {MOVEMENT_PATTERN, type TMovement} from '@/game/objects/enemy/types/TMovement';
-import {type EnemyMovementFunc, EnemyWave} from '@/game/objects/enemy/EnemyWave';
+import {type EnemyVelocityFunc, EnemyWave} from '@/game/objects/enemy/EnemyWave';
 import {POOL, Pool} from '@/game/managers/PoolManager';
 import {EnemyPlacer} from '@/game/objects/enemy/EnemyPlacer';
 import {COLLIDER, Collider} from '@/game/managers/CollisionManager';
@@ -29,7 +29,7 @@ export class EnemyWaveFactory {
 
         this.placeEnemies(wave, config);
 
-        wave.movementFunc = this.getMovementFunc(config);
+        wave.movementFunc = this.getVelocityFunc(config);
 
         scene.add.existing(wave as Phaser.GameObjects.Group);
     }
@@ -74,17 +74,16 @@ export class EnemyWaveFactory {
      * @param config параметры волны
      * @protected
      */
-    protected static getMovementFunc(config: TEnemyWaveConfig): EnemyMovementFunc {
+    protected static getVelocityFunc(config: TEnemyWaveConfig): EnemyVelocityFunc {
         const angleRad = Phaser.Math.DegToRad(config.angle - 180);
 
         switch (config.movement.pattern) {
             case MOVEMENT_PATTERN.LINEAR:
-                const deltaX = Math.cos(angleRad) * config.movement.speed * .01;
-                const deltaY = Math.sin(angleRad) * config.movement.speed * .01;
+                const deltaX = Math.cos(angleRad) * config.movement.speed;
+                const deltaY = Math.sin(angleRad) * config.movement.speed;
 
-                return (enemy: Enemy, dt: number) => {
-                    enemy.x += deltaX * dt;
-                    enemy.y += deltaY * dt;
+                return (enemy: Enemy) => {
+                    enemy.body.setVelocity(deltaX, deltaY);
                 };
         }
     }

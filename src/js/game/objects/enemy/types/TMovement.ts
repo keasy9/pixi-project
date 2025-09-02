@@ -7,6 +7,6 @@ type TBaseMovement = {
     speed: number,
 }
 
-type TLinearMovement = TBaseMovement & {};
+type TLinearMovement = TBaseMovement & { pattern: MOVEMENT_PATTERN.LINEAR };
 
 export type TMovement = TLinearMovement;
