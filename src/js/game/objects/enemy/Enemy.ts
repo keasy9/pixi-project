@@ -1,7 +1,7 @@
 import VariableSprite from '@/game/objects/abstract/VariableSprite';
 import {SPRITE_ENEMIES} from '@/const';
 import type {TSize} from '@/utils/Types';
-import type {DamageTaker, Mortal} from '@/game/objects/Types';
+import type {DamageProvider, DamageTaker, Mortal} from '@/game/objects/Types';
 
 // значение - фрейм в спрайте
 export enum ENEMY_TYPE {
@@ -43,7 +43,7 @@ export enum ENEMY_TYPE {
     GLIDER = 36,
 }
 
-export default class Enemy extends VariableSprite<ENEMY_TYPE> implements DamageTaker, Mortal {
+export default class Enemy extends VariableSprite<ENEMY_TYPE> implements DamageTaker, Mortal, DamageProvider {
     declare body: Phaser.Physics.Arcade.Body;
 
     public static readonly SIZE_IN_GRID: number = 8;
@@ -105,5 +105,9 @@ export default class Enemy extends VariableSprite<ENEMY_TYPE> implements DamageT
 
     public get dead(): boolean {
         return this.health <= 0;
+    }
+
+    public get damage(): number {
+        return 10;
     }
 }

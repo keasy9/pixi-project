@@ -5,8 +5,9 @@ import {POOL, Pool} from '@/game/managers/PoolManager';
 import {Bullet} from '@/game/objects/particles/Bullet';
 import {Game} from '@/game/GameState';
 import {COLLIDER, Collider} from '@/game/managers/CollisionManager';
+import type {DamageProvider, DamageTaker, Mortal} from '@/game/objects/Types';
 
-export default class Player extends Phaser.GameObjects.Container {
+export default class Player extends Phaser.GameObjects.Container implements DamageTaker, Mortal, DamageProvider {
     protected cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
     protected fireKey?: Phaser.Input.Keyboard.Key;
 
@@ -16,6 +17,7 @@ export default class Player extends Phaser.GameObjects.Container {
     protected speed = .4;
 
     protected fireTimer: Phaser.Time.TimerEvent;
+    protected health: number = 3;
 
     constructor(scene: Phaser.Scene, x: number, y :number) {
         super(scene, x, y);
@@ -86,5 +88,17 @@ export default class Player extends Phaser.GameObjects.Container {
         bullet = Pool.get(POOL.PLAYER_BULLET, Bullet).make({x: this.x + 2 * Game.scale, y: this.y - 1});
         Collider.add(bullet, COLLIDER.PLAYER_BULLET);
         bullet.fire({ damage: 10 });
+    }
+
+    public takeDamage(damage: number): void {
+        this.health = Math.max(0, this.health - damage);
+    }
+
+    public get dead(): boolean {
+        return this.health > 0;
+    }
+
+    public get damage(): number {
+        return 10;
     }
 }
