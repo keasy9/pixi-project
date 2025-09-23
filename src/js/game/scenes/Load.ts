@@ -1,4 +1,4 @@
-import {SPRITE_BG, SPRITE_SHIPS} from '@/const.ts';
+import {SPRITE_BG, SPRITE_SHIPS, SPRITE_EXHAUST} from '@/const.ts';
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
 import {Assets} from 'pixi.js';
 import {Scene} from '@/game/managers/SceneManager.ts';
@@ -22,6 +22,11 @@ export default class Load extends AbstractScene {
             Assets.load({
                 alias: SPRITE_SHIPS,
                 src: '/assets/sprites/ships.png',
+            }),
+
+            Assets.load({
+                alias: SPRITE_EXHAUST,
+                src: '/assets/sprites/exhaust.png',
             }),
 
         ]).then(() => Scene.load(Main));

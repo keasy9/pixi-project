@@ -10,8 +10,6 @@ export default class Main extends AbstractScene {
     {
         super('main');
 
-        console.log(Game.height);
-
         this.player = new Player(Game.width * .5, Game.height * .9);
 
         this.addChild(this.player);
