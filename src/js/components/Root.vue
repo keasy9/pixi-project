@@ -42,8 +42,13 @@
 <style lang="less">
     .root {
         position: relative;
+        height: 100vh;
+        aspect-ratio: 1/2;
 
         &__layer {
+            width: 100%;
+            height: 100%;
+
             &--gui {
                 position: absolute;
                 top: 0;

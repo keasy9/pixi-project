@@ -23,9 +23,12 @@
             height: props.height,
             canvas: canvas.value,
             physics: {
-
-                default: 'arcade',
-                arcade: {debug: import.meta.env.DEV},
+                default: 'matter',
+                matter: {
+                    debug: import.meta.env.DEV,
+                    gravity: {x: 0, y: 0},
+                    setBounds: true,
+                },
             },
             scene: [Load, Main],
         } as Phaser.Types.Core.GameConfig & TSize;

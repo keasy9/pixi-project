@@ -16,12 +16,12 @@ export default abstract class VariableSprite<TVariant extends number> extends Ph
 
         this.setTexture(this.getTextureKey(), variant);
 
-        if (scale) this.setScale(Game.scale);
-
         if (withBody) {
-            scene.physics.add.existing(this);
+            scene.matter.add.gameObject(this);
             this.correctBody(variant);
         }
+
+        if (scale) this.setScale(Game.scale);
     }
 
     protected abstract getTextureKey(): string;
@@ -50,7 +50,7 @@ export default abstract class VariableSprite<TVariant extends number> extends Ph
         const width = sizesMap[variant]?.width ?? this.defaultWidth;
         const height = sizesMap[variant]?.height ?? this.defaultHeight;
 
-        (this.body as Phaser.Physics.Arcade.Body).setSize(width, height).setOffset(0, 0);
+        this.setSize(width, height);
 
         this.setDisplayOrigin(width/2, height/2);
     }

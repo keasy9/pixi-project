@@ -44,7 +44,7 @@ export class EnemyWaveFactory {
         const enemies: Enemy[] = [];
         for (let i = 0; i < config.enemyCount; i++) {
             const enemy = Pool.get(POOL.ENEMY, Enemy).make({x: 0, y: 0, frame: config.enemyType});
-            Collider.add(enemy, COLLIDER.ENEMY);
+            //Collider.add(enemy, COLLIDER.ENEMY);
             enemies.push(enemy);
         }
 

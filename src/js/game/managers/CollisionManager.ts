@@ -18,10 +18,10 @@ class CollisionManager {
                 [COLLIDER.ENEMY_BULLET]: new Phaser.GameObjects.Group(Game.scene),
             }
 
-            Game.scene.physics.add.collider(collisionGroups[COLLIDER.PLAYER], collisionGroups[COLLIDER.ENEMY], this.onOverlap); // игрок должен сталкиваться с врагами
-            Game.scene.physics.add.collider(collisionGroups[COLLIDER.PLAYER_BULLET], collisionGroups[COLLIDER.ENEMY_BULLET]); // пули должны уничтожать друг друга
-            Game.scene.physics.add.overlap(collisionGroups[COLLIDER.PLAYER], collisionGroups[COLLIDER.ENEMY_BULLET], this.onOverlap); // игрок должен получать урон от пуль врага
-            Game.scene.physics.add.overlap(collisionGroups[COLLIDER.PLAYER_BULLET], collisionGroups[COLLIDER.ENEMY], this.onOverlap); // враги должны получать урон от пуль игрока
+            Game.scene.matter.add.collider(collisionGroups[COLLIDER.PLAYER], collisionGroups[COLLIDER.ENEMY], this.onOverlap); // игрок должен сталкиваться с врагами
+            Game.scene.matter.add.collider(collisionGroups[COLLIDER.PLAYER_BULLET], collisionGroups[COLLIDER.ENEMY_BULLET]); // пули должны уничтожать друг друга
+            Game.scene.matter.add.overlap(collisionGroups[COLLIDER.PLAYER], collisionGroups[COLLIDER.ENEMY_BULLET], this.onOverlap); // игрок должен получать урон от пуль врага
+            Game.scene.matter.add.overlap(collisionGroups[COLLIDER.PLAYER_BULLET], collisionGroups[COLLIDER.ENEMY], this.onOverlap); // враги должны получать урон от пуль игрока
 
             Game.sceneState.set('collisions', collisionGroups);
         }

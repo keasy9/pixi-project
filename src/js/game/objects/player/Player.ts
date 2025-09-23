@@ -4,7 +4,6 @@ import {Exhaust, EXHAUST_SIZE} from '@/game/objects/player/Exhaust';
 import {POOL, Pool} from '@/game/managers/PoolManager';
 import {Bullet} from '@/game/objects/particles/Bullet';
 import {Game} from '@/game/GameState';
-import {COLLIDER, Collider} from '@/game/managers/CollisionManager';
 import type {DamageProvider, DamageTaker, Mortal} from '@/game/objects/Types';
 
 export default class Player extends Phaser.GameObjects.Container implements DamageTaker, Mortal, DamageProvider {
@@ -14,7 +13,7 @@ export default class Player extends Phaser.GameObjects.Container implements Dama
     protected ship: Ship;
     protected exhaust: Exhaust[] = [];
 
-    protected speed = .4;
+    protected speed = 1;
 
     protected fireTimer: Phaser.Time.TimerEvent;
     protected health: number = 3;
@@ -28,11 +27,12 @@ export default class Player extends Phaser.GameObjects.Container implements Dama
         const exhaust = new Exhaust(scene, 0, 0, EXHAUST_SIZE.DOUBLE);
         this.add(exhaust.setPosition(1, 5));
 
+        this.setSize(this.ship.displayWidth, this.ship.displayHeight);
+        scene.matter.add.gameObject(this);
+
         this.setScale(Game.scale);
 
-        this.setSize(this.ship.displayWidth, this.ship.displayHeight);
-        scene.physics.add.existing(this);
-        (this.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
+        //(this.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
 
         this.cursors = scene.input.keyboard?.createCursorKeys();
         this.fireKey = scene.input.keyboard?.addKey('space');
@@ -67,10 +67,10 @@ export default class Player extends Phaser.GameObjects.Container implements Dama
             if (this.cursors.up.isDown) velocity.y = -1;
             else if (this.cursors.down.isDown) velocity.y = 1;
 
-            velocity.normalize().scale(this.scene.cameras.main.width * this.speed);
+            velocity.normalize().scale(Game.scale * this.speed);
         }
 
-        body.setVelocity(velocity.x, velocity.y);
+        this.setVelocity(velocity.x, velocity.y);
 
         this.fireTimer.paused = !this.fireKey?.isDown;
     }
@@ -82,11 +82,11 @@ export default class Player extends Phaser.GameObjects.Container implements Dama
 
     protected fire(): void {
         let bullet = Pool.get(POOL.PLAYER_BULLET, Bullet).make({x: this.x, y: this.y - 1});
-        Collider.add(bullet, COLLIDER.PLAYER_BULLET);
+        //Collider.add(bullet, COLLIDER.PLAYER_BULLET);
         bullet.fire({ damage: 10 });
 
         bullet = Pool.get(POOL.PLAYER_BULLET, Bullet).make({x: this.x + 2 * Game.scale, y: this.y - 1});
-        Collider.add(bullet, COLLIDER.PLAYER_BULLET);
+        //Collider.add(bullet, COLLIDER.PLAYER_BULLET);
         bullet.fire({ damage: 10 });
     }
 

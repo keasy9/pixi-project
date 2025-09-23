@@ -24,9 +24,9 @@ export default class Main extends Phaser.Scene {
         this.add.existing(this.bg);
         this.add.existing(this.player);
 
-        Collider.add(this.player, COLLIDER.PLAYER);
+        //Collider.add(this.player, COLLIDER.PLAYER);
 
-        this.level.load(1).then(level => level.start());
+        //this.level.load(1).then(level => level.start());
     }
 
     public update(time: number, delta: number) {
