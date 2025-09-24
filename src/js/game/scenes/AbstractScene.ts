@@ -10,6 +10,6 @@ export default abstract class AbstractScene extends Container {
             if ('update' in child && (typeof child.update === 'function')) {
                 child.update(dt);
             }
-        })
+        });
     }
 }

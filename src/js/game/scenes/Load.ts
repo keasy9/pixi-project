@@ -1,9 +1,10 @@
-import {SPRITE_BG, SPRITE_SHIPS, SPRITE_EXHAUST} from '@/const.ts';
+import {SPRITE_BG} from '@/const.ts';
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
 import {Assets} from 'pixi.js';
 import {Scene} from '@/game/managers/SceneManager.ts';
 import ParallaxBg from '@/game/scenes/ParallaxBg.ts';
 import Main from '@/game/scenes/Main';
+import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
 
 export default class Load extends AbstractScene {
     constructor ()
@@ -20,12 +21,12 @@ export default class Load extends AbstractScene {
             }).then(() => Scene.load(ParallaxBg, false)),
 
             Assets.load({
-                alias: SPRITE_SHIPS,
+                alias: SpriteSheet.Ships,
                 src: '/assets/sprites/ships.png',
             }),
 
             Assets.load({
-                alias: SPRITE_EXHAUST,
+                alias: SpriteSheet.Exhausts,
                 src: '/assets/sprites/exhaust.png',
             }),
 

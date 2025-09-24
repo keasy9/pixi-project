@@ -48,7 +48,7 @@ export class FramesBuilder {
                     source: this.spriteSheet,
                     frame: new Rectangle(i, j, this.frameWidth, this.frameHeight),
                 }));
-                if (j > maxHeight && i > maxWidth) return frames;
+                if (j >= maxHeight && i >= maxWidth) return frames;
             }
         }
 

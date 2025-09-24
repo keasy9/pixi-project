@@ -1,11 +1,11 @@
-import {Container, Sprite} from 'pixi.js';
+import {Container} from 'pixi.js';
 import type {GameObject} from '@/utils/Types';
-import {Game} from '@/game/managers/GameManager';
-import {EBus} from '@/utils/EventBus';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
+import type {SpriteDecorator} from "@/game/factories/sprite/SpriteDecorator.ts";
 
 export default class Player extends Container implements GameObject {
-    protected shipSprite: Sprite;
+    protected shipSprite: SpriteDecorator;
+    protected exhaustSprites: SpriteDecorator[];
 
     constructor(x: number, y :number) {
         super();
@@ -17,9 +17,13 @@ export default class Player extends Container implements GameObject {
 
         this.addChild(this.shipSprite);
 
-        this.scale.set(Game.scale);
+        this.exhaustSprites = [
+            SpriteFactory.createExhaust().place(5, 8),
+            SpriteFactory.createExhaust().place(2, 8),
+        ];
 
-        EBus.on('resize', (_w, _h, scale) => this.scale.set(scale));
+        this.addChild(this.exhaustSprites[0]);
+        this.addChild(this.exhaustSprites[1]);
     }
 
     public update(_dt: number) {

@@ -15,7 +15,7 @@ export class SpriteFactory {
         return new SpriteDecorator(texture);
     }
 
-    public static createPlayerShip(type: 1|2|3|4|5): SpriteDecorator {
+    public static createPlayerShip(type: 1|2|3|4|5 = 1): SpriteDecorator {
         type--;
 
         return this.create(SpriteSheet.Ships)
@@ -25,5 +25,17 @@ export class SpriteFactory {
             .to(2, type)
             .slice()
             .toFrame(1);
+    }
+
+    public static createExhaust(size: 1|2|3 = 1, type: 1|2 = 1): SpriteDecorator {
+        size--;
+
+        return this.create(SpriteSheet.Exhausts)
+            .withFrames()
+            .size(4, 5)
+            .from((type-1) * 4, size)
+            .to((type * 4) - 1, size)
+            .slice()
+            .animate(10 / 60);
     }
 }
