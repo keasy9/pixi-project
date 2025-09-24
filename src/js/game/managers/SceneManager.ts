@@ -39,6 +39,14 @@ class SceneManager {
 
         return this;
     }
+
+    public unloadAll(): this {
+        for (const [_, scene] of Object.entries(this.current)) {
+            scene.destroy();
+        }
+
+        return this;
+    }
 }
 
 export const Scene = new SceneManager();

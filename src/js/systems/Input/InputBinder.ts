@@ -1,29 +1,51 @@
 import KeyboardBindingBuilder from '@/systems/Input/KeyboardBindingBuilder.ts';
 import type {AnyInputBinding} from '@/systems/Input/types.ts';
-import {InputSource, KeyAction} from '@/systems/Input/types.ts';
+import {InputSource} from '@/systems/Input/types.ts';
 
-export class InputBinder {
+export default class InputBinder {
     protected bindings = new Map<string, AnyInputBinding>();
+    protected defaultListenerOptions = {passive: true};
 
-    constructor() {
-        window.addEventListener('keydown', (event) => {
-            this.bindings.forEach(binding => {
-                if (
-                    binding.source === InputSource.Keyboard
-                    && (binding.key === undefined || binding.key === event.key)
-                    && (binding.action === undefined || binding.action === KeyAction.Down)
-                ) binding.down = false;
-            })
+    public on() {
+        window.addEventListener('keydown', (e) =>  this.onKeyDown(e), this.defaultListenerOptions);
+        window.addEventListener('keyup', (e) => this.onKeyUp(e), this.defaultListenerOptions);
+    }
+
+    public off() {
+        window.removeEventListener('keydown', (e) =>  this.onKeyDown(e));
+        window.removeEventListener('keyup', (e) => this.onKeyUp(e));
+    }
+
+    protected onKeyDown(event: KeyboardEvent): void {
+        this.bindings.forEach(binding => {
+            if (
+                binding.source === InputSource.Keyboard
+                && (binding.key === undefined || binding.key === event.key)
+            ) {
+                if (binding.isDown()) binding.released = true;
+                binding.down = true;
+            }
         });
+    }
 
-        window.addEventListener('keydown', (event) => {
-            this.bindings.forEach(binding => {
-                if (
-                    binding.source === InputSource.Keyboard
-                    && (binding.key === undefined || binding.key === event.key)
-                    && (binding.action === undefined || binding.action === KeyAction.Up)
-                ) binding.down = false;
-            })
+    protected onKeyUp(event: KeyboardEvent): void {
+        this.bindings.forEach(binding => {
+            if (
+                binding.source === InputSource.Keyboard
+                && (binding.key === undefined || binding.key === event.key)
+            ) {
+                if (binding.isUp()) binding.pressed = true;
+                binding.down = false;
+            }
+        });
+    }
+
+    public update(_dt: number): void {
+        this.bindings.forEach(binding => {
+            if (binding.source === InputSource.Keyboard) {
+                binding.pressed = false;
+                binding.released = false;
+            }
         });
     }
 
@@ -38,15 +60,13 @@ export class InputBinder {
         return this.bindings.get(alias);
     }
 
-    public getOrFail(alias: string): AnyInputBinding {
+    public getOrFail<T extends AnyInputBinding = AnyInputBinding>(alias: string): T {
         const binding = this.bindings.get(alias);
         if (binding === undefined) throw `Алиас ввода [${alias}] не существует!`;
-        return binding;
+        return binding as T;
     }
 
     public keyboard(): KeyboardBindingBuilder {
         return new KeyboardBindingBuilder(this);
     }
 }
-
-export const Input = new InputBinder();

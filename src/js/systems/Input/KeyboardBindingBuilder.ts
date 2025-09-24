@@ -1,9 +1,8 @@
 import type {InputBinder} from '@/systems/Input/InputBinder.ts';
-import {InputSource, KeyAction, type KeyboardBinding} from '@/systems/Input/types.ts';
+import {InputSource, type KeyboardBinding} from '@/systems/Input/types.ts';
 
 export default class KeyboardBindingBuilder {
     protected keyCode?: string;
-    protected keyAction?: KeyAction;
 
     public constructor(protected binder: InputBinder) { }
 
@@ -12,19 +11,17 @@ export default class KeyboardBindingBuilder {
         return this;
     }
 
-    public action(action: KeyAction): this {
-        this.keyAction = action;
-        return this;
-    }
-
     public bind(alias: string): KeyboardBinding {
         return this.binder.add(alias, {
             source: InputSource.Keyboard,
             key: this.keyCode,
-            action: this.keyAction,
             down: false,
+            pressed: false,
+            released: false,
             isDown: function () { return this.down; },
             isUp: function () { return !this.down; },
+            isPressed: function () { return this.pressed; },
+            isReleased: function () { return !this.released; },
         });
     }
 }

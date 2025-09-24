@@ -3,6 +3,7 @@ import {Scene} from '@/game/managers/SceneManager.ts';
 import {EBus} from '@/systems/EventBus.ts';
 import Load from '@/game/scenes/Load.ts';
 import {TextureSource} from 'pixi.js';
+import InputBinder from '@/systems/Input/InputBinder.ts';
 
 export const GAME_WIDTH = 128;
 export const GAME_HEIGHT = 256;
@@ -16,10 +17,17 @@ export class GameManager {
 
     public event: typeof EBus;
     public scene: typeof Scene;
+    public _input: InputBinder;
 
     constructor() {
+        // todo избавиться от всех синглтонов кроме Game
         this.event = EBus;
         this.scene = Scene;
+        this._input = new InputBinder();
+    }
+
+    public get input(): InputBinder {
+        return this._input;
     }
 
     public get scale(): number {
@@ -49,15 +57,18 @@ export class GameManager {
 
         TextureSource.defaultOptions.scaleMode = 'nearest';
 
+        this._input.on();
+
         app.ticker.add(time => {
-            Scene.updateCurrent(time.deltaTime);
+            this.scene.updateCurrent(time.deltaTime);
+            this._input.update(time.deltaTime);
         });
 
-        EBus.on('sceneLoad', scene => this.app?.stage.addChild(scene));
-        EBus.on('sceneUnload', scene => this.app?.stage.removeChild(scene));
-        EBus.on('resize', this.resize.bind(this));
+        this.event.on('sceneLoad', scene => this.app?.stage.addChild(scene));
+        this.event.on('sceneUnload', scene => this.app?.stage.removeChild(scene));
+        this.event.on('resize', this.resize.bind(this));
 
-        Scene.load(Load);
+        this.scene.load(Load);
 
         this.ready = true;
     }
@@ -73,9 +84,12 @@ export class GameManager {
     }
 
     public destroy(): void {
-        EBus.off('sceneLoad', scene => this.app?.stage.addChild(scene));
-        EBus.off('sceneUnload', scene => this.app?.stage.removeChild(scene));
-        EBus.off('resize', this.resize.bind(this));
+        this.event.off('sceneLoad', scene => this.app?.stage.addChild(scene));
+        this.event.off('sceneUnload', scene => this.app?.stage.removeChild(scene));
+        this.event.off('resize', this.resize.bind(this));
+
+        this.scene.unloadAll();
+        this._input.off();
 
         this.app?.destroy(true);
 

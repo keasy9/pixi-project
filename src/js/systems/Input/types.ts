@@ -9,15 +9,13 @@ export interface InputBinding {
 export interface KeyboardBinding extends InputBinding {
     source: InputSource.Keyboard;
     key?: string;
-    action?: KeyAction;
     down: boolean;
+    pressed: boolean;
+    released: boolean;
     isDown: () => boolean;
     isUp: () => boolean;
+    isPressed: () => boolean;
+    isReleased: () => boolean;
 }
 
 export type AnyInputBinding = KeyboardBinding;
-
-export enum KeyAction {
-    Down,
-    Up,
-}
