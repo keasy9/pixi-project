@@ -1,24 +1,23 @@
-import {AnimatedSprite, Sprite, type Texture} from 'pixi.js';
+import {AnimatedSprite, type Texture} from 'pixi.js';
 import {SpriteFramesBuilder} from "@/game/factories/frame/SpriteFramesBuilder.ts";
 import {Game} from "@/game/managers/GameManager.ts";
-import {EBus} from "@/systems/EventBus.ts";
 
 export class SpriteDecorator extends AnimatedSprite {
-    protected mainFrames: Texture[];
+    protected mainFrames: Texture[] = []; // потенциал для нескольких анимаций в одном спрайте
 
-    public constructor(protected spriteSheet?: Texture) {
+    public constructor(protected spriteSheet: Texture) {
         super([spriteSheet]);
 
         this.stop();
 
         this.scale.set(Game.scale);
-        EBus.on('resize', (_w, _h, scale) => this.scale.set(scale));
+        Game.event.on('resize', (_w, _h, scale) => this.scale.set(scale));
     }
 
     public setFrames(frames: Texture[]): this {
         this.mainFrames = this.textures = frames;
 
-        return this.toFrame(0);
+        return this.goto(0);
     }
 
     public withFrames(): SpriteFramesBuilder
@@ -27,11 +26,28 @@ export class SpriteDecorator extends AnimatedSprite {
         return new SpriteFramesBuilder(this.spriteSheet, this);
     }
 
-    public toFrame(frame: number): this {
-        if (this.mainFrames.length <= frame) throw `У этого спрайта нет [${frame}] кадра!`;
+    public goto(frame: number): this {
+        if (this.mainFrames.length <= frame) console.warn(`У этого спрайта нет [${frame}] кадра!`);
 
-        this.texture = this.mainFrames[frame];
+        if (this.playing) this.gotoAndPlay(frame);
+        else this.gotoAndStop(frame);
+
         return this;
+    }
+
+    public skip(frames: number): this {
+        let target = this.currentFrame + frames;
+        while (target >= this.textures.length) {
+            target -= this.textures.length;
+        }
+
+        this.goto(target);
+
+        return this;
+    }
+
+    public skipHalf(): this {
+        return this.skip(Math.floor(this.textures.length / 2))
     }
 
     public moveRelative(x: number = 0, y: number = 0): this {
@@ -55,7 +71,13 @@ export class SpriteDecorator extends AnimatedSprite {
         return this;
     }
 
-    public clone(): SpriteDecorator {
-        return new SpriteDecorator(this.spriteSheet).setFrames(this.mainFrames ?? [this.spriteSheet]);
+    public clone(syncPlaying: boolean = true, syncFrames: boolean = false): SpriteDecorator {
+        const clone = new SpriteDecorator(this.spriteSheet)
+            .setFrames(this.mainFrames.length ? this.mainFrames : [this.spriteSheet]);
+
+        if (syncPlaying && this.playing) clone.animate(this.animationSpeed);
+        if (syncFrames) clone.goto(this.currentFrame);
+
+        return clone;
     }
 }

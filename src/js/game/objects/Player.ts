@@ -19,9 +19,11 @@ export default class Player extends Container implements GameObject {
 
         this.addChild(this.shipSprite);
 
+        const exhaust = SpriteFactory.createExhaust();
+
         this.exhaustSprites = [
-            SpriteFactory.createExhaust().moveRelative(5, 8),
-            SpriteFactory.createExhaust().moveRelative(2, 8),
+            exhaust.moveRelative(5, 8),
+            exhaust.clone().skipHalf().moveRelative(2, 8),
         ];
 
         this.addChild(this.exhaustSprites[0]);

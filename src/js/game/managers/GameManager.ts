@@ -1,6 +1,6 @@
 import type {Application} from 'pixi.js';
-import {Scene} from '@/game/managers/SceneManager.ts';
-import {EBus} from '@/systems/EventBus.ts';
+import {SceneManager} from '@/game/managers/SceneManager.ts';
+import EventBus from '@/systems/EventBus.ts';
 import Load from '@/game/scenes/Load.ts';
 import {TextureSource} from 'pixi.js';
 import InputBinder from '@/systems/Input/InputBinder.ts';
@@ -15,19 +15,26 @@ export class GameManager {
     protected _width: number = GAME_WIDTH;
     protected _height: number = GAME_HEIGHT;
 
-    public event: typeof EBus;
-    public scene: typeof Scene;
-    public _input: InputBinder;
+    protected _event: EventBus;
+    protected _scene: SceneManager;
+    protected _input: InputBinder;
 
     constructor() {
-        // todo избавиться от всех синглтонов кроме Game
-        this.event = EBus;
-        this.scene = Scene;
+        this._event = new EventBus();
+        this._scene = new SceneManager();
         this._input = new InputBinder();
     }
 
     public get input(): InputBinder {
         return this._input;
+    }
+
+    public get event(): EventBus {
+        return this._event;
+    }
+
+    public get scene(): SceneManager {
+        return this._scene;
     }
 
     public get scale(): number {
@@ -60,15 +67,15 @@ export class GameManager {
         this._input.on();
 
         app.ticker.add(time => {
-            this.scene.updateCurrent(time.deltaTime);
+            this._scene.updateCurrent(time.deltaTime);
             this._input.update(time.deltaTime);
         });
 
-        this.event.on('sceneLoad', scene => this.app?.stage.addChild(scene));
-        this.event.on('sceneUnload', scene => this.app?.stage.removeChild(scene));
-        this.event.on('resize', this.resize.bind(this));
+        this._event.on('sceneLoad', scene => this.app?.stage.addChild(scene));
+        this._event.on('sceneUnload', scene => this.app?.stage.removeChild(scene));
+        this._event.on('resize', this.resize.bind(this));
 
-        this.scene.load(Load);
+        this._scene.load(Load);
 
         this.ready = true;
     }
@@ -84,11 +91,11 @@ export class GameManager {
     }
 
     public destroy(): void {
-        this.event.off('sceneLoad', scene => this.app?.stage.addChild(scene));
-        this.event.off('sceneUnload', scene => this.app?.stage.removeChild(scene));
-        this.event.off('resize', this.resize.bind(this));
+        this._event.off('sceneLoad', scene => this.app?.stage.addChild(scene));
+        this._event.off('sceneUnload', scene => this.app?.stage.removeChild(scene));
+        this._event.off('resize', this.resize.bind(this));
 
-        this.scene.unloadAll();
+        this._scene.unloadAll();
         this._input.off();
 
         this.app?.destroy(true);

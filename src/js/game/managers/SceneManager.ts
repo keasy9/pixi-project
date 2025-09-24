@@ -1,8 +1,8 @@
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
 import type {Class} from '@/types.ts';
-import {EBus} from '@/systems/EventBus.ts';
+import {Game} from '@/game/managers/GameManager.ts';
 
-class SceneManager {
+export class SceneManager {
     protected current: Record<string, AbstractScene> = {};
     protected main?: AbstractScene;
 
@@ -24,7 +24,7 @@ class SceneManager {
             this.main = sceneInstance;
         }
 
-        EBus.emit('sceneLoad', sceneInstance);
+        Game.event.emit('sceneLoad', sceneInstance);
 
         return this;
     }
@@ -32,7 +32,7 @@ class SceneManager {
     public unload(scene: AbstractScene | string): this {
         if (scene instanceof AbstractScene) scene = scene.label;
 
-        EBus.emit('sceneUnload', this.current[scene]);
+        Game.event.emit('sceneUnload', this.current[scene]);
 
         this.current[scene].destroy();
         delete this.current[scene];
@@ -48,5 +48,3 @@ class SceneManager {
         return this;
     }
 }
-
-export const Scene = new SceneManager();

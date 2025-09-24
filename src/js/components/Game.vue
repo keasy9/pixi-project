@@ -10,7 +10,6 @@
 <script setup lang="ts">
     import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
     import * as PIXI from 'pixi.js';
-    import {EBus} from '@/systems/EventBus.ts';
     import {Game, GAME_WIDTH} from '@/game/managers/GameManager.ts';
 
     const props = defineProps<{
@@ -41,13 +40,13 @@
 
         gameScale.value = parseFloat((props.width / GAME_WIDTH).toFixed(2));
 
-        EBus.emit('resize', props.width, props.height, gameScale.value);
+        Game.event.emit('resize', props.width, props.height, gameScale.value);
     }
 
     function handleResize() {
         gameScale.value = parseFloat((props.width / GAME_WIDTH).toFixed(2));
 
-        EBus.emit('resize', props.width, props.height, gameScale.value);
+        Game.event.emit('resize', props.width, props.height, gameScale.value);
     }
 
     watch(() => [props.width, props.height], () => {

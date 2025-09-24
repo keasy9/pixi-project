@@ -34,7 +34,7 @@ export class SpriteFactory {
             .from(0, type)
             .to(2, type)
             .slice()
-            .toFrame(1);
+            .goto(1);
     }
 
     public static createExhaust(size: 1|2|3 = 1, type: 1|2 = 1): SpriteDecorator {

@@ -6,11 +6,10 @@ export interface EventMap {
     sceneUnload: [AbstractScene];
 }
 
-class EventBus {
+export default class EventBus {
     protected listeners: {
-        [K in keyof EventMap]?: Array<(payload: EventMap[K]) => void>;
+        [K in keyof EventMap]?: Array<(...payload: EventMap[K]) => void>;
     } = {};
-
 
     public on<K extends keyof EventMap>(
         event: K,
@@ -35,5 +34,3 @@ class EventBus {
         this.listeners[event]!.forEach((callback) => callback(...payload));
     }
 }
-
-export const EBus = new EventBus();
