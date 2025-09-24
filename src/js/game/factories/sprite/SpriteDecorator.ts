@@ -34,9 +34,16 @@ export class SpriteDecorator extends AnimatedSprite {
         return this;
     }
 
-    public place(x: number = 0, y: number = 0): this {
+    public moveRelative(x: number = 0, y: number = 0): this {
         this.x = x * Game.scale;
         this.y = y * Game.scale;
+
+        return this;
+    }
+
+    public move(x: number = 0, y: number = 0): this {
+        this.x = x;
+        this.y = y;
 
         return this;
     }
@@ -46,5 +53,9 @@ export class SpriteDecorator extends AnimatedSprite {
         this.play();
 
         return this;
+    }
+
+    public clone(): SpriteDecorator {
+        return new SpriteDecorator(this.spriteSheet).setFrames(this.mainFrames ?? [this.spriteSheet]);
     }
 }

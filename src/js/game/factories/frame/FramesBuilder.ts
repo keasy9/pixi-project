@@ -39,8 +39,8 @@ export class FramesBuilder {
     public slice(): Texture[] {
         const frames: Texture[] = [];
 
-        const maxWidth = this.endFrame ? this.endFrame[0] * this.frameWidth : this.spriteSheet.width;
-        const maxHeight = this.endFrame ? this.endFrame[1] * this.frameHeight : this.spriteSheet.height;
+        const maxWidth = (this.endFrame ? this.endFrame[0] * this.frameWidth : this.spriteSheet.width) - this.frameWidth;
+        const maxHeight = (this.endFrame ? this.endFrame[1] * this.frameHeight : this.spriteSheet.height) - this.frameHeight;
 
         for (let y = this.startFrame[1] * this.frameHeight; y < this.spriteSheet.height; y += this.frameHeight) {
             for (let x = this.startFrame[0] * this.frameWidth; x < this.spriteSheet.width; x += this.frameWidth) {
