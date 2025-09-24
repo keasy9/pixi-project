@@ -1,4 +1,5 @@
-import {Rectangle, Texture} from "pixi.js";
+import {Texture} from "pixi.js";
+import {FramesPool} from "@/game/factories/frame/FramesPool.ts";
 
 export class FramesBuilder {
     protected frameWidth: number = 0;
@@ -41,14 +42,10 @@ export class FramesBuilder {
         const maxWidth = this.endFrame ? this.endFrame[0] * this.frameWidth : this.spriteSheet.width;
         const maxHeight = this.endFrame ? this.endFrame[1] * this.frameHeight : this.spriteSheet.height;
 
-        for (let j = this.startFrame[1] * this.frameHeight; j < this.spriteSheet.height; j += this.frameHeight) {
-            for (let i = this.startFrame[0] * this.frameWidth; i < this.spriteSheet.width; i += this.frameWidth) {
-                // todo пулл фреймов
-                frames.push(new Texture({
-                    source: this.spriteSheet,
-                    frame: new Rectangle(i, j, this.frameWidth, this.frameHeight),
-                }));
-                if (j >= maxHeight && i >= maxWidth) return frames;
+        for (let y = this.startFrame[1] * this.frameHeight; y < this.spriteSheet.height; y += this.frameHeight) {
+            for (let x = this.startFrame[0] * this.frameWidth; x < this.spriteSheet.width; x += this.frameWidth) {
+                frames.push(FramesPool.get(this.spriteSheet, x, y, this.frameWidth, this.frameHeight));
+                if (y >= maxHeight && x >= maxWidth) return frames;
             }
         }
 
