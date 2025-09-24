@@ -10,9 +10,8 @@
 <script setup lang="ts">
     import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
     import * as PIXI from 'pixi.js';
-    import {EBus} from '@/utils/EventBus.ts';
-    import {Game} from '@/game/managers/GameManager.ts';
-    import {GAME_WIDTH} from '@/const.ts';
+    import {EBus} from '@/systems/EventBus.ts';
+    import {Game, GAME_WIDTH} from '@/game/managers/GameManager.ts';
 
     const props = defineProps<{
         width: number,

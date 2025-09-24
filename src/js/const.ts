@@ -1,7 +1,0 @@
-
-// разрешение игры
-export const GAME_WIDTH = 128;
-export const GAME_HEIGHT = 256;
-
-// спрайты
-export const SPRITE_BG = 'bg-layers';

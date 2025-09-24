@@ -1,7 +1,7 @@
 import {AnimatedSprite, Sprite, type Texture} from 'pixi.js';
 import {SpriteFramesBuilder} from "@/game/factories/frame/SpriteFramesBuilder.ts";
 import {Game} from "@/game/managers/GameManager.ts";
-import {EBus} from "@/utils/EventBus.ts";
+import {EBus} from "@/systems/EventBus.ts";
 
 export class SpriteDecorator extends AnimatedSprite {
     protected mainFrames: Texture[];

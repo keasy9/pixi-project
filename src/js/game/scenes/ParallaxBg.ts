@@ -1,9 +1,10 @@
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
 import {Assets, Container, Sprite, Texture} from 'pixi.js';
-import {GAME_HEIGHT, GAME_WIDTH, SPRITE_BG} from '@/const.ts';
 import {Rectangle} from 'pixi.js';
-import {Game} from '@/game/managers/GameManager.ts';
-import {EBus} from '@/utils/EventBus.ts';
+import {Game, GAME_HEIGHT, GAME_WIDTH} from '@/game/managers/GameManager.ts';
+import {EBus} from '@/systems/EventBus.ts';
+
+export const SPRITE_BG = 'bg-layers';
 
 export default class ParallaxBg extends AbstractScene {
     protected speed: number = .1;

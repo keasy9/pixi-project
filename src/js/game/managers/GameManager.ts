@@ -1,9 +1,11 @@
 import type {Application} from 'pixi.js';
 import {Scene} from '@/game/managers/SceneManager.ts';
-import {EBus} from '@/utils/EventBus.ts';
+import {EBus} from '@/systems/EventBus.ts';
 import Load from '@/game/scenes/Load.ts';
 import {TextureSource} from 'pixi.js';
-import {GAME_HEIGHT, GAME_WIDTH} from '@/const';
+
+export const GAME_WIDTH = 128;
+export const GAME_HEIGHT = 256;
 
 export class GameManager {
     protected app?: Application

@@ -1,8 +1,7 @@
-import {SPRITE_BG} from '@/const.ts';
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
 import {Assets} from 'pixi.js';
 import {Scene} from '@/game/managers/SceneManager.ts';
-import ParallaxBg from '@/game/scenes/ParallaxBg.ts';
+import ParallaxBg, {SPRITE_BG} from '@/game/scenes/ParallaxBg.ts';
 import Main from '@/game/scenes/Main';
 import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
 

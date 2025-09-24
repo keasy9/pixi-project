@@ -1,6 +1,6 @@
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
-import type {Class} from '@/utils/Types.ts';
-import {EBus} from '@/utils/EventBus.ts';
+import type {Class} from '@/Types.ts';
+import {EBus} from '@/systems/EventBus.ts';
 
 class SceneManager {
     protected current: Record<string, AbstractScene> = {};
