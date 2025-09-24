@@ -1,5 +1,5 @@
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
-import type {Class} from '@/Types.ts';
+import type {Class} from '@/types.ts';
 import {EBus} from '@/systems/EventBus.ts';
 
 class SceneManager {

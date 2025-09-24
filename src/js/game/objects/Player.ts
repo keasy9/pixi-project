@@ -1,5 +1,5 @@
 import {Container} from 'pixi.js';
-import type {GameObject} from '@/Types.ts';
+import type {GameObject} from '@/types.ts';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
 import type {SpriteDecorator} from "@/game/factories/sprite/SpriteDecorator.ts";
 
