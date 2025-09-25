@@ -27,8 +27,6 @@ export class SpriteDecorator extends AnimatedSprite {
     }
 
     public goto(frame: number): this {
-        if (this.mainFrames.length <= frame) console.warn(`У этого спрайта нет [${frame}] кадра!`);
-
         if (this.playing) this.gotoAndPlay(frame);
         else this.gotoAndStop(frame);
 
@@ -44,10 +42,6 @@ export class SpriteDecorator extends AnimatedSprite {
         this.goto(target);
 
         return this;
-    }
-
-    public skipHalf(): this {
-        return this.skip(Math.floor(this.textures.length / 2))
     }
 
     public moveRelative(x: number = 0, y: number = 0): this {

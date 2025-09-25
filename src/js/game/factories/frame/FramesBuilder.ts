@@ -45,7 +45,7 @@ export class FramesBuilder {
         for (let y = this.startFrame[1] * this.frameHeight; y < this.spriteSheet.height; y += this.frameHeight) {
             for (let x = this.startFrame[0] * this.frameWidth; x < this.spriteSheet.width; x += this.frameWidth) {
                 frames.push(FramesPool.get(this.spriteSheet, x, y, this.frameWidth, this.frameHeight));
-                if (y >= maxHeight && x >= maxWidth) return frames;
+                if (y > maxHeight && x > maxWidth) return frames;
             }
         }
 
