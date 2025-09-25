@@ -1,4 +1,4 @@
-import {SpriteDecorator} from "@/game/factories/sprite/SpriteDecorator.ts";
+import {Sprite} from "@/game/factories/sprite/Sprite.ts";
 import {Texture, Assets} from "pixi.js";
 import {FramesBuilder} from "@/game/factories/frame/FramesBuilder.ts";
 
@@ -17,15 +17,15 @@ export class SpriteFactory {
         return texture;
     }
 
-    protected static create(spriteSheet: SpriteSheet): SpriteDecorator {
-        return new SpriteDecorator(this.getTexture(spriteSheet));
+    protected static create(spriteSheet: SpriteSheet): Sprite {
+        return new Sprite(this.getTexture(spriteSheet));
     }
 
     protected static builder(spriteSheet: SpriteSheet): FramesBuilder {
         return new FramesBuilder(this.getTexture(spriteSheet));
     }
 
-    public static createPlayerShip(type: 1|2|3|4|5 = 1): SpriteDecorator {
+    public static createPlayerShip(type: 1|2|3|4|5 = 1): Sprite {
         type--;
 
         return this.create(SpriteSheet.Ships)
@@ -37,7 +37,7 @@ export class SpriteFactory {
             .goto(1);
     }
 
-    public static createExhaust(size: 1|2|3 = 1, type: 1|2 = 1): SpriteDecorator {
+    public static createExhaust(size: 1|2|3 = 1, type: 1|2 = 1): Sprite {
         size--;
 
         return this.create(SpriteSheet.Exhausts)
@@ -49,10 +49,10 @@ export class SpriteFactory {
             .animate(10 / 60);
     }
 
-    public static createSpace(): SpriteDecorator[] {
+    public static createSpace(): Sprite[] {
         return this.builder(SpriteSheet.Space)
             .size(128, 256)
             .slice()
-            .map(texture => new SpriteDecorator(texture))
+            .map(texture => new Sprite(texture))
     }
 }

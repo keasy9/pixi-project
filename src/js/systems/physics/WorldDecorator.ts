@@ -1,19 +1,13 @@
-import {type Body, type BodyDef, World} from "planck";
+import {type Body, World} from "planck";
 import type {PointData} from "pixi.js";
 import {Game, GAME_HEIGHT, GAME_WIDTH} from "@/game/managers/GameManager.ts";
 import BodyBuilder from "@/systems/physics/BodyBuilder.ts";
-import {type BodyWithUserData, type BodyUserData} from "@/systems/physics/types.ts";
 
 const PIXELS_PER_METER = 1;
 
 
 export default class WorldDecorator extends World {
     protected bounds: Record<string, Body[]> = {};
-
-    declare createBody: (def?: BodyDef & {userData: BodyUserData}) => BodyWithUserData;
-    declare createDynamicBody: (def?: BodyDef & {userData: BodyUserData}) => BodyWithUserData;
-    declare createKinematicBody: (def?: BodyDef & {userData: BodyUserData}) => BodyWithUserData;
-    declare getBodyList: () => BodyWithUserData | null;
 
     constructor() {
         super({
@@ -66,7 +60,7 @@ export default class WorldDecorator extends World {
     ): this {
         if (alias in this.bounds) {
             console.warn(`Алиас границ мира [${alias}] уже существует!`);
-            return;
+            return this;
         }
 
         x = x ? Math.floor(this.pixToMet(x) / Game.scale) : 0;
@@ -84,8 +78,7 @@ export default class WorldDecorator extends World {
                 .fixture(false)
                 .density(0)
                 .friction(.3)
-                .box(width + thickness * 2, thickness, false)
-                .get(),
+                .box(width + thickness * 2, thickness, false),
 
             // верх
             this.body()
@@ -94,8 +87,7 @@ export default class WorldDecorator extends World {
                 .fixture(false)
                 .density(0)
                 .friction(.3)
-                .box(width + thickness * 2, thickness, false)
-                .get(),
+                .box(width + thickness * 2, thickness, false),
 
             // право
             this.body()
@@ -104,8 +96,7 @@ export default class WorldDecorator extends World {
                 .fixture(false)
                 .density(0)
                 .friction(.3)
-                .box(thickness, height + thickness * 2, false)
-                .get(),
+                .box(thickness, height + thickness * 2, false),
 
             // лево
             this.body()
@@ -114,8 +105,7 @@ export default class WorldDecorator extends World {
                 .fixture(false)
                 .density(0)
                 .friction(.3)
-                .box(thickness, height + thickness * 2, false)
-                .get(),
+                .box(thickness, height + thickness * 2, false),
         );
 
         return this;

@@ -1,14 +1,13 @@
 import {Game} from "@/game/managers/GameManager.ts";
 import type {KeyboardBinding} from "@/systems/input/types.ts";
-import {CircleShape, type Shape} from "planck";
-import {Container, Graphics} from "pixi.js";
-import type {BodyWithUserData} from "@/systems/physics/types.ts";
+import {Body, CircleShape, type Shape} from 'planck';
+import {Container, type EventMode, Graphics} from 'pixi.js';
 
 export default class PhysicsDebug extends Container {
     protected graphics: Graphics;
 
     public enabled: boolean = false;
-    public eventMode = 'none';
+    public eventMode?: EventMode = 'none';
     public interactiveChildren: boolean = false;
     public label = 'PhysicsDebug';
 
@@ -17,7 +16,7 @@ export default class PhysicsDebug extends Container {
 
         this.eventMode = 'none';
 
-        Game.input.keyboard().key('F1').bind('toggle_debug');
+        Game.input.keyboard().key('F8').bind('toggle_debug');
 
         this.graphics = new Graphics();
 
@@ -40,7 +39,7 @@ export default class PhysicsDebug extends Container {
         }
     }
 
-    protected drawShape(shape: Shape, body: BodyWithUserData) {
+    protected drawShape(shape: Shape, body: Body) {
         let drawColor = 0xff0000;
         if (body.getType() === 'static') drawColor = 0x0000ff;
         else if (body.getType() === 'kinematic') drawColor = 0x00ff00;
@@ -51,8 +50,6 @@ export default class PhysicsDebug extends Container {
         if (shape.getType() === 'circle') {
             const shapeCenter = (shape as CircleShape).getCenter();
             const bodyCenter = body.getPosition();
-
-            console.log('drawcircle');
 
             this.graphics.circle(
                 Game.physics.worldToScreen(shapeCenter.x + bodyCenter.x),

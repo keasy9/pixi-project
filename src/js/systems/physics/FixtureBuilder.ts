@@ -1,13 +1,12 @@
-import {Box, Circle, type Shape} from "planck";
-import type {BodyWithUserData} from "@/systems/physics/types.ts";
+import {Body, Box, Circle, type Shape} from 'planck';
 import {Game} from "@/game/managers/GameManager.ts";
 
 export default class FixtureBuilder {
     protected _density = 1;
     protected _friction = .5;
-    protected _shape: Shape;
+    protected _shape?: Shape;
 
-    public constructor(protected body: BodyWithUserData) { }
+    public constructor(protected body: Body) { }
 
     public density(density: number): this {
         this._density = density;
@@ -19,26 +18,26 @@ export default class FixtureBuilder {
         return this;
     }
 
-    public box(width: number, height: number, scale: boolean = true): this {
+    public box(width: number, height: number, scale: boolean = true): Body {
         if (scale) {
             width = Game.physics.screenToWorld(width);
             height = Game.physics.screenToWorld(height);
         }
 
-        this._shape = new Box(width/2, height/2);
-        return this;
-    }
-
-    public circle(radius: number, scale: boolean = true): this {
-        this._shape = new Circle(scale ? Game.physics.screenToWorld(radius) : radius);
-        return this;
-    }
-
-    public get(): BodyWithUserData {
         this.body.createFixture({
             density: this._density,
             friction: this._friction,
-            shape: this._shape,
+            shape: new Box(width/2, height/2),
+        });
+
+        return this.body;
+    }
+
+    public circle(radius: number, scale: boolean = true): Body {
+        this.body.createFixture({
+            density: this._density,
+            friction: this._friction,
+            shape: new Circle(scale ? Game.physics.screenToWorld(radius) : radius),
         });
 
         return this.body;

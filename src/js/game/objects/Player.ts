@@ -1,16 +1,15 @@
 import {Container} from 'pixi.js';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
-import type {SpriteDecorator} from "@/game/factories/sprite/SpriteDecorator.ts";
+import type {Sprite} from "@/game/factories/sprite/Sprite.ts";
 import {Game} from '@/game/managers/GameManager.ts';
-import type {KeyboardBinding} from '@/systems/Input/types.ts';
-import type {GameObjectWithPhysics} from "@/game/types.ts";
-import type {BodyWithUserData} from "@/systems/physics/types.ts";
-import {Vec2} from "planck";
+import type {KeyboardBinding} from '@/systems/input/types.ts';
+import type {GameObject} from '@/game/types.ts';
+import {Body, Vec2} from 'planck';
 
-export default class Player extends Container implements GameObjectWithPhysics {
-    protected shipSprite: SpriteDecorator;
-    protected exhaustSprites: SpriteDecorator[];
-    protected body: BodyWithUserData;
+export default class Player extends Container implements GameObject {
+    protected shipSprite: Sprite;
+    protected exhaustSprites: Sprite[];
+    public body: Body;
 
     constructor(x: number, y :number) {
         super();
@@ -41,8 +40,7 @@ export default class Player extends Container implements GameObjectWithPhysics {
             .at(x, y)
             .with({sprite: this.shipSprite, object: this})
             .fixture()
-            .circle(this.shipSprite.width/2)
-            .get();
+            .circle(this.shipSprite.width/2);
     }
 
     public update(_dt: number) {
@@ -70,7 +68,7 @@ export default class Player extends Container implements GameObjectWithPhysics {
 
         // todo вытащить для легкого переиспользования
         let bodyPos = this.body.getPosition();
-        this.x = Game.physics.worldToScreen(bodyPos.x - this.body.getFixtureList()?.getShape().getRadius());
-        this.y = Game.physics.worldToScreen(bodyPos.y - this.body.getFixtureList()?.getShape().getRadius());
+        this.x = Game.physics.worldToScreen(bodyPos.x - this.body.getFixtureList()!.getShape().getRadius());
+        this.y = Game.physics.worldToScreen(bodyPos.y - this.body.getFixtureList()!.getShape().getRadius());
     }
 }
