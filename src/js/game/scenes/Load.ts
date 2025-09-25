@@ -6,8 +6,7 @@ import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
 import {Game} from '@/game/managers/GameManager.ts';
 
 export default class Load extends AbstractScene {
-    constructor ()
-    {
+    constructor () {
         super('load');
 
         // todo progressbar, intro

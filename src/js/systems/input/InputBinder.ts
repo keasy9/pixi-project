@@ -1,6 +1,6 @@
-import KeyboardBindingBuilder from '@/systems/Input/KeyboardBindingBuilder.ts';
-import type {AnyInputBinding} from '@/systems/Input/types.ts';
-import {InputSource} from '@/systems/Input/types.ts';
+import KeyboardBindingBuilder from '@/systems/input/KeyboardBindingBuilder.ts';
+import type {AnyInputBinding} from '@/systems/input/types.ts';
+import {InputSource} from '@/systems/input/types.ts';
 
 export default class InputBinder {
     protected bindings = new Map<string, AnyInputBinding>();
@@ -22,7 +22,7 @@ export default class InputBinder {
                 binding.source === InputSource.Keyboard
                 && (binding.key === undefined || binding.key === event.key)
             ) {
-                if (binding.isDown()) binding.released = true;
+                binding.pressed = !binding.isDown();
                 binding.down = true;
             }
         });
@@ -34,7 +34,7 @@ export default class InputBinder {
                 binding.source === InputSource.Keyboard
                 && (binding.key === undefined || binding.key === event.key)
             ) {
-                if (binding.isUp()) binding.pressed = true;
+                binding.released = !binding.isUp();
                 binding.down = false;
             }
         });

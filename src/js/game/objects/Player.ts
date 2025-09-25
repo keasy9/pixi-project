@@ -1,13 +1,15 @@
 import {Container} from 'pixi.js';
-import type {GameObject} from '@/types.ts';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
 import type {SpriteDecorator} from "@/game/factories/sprite/SpriteDecorator.ts";
 import {Game} from '@/game/managers/GameManager.ts';
 import type {KeyboardBinding} from '@/systems/Input/types.ts';
+import type {GameObjectWithPhysics} from "@/game/types.ts";
+import type {BodyWithUserData} from "@/systems/physics/types.ts";
 
-export default class Player extends Container implements GameObject {
+export default class Player extends Container implements GameObjectWithPhysics {
     protected shipSprite: SpriteDecorator;
     protected exhaustSprites: SpriteDecorator[];
+    protected body: BodyWithUserData;
 
     constructor(x: number, y :number) {
         super();
@@ -30,6 +32,13 @@ export default class Player extends Container implements GameObject {
         this.addChild(this.exhaustSprites[1]);
 
         Game.input.keyboard().key('ArrowLeft').bind('left');
+
+        this.body = Game.physics.body()
+            .at(this.x, this.y)
+            .with({sprite: this.shipSprite, object: this})
+            .fixture()
+            .circle(this.shipSprite.width/2)
+            .get();
     }
 
     public update(_dt: number) {

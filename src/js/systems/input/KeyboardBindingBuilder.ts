@@ -1,5 +1,5 @@
-import type {InputBinder} from '@/systems/Input/InputBinder.ts';
-import {InputSource, type KeyboardBinding} from '@/systems/Input/types.ts';
+import type {InputBinder} from '@/systems/input/InputBinder.ts';
+import {InputSource, type KeyboardBinding} from '@/systems/input/types.ts';
 
 export default class KeyboardBindingBuilder {
     protected keyCode?: string;
@@ -21,7 +21,7 @@ export default class KeyboardBindingBuilder {
             isDown: function () { return this.down; },
             isUp: function () { return !this.down; },
             isPressed: function () { return this.pressed; },
-            isReleased: function () { return !this.released; },
+            isReleased: function () { return this.released; },
         });
     }
 }
