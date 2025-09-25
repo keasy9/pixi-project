@@ -4,12 +4,15 @@ import type {Sprite} from "@/game/factories/sprite/Sprite.ts";
 import {Game} from '@/game/managers/GameManager.ts';
 import type {KeyboardBinding} from '@/systems/input/types.ts';
 import type {GameObject} from '@/game/types.ts';
-import {Body, Vec2} from 'planck';
+import {Vec2} from 'planck';
+import {derive} from '@traits-ts/core';
+import {HasBody} from '@/game/objects/traits/HasBody.ts';
 
-export default class Player extends Container implements GameObject {
+export default class Player extends derive(HasBody, Container) implements GameObject {
     protected shipSprite: Sprite;
     protected exhaustSprites: Sprite[];
-    public body: Body;
+
+    protected speed: number = 7;
 
     constructor(x: number, y :number) {
         super();
@@ -53,7 +56,7 @@ export default class Player extends Container implements GameObject {
 
         velocity.normalize();
 
-        this.body.setLinearVelocity(velocity.mul(10));
+        this.body.setLinearVelocity(velocity.mul(this.speed));
         if (velocity.x > 0) {
             this.shipSprite.goto(2);
             this.exhaustSprites[1].moveRelative(4, 8);
@@ -66,9 +69,6 @@ export default class Player extends Container implements GameObject {
             this.exhaustSprites[1].moveRelative(5, 8);
         }
 
-        // todo вытащить для легкого переиспользования
-        let bodyPos = this.body.getPosition();
-        this.x = Game.physics.worldToScreen(bodyPos.x - this.body.getFixtureList()!.getShape().getRadius());
-        this.y = Game.physics.worldToScreen(bodyPos.y - this.body.getFixtureList()!.getShape().getRadius());
+        this.syncPosition();
     }
 }
