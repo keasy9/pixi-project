@@ -34,7 +34,7 @@ export default class InputBinder {
                 binding.source === InputSource.Keyboard
                 && (binding.key === undefined || binding.key === event.key)
             ) {
-                binding.released = !binding.isUp();
+                binding.released = binding.isDown();
                 binding.down = false;
             }
         });

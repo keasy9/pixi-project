@@ -73,9 +73,20 @@ export class GameManager {
         TextureSource.defaultOptions.scaleMode = 'nearest';
 
         this._input.on();
-
+        this._scene.init(app);
 
         let timeStepAcc: number = 0;
+
+        let debug: PhysicsDebug|undefined;
+
+        // debug
+        if (import.meta.env.DEV) {
+            debug = new PhysicsDebug();
+
+            globalThis.__PIXI_APP__ = app;
+            app.stage.addChild(debug);
+        }
+
         app.ticker.add(time => {
             timeStepAcc += time.deltaTime;
 
@@ -88,22 +99,14 @@ export class GameManager {
             }
 
             this._scene.updateCurrent(time.deltaTime);
-            this._input.update(time.deltaTime);
+
+            debug?.update();
+
+            this._input.update(time.deltaTime); // всегда обновлять последним!
         });
 
-        app.stage.sortableChildren = true;
-
-
-        this._event.on('sceneLoad', scene => this.app?.stage.addChild(scene));
-        this._event.on('sceneUnload', scene => this.app?.stage.removeChild(scene));
         this._event.on('resize', this.resize.bind(this));
 
-
-        // debug
-        if (import.meta.env.DEV) {
-            globalThis.__PIXI_APP__ = app;
-            this._scene.load(PhysicsDebug, false);
-        }
 
         this._scene.load(Load);
 
@@ -121,11 +124,9 @@ export class GameManager {
     }
 
     public destroy(): void {
-        this._event.off('sceneLoad', scene => this.app?.stage.addChild(scene));
-        this._event.off('sceneUnload', scene => this.app?.stage.removeChild(scene));
         this._event.off('resize', this.resize.bind(this));
 
-        this._scene.unloadAll();
+        this._scene.destroy();
         this._input.off();
 
         this.app?.destroy(true);

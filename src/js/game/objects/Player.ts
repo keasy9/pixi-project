@@ -34,7 +34,7 @@ export default class Player extends Container implements GameObjectWithPhysics {
         Game.input.keyboard().key('ArrowLeft').bind('left');
 
         this.body = Game.physics.body()
-            .at(this.x, this.y)
+            .at(x, y)
             .with({sprite: this.shipSprite, object: this})
             .fixture()
             .circle(this.shipSprite.width/2)

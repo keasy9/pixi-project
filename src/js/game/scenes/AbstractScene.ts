@@ -1,6 +1,7 @@
 import {Container} from 'pixi.js';
 
 export default abstract class AbstractScene extends Container {
+    public zIndex: number = 500;
     constructor(public readonly label: string) {
         super();
     }
