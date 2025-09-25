@@ -1,7 +1,7 @@
 import {Game} from "@/game/managers/GameManager.ts";
 import type {KeyboardBinding} from "@/systems/input/types.ts";
 import {CircleShape, type Shape} from "planck";
-import {Graphics, RenderTexture, Sprite} from "pixi.js";
+import {Graphics} from "pixi.js";
 import type {BodyWithUserData} from "@/systems/physics/types.ts";
 import AbstractScene from "@/game/scenes/AbstractScene.ts";
 
@@ -25,6 +25,8 @@ export default class PhysicsDebug extends AbstractScene {
 
         this.graphics.zIndex = 9999;
         this.graphics.sortableChildren = true;
+        this.graphics.interactiveChildren = false;
+        this.graphics.eventMode = 'none';
 
         this.addChild(this.graphics);
     }
