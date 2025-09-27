@@ -6,7 +6,9 @@ import BodyBuilder from "@/systems/physics/BodyBuilder.ts";
 const PIXELS_PER_METER = 1;
 
 
-export default class WorldDecorator extends World {
+export default class ExtendedWorld extends World {
+    declare _addBody: (body: Body) => void;
+
     protected bounds: Record<string, Body[]> = {};
 
     constructor() {
@@ -46,6 +48,11 @@ export default class WorldDecorator extends World {
         };
     }
 
+    public addBody(body: Body): this {
+        this._addBody(body);
+        return this;
+    }
+
     public body(): BodyBuilder {
         return new BodyBuilder();
     }
@@ -75,7 +82,8 @@ export default class WorldDecorator extends World {
             this.body()
                 .static()
                 .at(x + width / 2, y + height + thickness / 2)
-                .fixture(false)
+                .toWorld(false)
+                .fixture()
                 .density(0)
                 .friction(.3)
                 .box(width + thickness * 2, thickness, false),
@@ -84,7 +92,8 @@ export default class WorldDecorator extends World {
             this.body()
                 .static()
                 .at(x + width / 2, y - thickness / 2)
-                .fixture(false)
+                .toWorld(false)
+                .fixture()
                 .density(0)
                 .friction(.3)
                 .box(width + thickness * 2, thickness, false),
@@ -93,7 +102,8 @@ export default class WorldDecorator extends World {
             this.body()
                 .static()
                 .at(x + width + thickness / 2, y + height / 2)
-                .fixture(false)
+                .toWorld(false)
+                .fixture()
                 .density(0)
                 .friction(.3)
                 .box(thickness, height + thickness * 2, false),
@@ -102,7 +112,8 @@ export default class WorldDecorator extends World {
             this.body()
                 .static()
                 .at(x - thickness / 2, y + height / 2)
-                .fixture(false)
+                .toWorld(false)
+                .fixture()
                 .density(0)
                 .friction(.3)
                 .box(thickness, height + thickness * 2, false),

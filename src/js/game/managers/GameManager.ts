@@ -4,7 +4,7 @@ import EventBus from '@/systems/EventBus.ts';
 import Load from '@/game/scenes/Load.ts';
 import {TextureSource} from 'pixi.js';
 import InputBinder from '@/systems/input/InputBinder.ts';
-import WorldDecorator from "@/systems/physics/WorldDecorator.ts";
+import ExtendedWorld from "@/systems/physics/ExtendedWorld.ts";
 import PhysicsDebug from "@/game/scenes/PhysicsDebug.ts";
 
 export const GAME_WIDTH = 128;
@@ -20,7 +20,7 @@ export class GameManager {
     protected _event: EventBus;
     protected _scene: SceneManager;
     protected _input: InputBinder;
-    protected _physicsWorld: WorldDecorator;
+    protected _physicsWorld: ExtendedWorld;
 
     protected timeStep: number = 1 / 60;
     protected timeStepLimit: number = 6;
@@ -29,7 +29,7 @@ export class GameManager {
         this._event = new EventBus();
         this._scene = new SceneManager();
         this._input = new InputBinder();
-        this._physicsWorld = new WorldDecorator();
+        this._physicsWorld = new ExtendedWorld();
     }
 
     public get input(): InputBinder {
@@ -44,7 +44,7 @@ export class GameManager {
         return this._scene;
     }
 
-    public get physics(): WorldDecorator {
+    public get physics(): ExtendedWorld {
         return this._physicsWorld;
     }
 

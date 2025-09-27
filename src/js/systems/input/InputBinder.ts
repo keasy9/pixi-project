@@ -20,7 +20,7 @@ export default class InputBinder {
         this.bindings.forEach(binding => {
             if (
                 binding.source === InputSource.Keyboard
-                && (binding.key === undefined || binding.key === event.key)
+                && (binding.keys.length === 0 || binding.keys.indexOf(event.code) !== -1)
             ) {
                 binding.pressed = !binding.isDown();
                 binding.down = true;
@@ -32,7 +32,7 @@ export default class InputBinder {
         this.bindings.forEach(binding => {
             if (
                 binding.source === InputSource.Keyboard
-                && (binding.key === undefined || binding.key === event.key)
+                && (binding.keys.length === 0 || binding.keys.indexOf(event.code) !== -1)
             ) {
                 binding.released = binding.isDown();
                 binding.down = false;

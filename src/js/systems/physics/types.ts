@@ -1,8 +1,8 @@
-import type {Sprite} from "@/game/factories/sprite/Sprite.ts";
+import type {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import type {GameObject} from "@/game/types.ts";
 
 export type BodyUserData = {
-    sprite?: Sprite,
-    object: GameObject,
+    sprite?: ExtendedSprite,
+    object?: GameObject,
 }
 

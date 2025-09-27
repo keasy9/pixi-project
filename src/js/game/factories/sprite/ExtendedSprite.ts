@@ -2,7 +2,7 @@ import {AnimatedSprite, type Texture} from 'pixi.js';
 import {SpriteFramesBuilder} from "@/game/factories/frame/SpriteFramesBuilder.ts";
 import {Game} from "@/game/managers/GameManager.ts";
 
-export class Sprite extends AnimatedSprite {
+export class ExtendedSprite extends AnimatedSprite {
     protected mainFrames: Texture[] = []; // потенциал для нескольких анимаций в одном спрайте
 
     public constructor(protected spriteSheet: Texture) {
@@ -65,8 +65,8 @@ export class Sprite extends AnimatedSprite {
         return this;
     }
 
-    public clone(syncPlaying: boolean = true, syncFrames: boolean = false): Sprite {
-        const clone = new Sprite(this.spriteSheet)
+    public clone(syncPlaying: boolean = true, syncFrames: boolean = false): ExtendedSprite {
+        const clone = new ExtendedSprite(this.spriteSheet)
             .setFrames(this.mainFrames.length ? this.mainFrames : [this.spriteSheet]);
 
         if (syncPlaying && this.playing) clone.animate(this.animationSpeed);

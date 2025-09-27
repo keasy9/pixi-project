@@ -1,16 +1,17 @@
 import {Container} from 'pixi.js';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
-import type {Sprite} from "@/game/factories/sprite/Sprite.ts";
+import type {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import {Game} from '@/game/managers/GameManager.ts';
 import type {KeyboardBinding} from '@/systems/input/types.ts';
 import type {GameObject} from '@/game/types.ts';
 import {Vec2} from 'planck';
 import {derive} from '@traits-ts/core';
 import {HasBody} from '@/game/objects/traits/HasBody.ts';
+import ExtendedMath from '@/utils/ExtendedMath.ts';
 
 export default class Player extends derive(HasBody, Container) implements GameObject {
-    protected shipSprite: Sprite;
-    protected exhaustSprites: Sprite[];
+    protected shipSprite: ExtendedSprite;
+    protected exhaustSprites: ExtendedSprite[];
 
     protected speed: number = 7;
 
@@ -34,16 +35,19 @@ export default class Player extends derive(HasBody, Container) implements GameOb
         this.addChild(this.exhaustSprites[0]);
         this.addChild(this.exhaustSprites[1]);
 
-        Game.input.keyboard().key('ArrowLeft').bind('left');
-        Game.input.keyboard().key('ArrowRight').bind('right');
-        Game.input.keyboard().key('ArrowUp').bind('up');
-        Game.input.keyboard().key('ArrowDown').bind('down');
+        Game.input.keyboard().keys('ArrowLeft', 'KeyA').bind('left');
+        Game.input.keyboard().keys('ArrowRight', 'KeyD').bind('right');
+        Game.input.keyboard().keys('ArrowUp', 'KeyW').bind('up');
+        Game.input.keyboard().keys('ArrowDown', 'KeyS').bind('down');
 
         this.body = Game.physics.body()
             .at(x, y)
             .with({sprite: this.shipSprite, object: this})
+            .toWorld()
             .fixture()
-            .circle(this.shipSprite.width/2);
+            .circle(this.shipSprite);
+
+        this.syncPosition();
     }
 
     public update(_dt: number) {
@@ -56,19 +60,37 @@ export default class Player extends derive(HasBody, Container) implements GameOb
 
         velocity.normalize();
 
+        const oldY = this.body.getLinearVelocity().y;
         this.body.setLinearVelocity(velocity.mul(this.speed));
+
         if (velocity.x > 0) {
             this.shipSprite.goto(2);
             this.exhaustSprites[1].moveRelative(4, 8);
+
         } else if (velocity.x < 0) {
             this.shipSprite.goto(0);
             this.exhaustSprites[0].moveRelative(3, 8);
+
         } else {
             this.shipSprite.goto(1);
             this.exhaustSprites[0].moveRelative(2, 8);
             this.exhaustSprites[1].moveRelative(5, 8);
         }
 
+        const oldX = this.x;
+
         this.syncPosition();
+
+        if (oldX !== this.x) {
+            Game.event.emit('moveEffectHorizontal', ExtendedMath.lerp(
+                this.x / Game.width,
+                0,
+                1,
+            ));
+        }
+
+        if (oldY !== velocity.y) {
+            Game.event.emit('speedEffectVertical', ExtendedMath.clamp(velocity.y));
+        }
     }
 }

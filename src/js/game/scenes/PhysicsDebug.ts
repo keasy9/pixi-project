@@ -16,7 +16,7 @@ export default class PhysicsDebug extends Container {
 
         this.eventMode = 'none';
 
-        Game.input.keyboard().key('F8').bind('toggle_debug');
+        Game.input.keyboard().keys('F8').bind('toggle_debug');
 
         this.graphics = new Graphics();
 

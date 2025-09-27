@@ -1,7 +1,8 @@
 import {type BodyType, Vec2} from "planck";
-import FixtureBuilder from "@/systems/physics/FixtureBuilder.ts";
 import {Game} from "@/game/managers/GameManager.ts";
 import type {BodyUserData} from "@/systems/physics/types.ts";
+import ExtendedBody from '@/systems/physics/ExtendedBody.ts';
+import type ExtendedWorld from '@/systems/physics/ExtendedWorld.ts';
 
 export default class BodyBuilder {
     protected type: BodyType = 'dynamic';
@@ -34,11 +35,15 @@ export default class BodyBuilder {
         return this;
     }
 
-    public fixture(scale: boolean = true): FixtureBuilder {
-        return new FixtureBuilder(Game.physics.createBody({
+    public toWorld(scale: boolean = true, world: ExtendedWorld = Game.physics): ExtendedBody {
+        const body = new ExtendedBody(world, {
             type: this.type,
             position: scale ? Game.physics.screenPosToWorld(this.position) : this.position,
             userData: this.userData,
-        }));
+        })
+
+        Game.physics.addBody(body);
+
+        return body
     }
 }

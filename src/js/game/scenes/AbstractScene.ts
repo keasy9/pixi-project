@@ -1,6 +1,6 @@
-import {Container} from 'pixi.js';
+import {Container, type ContainerChild} from 'pixi.js';
 
-export default abstract class AbstractScene extends Container {
+export default abstract class AbstractScene<T extends ContainerChild = ContainerChild> extends Container<T> {
     public zIndex: number = 500;
     constructor(public readonly label: string) {
         super();

@@ -1,12 +1,12 @@
-import type {Sprite} from "@/game/factories/sprite/Sprite.ts";
+import type {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import {FramesBuilder} from "@/game/factories/frame/FramesBuilder.ts";
 
 export class SpriteFramesBuilder extends FramesBuilder {
-    constructor(spriteSheet: Texture, protected sprite: Sprite) {
+    constructor(spriteSheet: Texture, protected sprite: ExtendedSprite) {
         super(spriteSheet);
     }
 
-    public slice(): Sprite {
+    public slice(): ExtendedSprite {
         return this.sprite.setFrames(super.slice());
     }
 }

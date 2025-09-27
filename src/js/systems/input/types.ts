@@ -8,7 +8,7 @@ export interface InputBinding {
 
 export interface KeyboardBinding extends InputBinding {
     source: InputSource.Keyboard;
-    key?: string;
+    keys: string[];
     down: boolean;
     pressed: boolean;
     released: boolean;
