@@ -24,12 +24,18 @@ export default class PhysicsDebug extends Container {
         this.graphics.eventMode = 'none';
 
         this.addChild(this.graphics);
+
+        this.enabled = Game.storage.get('isDebug', false);
     }
 
     public update() {
         this.graphics.clear();
 
-        if (Game.input.getOrFail<KeyboardBinding>('toggle_debug').isReleased()) this.enabled = !this.enabled;
+        if (Game.input.getOrFail<KeyboardBinding>('toggle_debug').isReleased()) {
+            this.enabled = !this.enabled;
+            Game.storage.set('isDebug', this.enabled);
+        }
+
         if (!this.enabled) return;
 
         for (let body = Game.physics.getBodyList(); body; body = body.getNext()) {

@@ -6,6 +6,7 @@ import {TextureSource} from 'pixi.js';
 import InputBinder from '@/systems/input/InputBinder.ts';
 import ExtendedWorld from "@/systems/physics/ExtendedWorld.ts";
 import PhysicsDebug from "@/game/scenes/PhysicsDebug.ts";
+import LocalStorage from '@/utils/LocalStorage.ts';
 
 export const GAME_WIDTH = 128;
 export const GAME_HEIGHT = 256;
@@ -21,6 +22,7 @@ export class GameManager {
     protected _scene: SceneManager;
     protected _input: InputBinder;
     protected _physicsWorld: ExtendedWorld;
+    protected _storage: LocalStorage;
 
     protected timeStep: number = 1 / 60;
     protected timeStepLimit: number = 6;
@@ -30,6 +32,7 @@ export class GameManager {
         this._scene = new SceneManager();
         this._input = new InputBinder();
         this._physicsWorld = new ExtendedWorld();
+        this._storage = new LocalStorage();
     }
 
     public get input(): InputBinder {
@@ -46,6 +49,10 @@ export class GameManager {
 
     public get physics(): ExtendedWorld {
         return this._physicsWorld;
+    }
+
+    public get storage(): LocalStorage {
+        return this._storage;
     }
 
     public get scale(): number {
