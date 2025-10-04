@@ -1,8 +1,8 @@
 import {type BodyType, Vec2} from "planck";
 import {Game} from "@/game/managers/GameManager.ts";
-import type {BodyUserData} from "@/systems/physics/types.ts";
-import ExtendedBody from '@/systems/physics/ExtendedBody.ts';
-import type ExtendedWorld from '@/systems/physics/ExtendedWorld.ts';
+import type {BodyUserData} from "@/game/systems/physics/types.ts";
+import ExtendedBody from '@/game/systems/physics/ExtendedBody.ts';
+import type ExtendedWorld from '@/game/systems/physics/ExtendedWorld.ts';
 
 export default class BodyBuilder {
     protected type: BodyType = 'dynamic';

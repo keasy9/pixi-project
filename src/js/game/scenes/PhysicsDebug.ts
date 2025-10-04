@@ -1,5 +1,5 @@
 import {Game} from "@/game/managers/GameManager.ts";
-import type {KeyboardBinding} from "@/systems/input/types.ts";
+import type {KeyboardBinding} from "@/game/systems/input/types.ts";
 import {Body, CircleShape, type Shape} from 'planck';
 import {Container, type EventMode, Graphics} from 'pixi.js';
 

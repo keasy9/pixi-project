@@ -1,7 +1,7 @@
 import {Box, Circle} from 'planck';
 import {Game} from "@/game/managers/GameManager.ts";
 import {ExtendedSprite} from '@/game/factories/sprite/ExtendedSprite.ts';
-import type ExtendedBody from '@/systems/physics/ExtendedBody.ts';
+import type ExtendedBody from '@/game/systems/physics/ExtendedBody.ts';
 
 export default class FixtureBuilder {
     protected _density = 1;

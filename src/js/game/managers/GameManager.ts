@@ -1,10 +1,10 @@
 import type {Application} from 'pixi.js';
 import {SceneManager} from '@/game/managers/SceneManager.ts';
-import EventBus from '@/systems/EventBus.ts';
+import EventBus from '@/game/systems/EventBus.ts';
 import Load from '@/game/scenes/Load.ts';
 import {TextureSource} from 'pixi.js';
-import InputBinder from '@/systems/input/InputBinder.ts';
-import ExtendedWorld from "@/systems/physics/ExtendedWorld.ts";
+import InputBinder from '@/game/systems/input/InputBinder.ts';
+import ExtendedWorld from "@/game/systems/physics/ExtendedWorld.ts";
 import PhysicsDebug from "@/game/scenes/PhysicsDebug.ts";
 import LocalStorage from '@/utils/LocalStorage.ts';
 

@@ -1,5 +1,5 @@
-import InputBinder from '@/systems/input/InputBinder.ts';
-import {InputSource, type KeyboardBinding} from '@/systems/input/types.ts';
+import InputBinder from '@/game/systems/input/InputBinder.ts';
+import {InputSource, type KeyboardBinding} from '@/game/systems/input/types.ts';
 
 export default class KeyboardBindingBuilder {
     protected keyCodes: string[] = [];

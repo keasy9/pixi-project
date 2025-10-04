@@ -2,7 +2,7 @@ import {Container} from 'pixi.js';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
 import type {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import {Game} from '@/game/managers/GameManager.ts';
-import type {KeyboardBinding} from '@/systems/input/types.ts';
+import type {KeyboardBinding} from '@/game/systems/input/types.ts';
 import type {GameObject} from '@/game/types.ts';
 import {Vec2} from 'planck';
 import {derive} from '@traits-ts/core';

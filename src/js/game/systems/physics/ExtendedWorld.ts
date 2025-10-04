@@ -1,7 +1,7 @@
 import {type Body, World} from "planck";
 import type {PointData} from "pixi.js";
 import {Game, GAME_HEIGHT, GAME_WIDTH} from "@/game/managers/GameManager.ts";
-import BodyBuilder from "@/systems/physics/BodyBuilder.ts";
+import BodyBuilder from "@/game/systems/physics/BodyBuilder.ts";
 
 const PIXELS_PER_METER = 1;
 

@@ -1,0 +1,122 @@
+{
+    "number": 1,
+    "timeline": [
+        {
+            "delay": 0,
+            "type": 0,
+            "angle": 45,
+            "offset": 0.2,
+            "spawnType": 0,
+            "movement": {
+                "pattern": 0,
+                "speed": 1.5
+            },
+            "fire": {
+                "pattern": 1,
+                "speed": 2.0,
+                "bullet": 1
+            },
+            "enemies": [
+                1,
+                2,
+                {
+                    "type": 3,
+                    "fire": {
+                        "pattern": 0,
+                        "bullet": 2
+                    },
+                    "movementPattern": 1,
+                    "movementSpeed": 1.2
+                }
+            ]
+        },
+        {
+            "delay": 5000,
+            "type": 1,
+            "person": "captain",
+            "startNode": "intro",
+            "nodes": [
+                {
+                    "id": "intro",
+                    "person": "captain",
+                    "text": "Вражеские корабли обнаружены! Приготовиться к бою!",
+                    "answers": [
+                        {
+                            "id": "confirm",
+                            "text": "Понял, вступаю в бой!",
+                            "next": "warning"
+                        },
+                        {
+                            "id": "question",
+                            "text": "Что известно о противнике?",
+                            "next": "info"
+                        }
+                    ]
+                },
+                {
+                    "id": "warning",
+                    "person": "captain",
+                    "text": "Будь осторожен - у них мощное вооружение!",
+                    "next": "end"
+                },
+                {
+                    "id": "info",
+                    "person": "captain",
+                    "text": "Это корабли новой модели с улучшенными щитами.",
+                    "next": "warning"
+                },
+                {
+                    "id": "end",
+                    "person": "captain",
+                    "text": "Удачи, пилот! Мы рассчитываем на тебя."
+                }
+            ]
+        },
+        {
+            "delay": 10000,
+            "type": 0,
+            "angle": 270,
+            "offset": -0.5,
+            "spawnType": 1,
+            "movement": {
+                "pattern": 1,
+                "speed": 1.0
+            },
+            "fire": {
+                "pattern": 0,
+                "bullet": 1
+            },
+            "enemies": [2, 2, 2, 2, 2, 2]
+        },
+        {
+            "delay": 15000,
+            "type": 2,
+            "bossName": "mothership"
+        },
+        {
+            "type": 0,
+            "angle": 90,
+            "offset": 0.8,
+            "spawnType": 2,
+            "movement": {
+                "pattern": 2,
+                "speed": 0.8
+            },
+            "fire": {
+                "pattern": 1,
+                "speed": 1.5,
+                "bullet": 3
+            },
+            "enemies": [
+                4,
+                4,
+                4,
+                {
+                    "type": 5,
+                    "movementPattern": 0,
+                    "movementSpeed": 2.0
+                }
+            ]
+        }
+    ]
+}

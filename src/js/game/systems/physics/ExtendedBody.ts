@@ -1,9 +1,9 @@
 import {Body, type BodyDef} from 'planck';
-import type {BodyUserData} from '@/systems/physics/types.ts';
+import type {BodyUserData} from '@/game/systems/physics/types.ts';
 import type {ExtendedSprite} from '@/game/factories/sprite/ExtendedSprite.ts';
 import type {GameObject} from '@/game/types.ts';
-import type ExtendedWorld from '@/systems/physics/ExtendedWorld.ts';
-import FixtureBuilder from '@/systems/physics/FixtureBuilder.ts';
+import type ExtendedWorld from '@/game/systems/physics/ExtendedWorld.ts';
+import FixtureBuilder from '@/game/systems/physics/FixtureBuilder.ts';
 
 export default class ExtendedBody extends Body {
     public constructor(world: ExtendedWorld, def: BodyDef) {

@@ -28,6 +28,11 @@ export default class Load extends AbstractScene {
                 src: '/assets/sprites/exhaust.png',
             }),
 
+            Assets.load({
+                alias: SpriteSheet.Enemies,
+                src: '/assets/sprites/exhaust.png',
+            }),
+
         ]).then(() => Game.scene.load(Main));
     }
 }

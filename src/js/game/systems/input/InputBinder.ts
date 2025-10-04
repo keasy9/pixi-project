@@ -1,6 +1,6 @@
-import KeyboardBindingBuilder from '@/systems/input/KeyboardBindingBuilder.ts';
-import type {AnyInputBinding} from '@/systems/input/types.ts';
-import {InputSource} from '@/systems/input/types.ts';
+import KeyboardBindingBuilder from '@/game/systems/input/KeyboardBindingBuilder.ts';
+import type {AnyInputBinding} from '@/game/systems/input/types.ts';
+import {InputSource} from '@/game/systems/input/types.ts';
 
 export default class InputBinder {
     protected bindings = new Map<string, AnyInputBinding>();

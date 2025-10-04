@@ -5,7 +5,7 @@ export class FramesBuilder {
     protected frameWidth: number = 0;
     protected frameHeight: number = 0;
     protected startFrame: [number, number] = [0, 0];
-    protected endFrame?: [number, number] = null;
+    protected endFrame?: [number, number];
 
     public constructor(protected spriteSheet: Texture) {}
 
@@ -32,7 +32,7 @@ export class FramesBuilder {
     }
 
     public toEnd(): this {
-        this.endFrame = null;
+        this.endFrame = undefined;
         return this;
     }
 
@@ -50,5 +50,9 @@ export class FramesBuilder {
         }
 
         return frames;
+    }
+
+    public one(): Texture {
+        return this.to(this.startFrame[0]+1, this.startFrame[0]+1).slice()[0];
     }
 }
