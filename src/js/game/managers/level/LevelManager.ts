@@ -1,15 +1,25 @@
 import type {LevelData} from '@/game/managers/level/types/level.ts';
 import type AbstractScene from '@/game/scenes/AbstractScene.ts';
 import {Assets} from 'pixi.js';
+import type {Updateable} from '@/game/types/Updateable.ts';
+import {LevelEventType} from '@/game/managers/level/types/level.ts';
+import WaveManager from '@/game/managers/level/WaveManager.ts';
 
-export default class LevelManager {
+export default class LevelManager implements Updateable {
     protected loaded: Record<string, LevelData> = {};
     protected currentLevel?: LevelData;
     protected currentEvent: number = 0;
     protected eventTime: number = 0;
     protected isRunning: boolean = false;
 
+    protected _wave?: WaveManager;
+
     constructor(protected scene: AbstractScene) {}
+
+    protected get wave(): WaveManager {
+        this._wave ??= new WaveManager(this.scene);
+        return this._wave;
+    }
 
     public async load(levelName: string): Promise<this> {
         return new Promise(async (resolve) => {
@@ -40,9 +50,53 @@ export default class LevelManager {
 
     public start(): this {
         if (!this.currentLevel) throw 'Уровень не загружен!';
-
-        // todo return LevelTimeline class
+        this.isRunning = true;
 
         return this;
+    }
+
+    public stop(): this {
+        this.isRunning = false;
+        this.currentEvent = 0;
+        this.eventTime = 0;
+        return this;
+    }
+
+    public update(dt: number): void {
+        this.eventTime += dt;
+
+        if (this.canRunNextEvent()) {
+            this.currentEvent++;
+            this.eventTime = 0;
+
+            this.runCurrentEvent();
+        }
+    }
+
+    protected isLastEventRunning(): boolean {
+        return this.currentEvent === this.currentLevel?.timeline.length;
+    }
+
+    protected canRunNextEvent(): boolean {
+        if (this.isLastEventRunning()) return false;
+
+        const nextEventDelay = this.currentLevel?.timeline[this.currentEvent + 1].delay ?? 0;
+        return nextEventDelay >= this.eventTime;
+    }
+
+    protected runCurrentEvent(): void {
+        const event = this.currentLevel?.timeline[this.currentEvent];
+        if (!event) throw `Не удалось получить событие [${this.currentEvent}] из таймлайна уровня [${this.currentLevel?.number}]!`;
+
+        switch (event.type) {
+            case LevelEventType.Wave:
+                this.wave.create(event);
+                break;
+
+            case LevelEventType.Dialog:
+            case LevelEventType.Boss:
+            default:
+                return;
+        }
     }
 }
