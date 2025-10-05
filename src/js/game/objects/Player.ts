@@ -3,13 +3,15 @@ import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
 import type {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import {Game} from '@/game/managers/GameManager.ts';
 import type {KeyboardBinding} from '@/game/systems/input/types.ts';
-import type {GameObject} from '@/game/types.ts';
+import type {Updateable} from '@/game/types/Updateable.ts';
 import {Vec2} from 'planck';
 import {derive} from '@traits-ts/core';
 import {HasBody} from '@/game/objects/traits/HasBody.ts';
 import ExtendedMath from '@/utils/ExtendedMath.ts';
+import type {Rotateble} from '@/game/types/Rotateble.ts';
+import type {Positionable} from '@/game/types/Positionable.ts';
 
-export default class Player extends derive(HasBody, Container) implements GameObject {
+export default class Player extends derive(HasBody, Container) implements Updateable, Positionable, Rotateble {
     protected shipSprite: ExtendedSprite;
     protected exhaustSprites: ExtendedSprite[];
 

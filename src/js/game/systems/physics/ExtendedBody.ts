@@ -1,7 +1,7 @@
 import {Body, type BodyDef} from 'planck';
 import type {BodyUserData} from '@/game/systems/physics/types.ts';
 import type {ExtendedSprite} from '@/game/factories/sprite/ExtendedSprite.ts';
-import type {GameObject} from '@/game/types.ts';
+import type {Updateable} from '@/game/types/Updateable.ts';
 import type ExtendedWorld from '@/game/systems/physics/ExtendedWorld.ts';
 import FixtureBuilder from '@/game/systems/physics/FixtureBuilder.ts';
 
@@ -37,12 +37,12 @@ export default class ExtendedBody extends Body {
         return this.userData.sprite;
     }
 
-    public setObject(object: GameObject): this {
+    public setObject(object: Updateable): this {
         this.userData.object = object;
         return this;
     }
 
-    public getObject(): GameObject|undefined {
+    public getObject(): Updateable|undefined {
         return this.userData.object;
     }
 
