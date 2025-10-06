@@ -90,7 +90,7 @@ export default class LevelManager implements Updateable {
 
         switch (event.type) {
             case LevelEventType.Wave:
-                this.wave.create(event);
+                this.wave.create(event); // todo подумать, может отказаться от менеджера волн?
                 break;
 
             case LevelEventType.Dialog:
