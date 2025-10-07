@@ -6,8 +6,15 @@ import {derive} from '@traits-ts/core';
 import Game from '@/components/Game.vue';
 import type {Recyclable} from '@/game/types/Recyclable.ts';
 import {CanBeRecycled} from '@/game/objects/traits/CanBeRecycled.ts';
+import {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
+import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
 
-export default class Enemy extends derive(HasBody, CanBeRecycled) implements Positionable, Rotateble, Updateable, Recyclable {
+export default class Enemy extends derive(HasBody, CanBeRecycled, ExtendedSprite) implements Positionable, Rotateble, Updateable, Recyclable {
+
+    public constructor() {
+        super(SpriteSheet.Enemies);
+    }
+
     public get x(): number {
         return Game.physics.worldToScreen(this.body.getPosition().x);
     }

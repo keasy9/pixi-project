@@ -7,6 +7,7 @@ import InputBinder from '@/game/systems/input/InputBinder.ts';
 import ExtendedWorld from "@/game/systems/physics/ExtendedWorld.ts";
 import PhysicsDebug from "@/game/scenes/PhysicsDebug.ts";
 import LocalStorage from '@/utils/LocalStorage.ts';
+import type {Class} from "@/types.ts";
 
 export const GAME_WIDTH = 128;
 export const GAME_HEIGHT = 256;
@@ -27,12 +28,20 @@ export class GameManager {
     protected timeStep: number = 1 / 60;
     protected timeStepLimit: number = 6;
 
+    protected sinletons: Record<Class, object> = {};
+
     constructor() {
         this._event = new EventBus();
         this._scene = new SceneManager();
         this._input = new InputBinder();
         this._physicsWorld = new ExtendedWorld();
         this._storage = new LocalStorage();
+    }
+
+    public singleton<T extends object, TParams extends any[]>(className: Class<T, TParams>, ...params: TParams = []): T
+    {
+        this.singletons[className] ??= new className(...params);
+        return this.singletons[className];
     }
 
     public get input(): InputBinder {

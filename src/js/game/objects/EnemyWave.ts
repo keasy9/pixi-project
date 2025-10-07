@@ -1,12 +1,21 @@
 import type {LevelWave} from '@/game/managers/level/types/wave.ts';
 import type {Updateable} from '@/game/types/Updateable.ts';
 import type Enemy from '@/game/objects/Enemy.ts';
+import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
 
 export default class EnemyWave implements Updateable {
     protected enemies: Enemy[] = [];
     protected enemyMovement: (enemy: Enemy) => void = () => {};
 
-    public constructor(waveConf: LevelWave) {
+    public constructor(conf: LevelWave) {
+        this.createEnemies(conf);
+        //this.placeEnemies(conf);
+        //this.computeMovement(conf);
+    }
+
+    protected createEnemies(conf: LevelWave): void {
+        const enemy = new Enemy(SpriteSheet.Enemies);
+
         // todo создавать врагов из конфига
     }
 
