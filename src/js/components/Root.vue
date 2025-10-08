@@ -1,6 +1,6 @@
 <template>
     <div class="root">
-        <Game
+        <GameLayer
             v-if="width !== 0 && height !== 0"
             :width="width"
             :height="height"
@@ -13,7 +13,7 @@
 <script setup lang="ts">
     import {onBeforeUnmount, onMounted, ref} from 'vue';
     import debounce from 'debounce';
-    import Game from '@/components/Game.vue';
+    import GameLayer from '@/components/GameLayer.vue';
 
     const width = ref<number>(0);
     const height = ref<number>(0);
