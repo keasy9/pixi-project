@@ -14,9 +14,16 @@ export default class EnemyWave implements Updateable {
     }
 
     protected createEnemies(conf: LevelWave): void {
-        const enemy = new Enemy(SpriteSheet.Enemies);
+        for (let enemy of conf.enemies) {
+            if (typeof enemy === 'number') enemy = {type: enemy};
 
-        // todo создавать врагов из конфига
+            enemy.movement ??= conf.movement;
+            enemy.fire ??= conf.fire;
+
+
+
+            // todo создавать врагов из конфига
+        }
     }
 
     public update(dt: number) {

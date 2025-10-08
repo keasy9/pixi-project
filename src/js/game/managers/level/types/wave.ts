@@ -34,51 +34,49 @@ interface EnemyMovementParams {
     // todo другие параметры в зависимости от pattern
 }
 
-export const enemyType = Record<number, [number, number]> = {
-    // frame: [width, height]
-    1: [5, 5],
-    2: [7, 5],
-    3: [5, 5],
-    4: [6, 4],
-    5: [5, 4],
-    6: [7, 5],
-    7: [6, 4],
-    8: [6, 4],
-    9: [5, 5],
-    10: [6, 5],
-    11: [6, 5],
-    12: [4, 5],
-    13: [7, 6],
-    14: [8, 6],
-    15: [6, 6],
-    16: [6, 5],
-    17: [8, 5],
-    18: [6, 5],
-    19: [6, 6],
-    20: [6, 6],
-    21: [6, 6],
-    22: [5, 6],
-    23: [6, 5],
-    24: [8, 6],
-    25: [8, 8],
-    26: [8, 8],
-    27: [8, 8],
-    28: [8, 7],
-    29: [6, 6],
-    30: [8, 6],
-    31: [8, 6],
-    32: [6, 8],
-    33: [6, 6],
-    34: [6, 6],
-    35: [6, 6],
-    36: [8, 7],
+export enum EnemyType {
+    White = 0,
+    Fork = 1,
+    Trident = 2,
+    Ocean = 4,
+    Grass = 5,
+    Crab = 6,
+    Dark = 7,
+    Girl = 8,
+    Peak = 9,
+    Sun = 10,
+    Spoon = 11,
+    Tiny = 12,
+    Tree = 13,
+    Woman = 14,
+    Star = 15,
+    Rocket = 16,
+    Brown = 17,
+    Ball = 18,
+    Wedge = 19,
+    Foot = 20,
+    Handsome = 21,
+    Fish = 22,
+    Knuckle = 23,
+    Drop = 24,
+    Devil = 25,
+    Goat = 26,
+    Beetle = 27,
+    Grig = 28,
+    Puddle = 29,
+    Hugger = 30,
+    Sea = 31,
+    Head = 32,
+    Hasher = 33,
+    Grip = 34,
+    Butt = 35,
+    Glider = 36,
 }
 
 interface EnemyDef {
     type: keyof typeof enemyType;
     fire?: EnemyFireParams;
-    movementPattern?: EnemyMovementPattern;
-    movementSpeed?: number; // скорость врага. Надо умножать на коэффициент, чтобы скорость была примерно ожидаемой независимо от movementPattern. Со значением по-умолчанию
+    movement?: EnemyMovementParams;
 }
 
 export interface LevelWave extends LevelEvent {

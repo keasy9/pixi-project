@@ -28,20 +28,12 @@ export class GameManager {
     protected timeStep: number = 1 / 60;
     protected timeStepLimit: number = 6;
 
-    protected sinletons: Record<Class, object> = {};
-
     constructor() {
         this._event = new EventBus();
         this._scene = new SceneManager();
         this._input = new InputBinder();
         this._physicsWorld = new ExtendedWorld();
         this._storage = new LocalStorage();
-    }
-
-    public singleton<T extends object, TParams extends any[]>(className: Class<T, TParams>, ...params: TParams = []): T
-    {
-        this.singletons[className] ??= new className(...params);
-        return this.singletons[className];
     }
 
     public get input(): InputBinder {

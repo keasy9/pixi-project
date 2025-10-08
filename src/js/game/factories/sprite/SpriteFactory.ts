@@ -1,6 +1,8 @@
 import {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import {Texture, Assets} from "pixi.js";
 import {FramesBuilder} from "@/game/factories/frame/FramesBuilder.ts";
+import type Enemy from "@/game/objects/Enemy.ts";
+import type {EnemyType} from "@/game/managers/level/types/wave.ts";
 
 export enum SpriteSheet {
     Ships = 'ships',
@@ -10,6 +12,7 @@ export enum SpriteSheet {
 }
 
 export class SpriteFactory {
+
     protected static getTexture(spriteSheet: SpriteSheet): Texture {
         const texture = Assets.get(spriteSheet);
         if (!texture) throw `Спрайт [${spriteSheet}] не загружен!`;
@@ -44,7 +47,7 @@ export class SpriteFactory {
         return this.sprite(SpriteSheet.Exhausts)
             .withFrames()
             .size(4, 5)
-            .from((type-1) * 4, size)
+            .from((type - 1) * 4, size)
             .to((type * 4) - 1, size)
             .slice()
             .animate(10 / 60);
@@ -55,5 +58,9 @@ export class SpriteFactory {
             .size(128, 256)
             .slice()
             .map(texture => new ExtendedSprite(texture))
+    }
+
+    public createEnemy(type: EnemyType): Enemy {
+        // todo?
     }
 }
