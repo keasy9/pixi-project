@@ -7,7 +7,7 @@ import InputBinder from '@/game/systems/input/InputBinder.ts';
 import ExtendedWorld from "@/game/systems/physics/ExtendedWorld.ts";
 import PhysicsDebug from "@/game/scenes/PhysicsDebug.ts";
 import LocalStorage from '@/utils/LocalStorage.ts';
-import type {Class} from "@/types.ts";
+import type {Constructor} from "@/types.ts";
 
 export const GAME_WIDTH = 128;
 export const GAME_HEIGHT = 256;

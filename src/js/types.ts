@@ -1,1 +1,1 @@
-export type Class<T extends object = object, Params extends any[] = any[]> = new (...args: Params) => T;
+export type Class<T extends any = object, Args extends any[] = any[]> = new (...args: Args) => T;

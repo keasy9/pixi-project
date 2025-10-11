@@ -1,5 +1,5 @@
 import type {Recyclable} from '@/game/types/Recyclable.ts';
-import type {Class} from '@/types.ts';
+import type {Constructor} from '@/types.ts';
 import ObjectPool from '@/game/pool/ObjectPool.ts';
 import type AbstractScene from '@/game/scenes/AbstractScene.ts';
 import type {ContainerChild, IRenderLayer} from 'pixi.js';
@@ -8,7 +8,7 @@ export default class SceneObjectPool<Entry extends Recyclable&(ContainerChild|IR
 
     public constructor(
         protected scene: AbstractScene,
-        protected objectClass: Class<Entry, EntryConstructorParams>,
+        protected objectClass: Constructor<Entry, EntryConstructorParams>,
         protected constructorParams: EntryConstructorParams = [] as unknown as EntryConstructorParams,
     ) {
         super(objectClass, constructorParams);

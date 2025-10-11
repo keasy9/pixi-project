@@ -1,7 +1,7 @@
 import {trait} from '@traits-ts/core';
-import type {Class} from '@/types.ts';
+import type {Constructor} from '@/types.ts';
 
-export const CanBeRecycled = trait((base: Class) => class CanBeRecycled extends base {
+export const CanBeRecycled = trait((base: Constructor) => class CanBeRecycled extends base {
     public dead: boolean = false;
 
     public recycle<K extends keyof this>(props: Record<K, this[K]>): void {

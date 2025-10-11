@@ -1,5 +1,5 @@
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
-import type {Class} from '@/types.ts';
+import type {Constructor} from '@/types.ts';
 import {Game} from '@/game/managers/GameManager.ts';
 import {type Application, Container} from "pixi.js";
 
@@ -27,7 +27,7 @@ export class SceneManager {
         return this;
     }
 
-    public load(scene: Class<AbstractScene>, makeMain: boolean = true): this {
+    public load(scene: Constructor<AbstractScene>, makeMain: boolean = true): this {
         const sceneInstance = new scene();
 
         this.current[sceneInstance.label] = sceneInstance;

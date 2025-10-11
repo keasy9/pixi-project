@@ -1,11 +1,11 @@
 import {trait} from '@traits-ts/core';
 import type {Body} from 'planck';
 import {Game} from '@/game/managers/GameManager.ts';
-import type {Class} from '@/types.ts';
+import type {Constructor} from '@/types.ts';
 import type {Positionable} from '@/game/types/Positionable.ts';
 import type {Rotateble} from '@/game/types/Rotateble.ts';
 
-export const HasBody = trait((base: Class<Positionable & Rotateble>) => class HasBody extends base {
+export const HasBody = trait((base: Constructor<Positionable & Rotateble>) => class HasBody extends base {
     // @ts-ignore
     protected body: Body;
 

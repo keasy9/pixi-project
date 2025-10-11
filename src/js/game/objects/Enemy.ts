@@ -6,14 +6,8 @@ import {derive} from '@traits-ts/core';
 import type {Recyclable} from '@/game/types/Recyclable.ts';
 import {CanBeRecycled} from '@/game/objects/traits/CanBeRecycled.ts';
 import {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
-import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
-import {enemyType} from "@/game/managers/level/types/wave.ts";
 
 export default class Enemy extends derive(HasBody, CanBeRecycled, ExtendedSprite) implements Positionable, Rotateble, Updateable, Recyclable {
-
-    public constructor(type: enemyType) {
-        super(SpriteSheet.Enemies);
-    }
 
     public update(_dt: number) {
         this.syncPosition();

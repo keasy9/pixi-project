@@ -1,8 +1,9 @@
 import {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import {Texture, Assets} from "pixi.js";
 import {FramesBuilder} from "@/game/factories/frame/FramesBuilder.ts";
-import type Enemy from "@/game/objects/Enemy.ts";
-import type {EnemyType} from "@/game/managers/level/types/wave.ts";
+import Enemy from "@/game/objects/Enemy.ts";
+import {EnemyType} from "@/game/managers/level/types/wave.ts";
+import type {Class} from '@/types.ts';
 
 export enum SpriteSheet {
     Ships = 'ships',
@@ -21,8 +22,9 @@ export class SpriteFactory {
         return texture;
     }
 
-    protected static sprite(spriteSheet: SpriteSheet): ExtendedSprite {
-        return new ExtendedSprite(this.getTexture(spriteSheet));
+    //@ts-ignore
+    protected static sprite<T extends ExtendedSprite = ExtendedSprite>(spriteSheet: SpriteSheet, spriteClass: Class<T> = ExtendedSprite): T {
+        return new spriteClass(this.getTexture(spriteSheet));
     }
 
     protected static frames(spriteSheet: SpriteSheet): FramesBuilder {
@@ -60,7 +62,11 @@ export class SpriteFactory {
             .map(texture => new ExtendedSprite(texture))
     }
 
-    public createEnemy(type: EnemyType): Enemy {
-        // todo?
+    public static createEnemy(type: EnemyType): Enemy {
+        return this.sprite(SpriteSheet.Enemies, Enemy)
+            .withFrames()
+            .size(8, 8)
+            .slice()
+            .goto(type) as unknown as  Enemy
     }
 }

@@ -1,4 +1,4 @@
-import type {LevelWave} from '@/game/managers/level/types/wave.ts';
+import type {EnemyDef, LevelWave} from '@/game/managers/level/types/wave.ts';
 import type {Updateable} from '@/game/types/Updateable.ts';
 import type Enemy from '@/game/objects/Enemy.ts';
 import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
@@ -15,7 +15,7 @@ export default class EnemyWave implements Updateable {
 
     protected createEnemies(conf: LevelWave): void {
         for (let enemy of conf.enemies) {
-            if (typeof enemy === 'number') enemy = {type: enemy};
+            if (typeof enemy === 'number') enemy = {type: enemy} as EnemyDef;
 
             enemy.movement ??= conf.movement;
             enemy.fire ??= conf.fire;

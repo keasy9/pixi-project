@@ -73,8 +73,8 @@ export enum EnemyType {
     Glider = 36,
 }
 
-interface EnemyDef {
-    type: keyof typeof enemyType;
+export interface EnemyDef {
+    type: EnemyType;
     fire?: EnemyFireParams;
     movement?: EnemyMovementParams;
 }
@@ -86,5 +86,5 @@ export interface LevelWave extends LevelEvent {
     spawnType: WaveSpawnType;
     movement: EnemyMovementParams;
     fire: EnemyFireParams;
-    enemies: ((keyof typeof enemyType)|EnemyDef)[]; // враги. Если число, то это тип врага, если объект, то это индивидуальные параметры врага
+    enemies: (EnemyType|EnemyDef)[]; // враги. Если число, то это тип врага, если объект, то это индивидуальные параметры врага
 }

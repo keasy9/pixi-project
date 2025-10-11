@@ -1,11 +1,10 @@
 import type {Recyclable} from '@/game/types/Recyclable.ts';
-import type {Class} from '@/types.ts';
 
 export default class ObjectPool<Entry extends Recyclable, EntryConstructorParams extends any[] = any[]> {
     protected objects: Entry[] = [];
 
     public constructor(
-        protected objectClass: Class<Entry, EntryConstructorParams>,
+        protected objectClass: Constructor<Entry, EntryConstructorParams>,
         protected constructorParams: EntryConstructorParams = [] as unknown as EntryConstructorParams, // todo
     ) {}
 
