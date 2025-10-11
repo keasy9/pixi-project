@@ -2,7 +2,7 @@ import {System, system} from '@lastolivegames/becsy';
 import ParallaxBgLayer from '@/game/components/labels/ParallaxBgLayer.ts';
 import Position from '@/game/components/Position.ts';
 import Speed from '@/game/components/Speed.ts';
-import ParallaxBgFactory from '@/game/rendering/ParallaxBgFactory.ts';
+import ParallaxBgFactory from '@/game/rendering/factories/ParallaxBgFactory.ts';
 import Graphics from '@/game/components/Graphics.ts';
 import Game from '@/game/Game.ts';
 import {Assets} from 'pixi.js';

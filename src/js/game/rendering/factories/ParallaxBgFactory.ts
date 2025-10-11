@@ -28,6 +28,7 @@ export default class ParallaxBgFactory {
             clone.y = -this.frameSize[1];
 
             container.addChild(sprite, clone);
+            container.scale = 1.1;
 
             Game.instance.graphics.addChild(container);
 
