@@ -1,4 +1,6 @@
 .page {
+    background: black;
+
     &__bg {
         position: fixed;
         top: -10px;
@@ -9,9 +11,10 @@
         width: 110%;
         height: 110%;
 
-        filter: blur(5px);
+        image-rendering: pixelated;
         object-fit: cover;
         object-position: center;
+        opacity: .3;
 
         z-index: 1;
     }

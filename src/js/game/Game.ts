@@ -2,6 +2,7 @@ import {World as EcsWorld} from "@lastolivegames/becsy";
 import {World} from "planck";
 import {Application, Container, TextureSource} from 'pixi.js';
 import '@/game/systems';
+import GraphicsRoot from '@/game/rendering/GraphicsRoot.ts';
 
 type GameConfig = {
     size: [number, number],
@@ -26,7 +27,7 @@ export default class Game {
     protected maxPhysicsStepsPerFrame = 6;
 
     //@ts-ignore инициализируется в фабричной функции
-    protected graphicsContainer: Container;
+    protected graphicsContainer: GraphicsRoot;
 
     public get graphics(): Container {
         return this.graphicsContainer;
@@ -43,6 +44,14 @@ export default class Game {
     public static get instance(): Game {
         if (!this._instance)  throw 'Игра ещё не инициализирована!';
         return this._instance;
+    }
+
+    public get targetSize(): [number, number] {
+        return this.size;
+    }
+
+    public get renderingSize(): [number, number] {
+        return this.rendererSize;
     }
 
     /**
@@ -87,7 +96,7 @@ export default class Game {
             resizeTo: canvas,
         }).then(() => this.setupTicker());
 
-        this.graphicsContainer = new Container();
+        this.graphicsContainer = new GraphicsRoot();
 
         this.renderer.stage.addChild(this.graphicsContainer);
 
@@ -124,6 +133,8 @@ export default class Game {
             }
 
             await this.ecsWorld?.execute(time.elapsedMS, time.deltaTime);
+
+            this.graphicsContainer.applyScale(this.rendererSize[0] / this.size[0]);
         });
 
         return this;

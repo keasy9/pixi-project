@@ -1,1 +1,3 @@
-import './Load.ts';
+import './Movement.ts';
+import './ParallaxBg.ts';
+import './StateSync.ts';
