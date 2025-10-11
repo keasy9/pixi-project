@@ -1,24 +1,31 @@
-import type {World as EcsWorld} from "@lastolivegames/becsy";
+import {World as EcsWorld} from "@lastolivegames/becsy";
 import {World} from "planck";
-import {Application, Container} from "pixi.js";
+import {Application, Container, TextureSource} from 'pixi.js';
+import '@/game/systems';
 
 type GameConfig = {
     size: [number, number],
     fps?: number, // по умолчанию 1/60
+    maxPhysicsStepsPerFrame?: number, // по-умолчанию 6
 }
 
 // синглтон
 export default class Game {
     protected static _instance?: Game;
 
+    //@ts-ignore инициализируется в фабричной функции
     protected renderer: Application;
+    //@ts-ignore инициализируется в фабричной функции
     protected ecsWorld: EcsWorld;
+    //@ts-ignore инициализируется в фабричной функции
     protected physicsWorld: World;
 
     protected size: [number, number];
     protected rendererSize: [number, number];
     protected fps: number = 1/60;
+    protected maxPhysicsStepsPerFrame = 6;
 
+    //@ts-ignore инициализируется в фабричной функции
     protected graphicsContainer: Container;
 
     public get graphics(): Container {
@@ -53,14 +60,18 @@ export default class Game {
         this._instance = new Game(config);
 
         this._instance.initPhysics()
-            .initRenderer(canvas)
-            .initEcs();
+            .initEcs()
+            .initRenderer(canvas);
 
         if (import.meta.env.DEV) this._instance.initDebug();
+
+        return this._instance;
     }
 
     protected initRenderer(canvas: HTMLCanvasElement): this {
         this.resize(canvas.offsetWidth, canvas.offsetHeight);
+
+        TextureSource.defaultOptions.scaleMode = 'nearest';
 
         this.renderer = new Application();
 
@@ -74,7 +85,7 @@ export default class Game {
             autoDensity: true,
             roundPixels: false,
             resizeTo: canvas,
-        });
+        }).then(() => this.setupTicker());
 
         this.graphicsContainer = new Container();
 
@@ -89,7 +100,7 @@ export default class Game {
     }
 
     protected initEcs(): this {
-        this.ecsWorld = EcsWorld.create();
+        EcsWorld.create().then(wld => this.ecsWorld = wld);
         return this;
     }
 
@@ -98,20 +109,51 @@ export default class Game {
         return this;
     }
 
-    public static resize(width, height): Game {
+    protected setupTicker(): this {
+        let timeStepAcc = 0;
+
+        this.renderer.ticker.add(async time => {
+            timeStepAcc += time.deltaTime;
+
+            let stepsCount = 0;
+            while(timeStepAcc >= this.fps && stepsCount < this.maxPhysicsStepsPerFrame) {
+                this.physicsWorld.step(this.fps);
+
+                timeStepAcc -= this.fps;
+                stepsCount++;
+            }
+
+            await this.ecsWorld?.execute(time.elapsedMS, time.deltaTime);
+        });
+
+        return this;
+    }
+
+    public static resize(width: number, height: number): Game|undefined {
         return this._instance?.resize(width, height);
     }
 
-    public resize(width, height): this {
+    public resize(width: number, height: number): this {
         this.rendererSize = [width, height];
+        return this;
     }
 
+    /**
+     * Уничтожает все составляющие игры (физический мир, ecs-мир, pixi)
+     */
     public destroy(): void {
         this.ecsWorld.terminate();
         this.renderer.destroy();
 
-        for (let b = world.getBodyList(); b; b = b.getNext()) {
-            world.destroyBody(b);
+        for (let b = this.physicsWorld.getBodyList(); b; b = b.getNext()) {
+            this.physicsWorld.destroyBody(b);
         }
+
+        //@ts-ignore
+        this.ecsWorld = undefined;
+        //@ts-ignore
+        this.renderer = undefined;
+        //@ts-ignore
+        this.physicsWorld = undefined;
     }
 }
