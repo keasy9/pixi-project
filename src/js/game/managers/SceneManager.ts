@@ -1,7 +1,7 @@
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
-import type {Constructor} from '@/types.ts';
 import {Game} from '@/game/managers/GameManager.ts';
-import {type Application, Container} from "pixi.js";
+import {type Application, Container, Ticker} from 'pixi.js';
+import type {Class} from '@/types.ts';
 
 export class SceneManager {
     protected sceneContainer: Container<AbstractScene>;
@@ -19,15 +19,15 @@ export class SceneManager {
         return this;
     }
 
-    public updateCurrent(dt: number): this {
+    public updateCurrent(ticker: Ticker): this {
         for (let sceneName in this.current) {
-            this.current[sceneName].update(dt);
+            this.current[sceneName].update(ticker);
         }
 
         return this;
     }
 
-    public load(scene: Constructor<AbstractScene>, makeMain: boolean = true): this {
+    public load(scene: Class<AbstractScene>, makeMain: boolean = true): this {
         const sceneInstance = new scene();
 
         this.current[sceneInstance.label] = sceneInstance;
@@ -65,7 +65,7 @@ export class SceneManager {
         return this;
     }
 
-    public destroy(): this {
+    public destroy(): void {
         this.unloadAll();
         this.sceneContainer.destroy(true);
     }

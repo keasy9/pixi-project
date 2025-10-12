@@ -1,9 +1,9 @@
 import type {EnemyDef, LevelWave} from '@/game/managers/level/types/wave.ts';
-import type {Updateable} from '@/game/types/Updateable.ts';
+import type {Updatable} from '@/game/objects/interfaces/Updatable.ts';
 import type Enemy from '@/game/objects/Enemy.ts';
-import {SpriteSheet} from "@/game/factories/sprite/SpriteFactory.ts";
+import type {Ticker} from 'pixi.js';
 
-export default class EnemyWave implements Updateable {
+export default class EnemyWave implements Updatable {
     protected enemies: Enemy[] = [];
     protected enemyMovement: (enemy: Enemy) => void = () => {};
 
@@ -26,7 +26,7 @@ export default class EnemyWave implements Updateable {
         }
     }
 
-    public update(dt: number) {
+    public update(_ticker: Ticker) {
         this.enemies.forEach((enemy, index) => {
             if (enemy.dead) {
                 // избегаем реиндексации как дорогой операции, forEach пропускает пробелы в массиве автоматически

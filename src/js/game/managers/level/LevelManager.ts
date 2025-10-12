@@ -1,11 +1,11 @@
 import type {LevelData} from '@/game/managers/level/types/level.ts';
 import type AbstractScene from '@/game/scenes/AbstractScene.ts';
-import {Assets} from 'pixi.js';
-import type {Updateable} from '@/game/types/Updateable.ts';
+import {Assets, Ticker} from 'pixi.js';
+import type {Updatable} from '@/game/objects/interfaces/Updatable.ts';
 import {LevelEventType} from '@/game/managers/level/types/level.ts';
 import WaveManager from '@/game/managers/level/WaveManager.ts';
 
-export default class LevelManager implements Updateable {
+export default class LevelManager implements Updatable {
     protected loaded: Record<string, LevelData> = {};
     protected currentLevel?: LevelData;
     protected currentEvent: number = 0;
@@ -62,8 +62,8 @@ export default class LevelManager implements Updateable {
         return this;
     }
 
-    public update(dt: number): void {
-        this.eventTime += dt;
+    public update(ticker: Ticker): void {
+        this.eventTime += ticker.deltaTime;
 
         if (this.canRunNextEvent()) {
             this.currentEvent++;

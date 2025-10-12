@@ -1,17 +1,16 @@
-import {Container} from 'pixi.js';
+import {Container, Ticker} from 'pixi.js';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
 import type {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
 import {Game} from '@/game/managers/GameManager.ts';
 import type {KeyboardBinding} from '@/game/systems/input/types.ts';
-import type {Updateable} from '@/game/types/Updateable.ts';
+import type {Updatable} from '@/game/objects/interfaces/Updatable.ts';
 import {Vec2} from 'planck';
-import {derive} from '@traits-ts/core';
-import {HasBody} from '@/game/objects/traits/HasBody.ts';
 import ExtendedMath from '@/utils/ExtendedMath.ts';
-import type {Rotateble} from '@/game/types/Rotateble.ts';
-import type {Positionable} from '@/game/types/Positionable.ts';
+import type {Rotateble} from '@/game/objects/interfaces/Rotateble.ts';
+import type {Positionable} from '@/game/objects/interfaces/Positionable.ts';
+import HasBody from '@/game/objects/traits/HasBody.ts';
 
-export default class Player extends derive(HasBody, Container) implements Updateable, Positionable, Rotateble {
+export default class Player extends HasBody(Container) implements Updatable, Positionable, Rotateble {
     protected shipSprite: ExtendedSprite;
     protected exhaustSprites: ExtendedSprite[];
 
@@ -52,7 +51,7 @@ export default class Player extends derive(HasBody, Container) implements Update
         this.syncPosition();
     }
 
-    public update(_dt: number) {
+    public update(_ticker: Ticker) {
         const velocity = new Vec2();
 
         if (Game.input.getOrFail<KeyboardBinding>('left').isDown()) velocity.x--;

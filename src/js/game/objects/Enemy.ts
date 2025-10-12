@@ -1,15 +1,15 @@
-import type {Positionable} from '@/game/types/Positionable.ts';
-import type {Rotateble} from '@/game/types/Rotateble.ts';
-import type {Updateable} from '@/game/types/Updateable.ts';
-import {HasBody} from '@/game/objects/traits/HasBody.ts';
-import {derive} from '@traits-ts/core';
-import type {Recyclable} from '@/game/types/Recyclable.ts';
-import {CanBeRecycled} from '@/game/objects/traits/CanBeRecycled.ts';
+import type {Positionable} from '@/game/objects/interfaces/Positionable.ts';
+import type {Rotateble} from '@/game/objects/interfaces/Rotateble.ts';
+import type {Updatable} from '@/game/objects/interfaces/Updatable.ts';
+import HasBody from '@/game/objects/traits/HasBody.ts';
+import type {Recyclable} from '@/game/objects/interfaces/Recyclable.ts';
 import {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
+import CanBeRecycled from '@/game/objects/traits/CanBeRecycled.ts';
+import type {Ticker} from 'pixi.js';
 
-export default class Enemy extends derive(HasBody, CanBeRecycled, ExtendedSprite) implements Positionable, Rotateble, Updateable, Recyclable {
 
-    public update(_dt: number) {
+export default class Enemy extends CanBeRecycled(HasBody(ExtendedSprite)) implements Positionable, Rotateble, Updatable, Recyclable {
+    public update(_ticker: Ticker) {
         this.syncPosition();
         this.syncRotation();
     }

@@ -1,4 +1,4 @@
-import type {Recyclable} from '@/game/types/Recyclable.ts';
+import type {Recyclable} from '@/game/objects/interfaces/Recyclable.ts';
 
 export default class ObjectPool<Entry extends Recyclable, EntryConstructorParams extends any[] = any[]> {
     protected objects: Entry[] = [];

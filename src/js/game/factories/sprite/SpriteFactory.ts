@@ -23,7 +23,7 @@ export class SpriteFactory {
     }
 
     //@ts-ignore
-    protected static sprite<T extends ExtendedSprite = ExtendedSprite>(spriteSheet: SpriteSheet, spriteClass: Class<T> = ExtendedSprite): T {
+    protected static sprite<T = ExtendedSprite>(spriteSheet: SpriteSheet, spriteClass: Class<T> = ExtendedSprite): T {
         return new spriteClass(this.getTexture(spriteSheet));
     }
 
@@ -67,6 +67,6 @@ export class SpriteFactory {
             .withFrames()
             .size(8, 8)
             .slice()
-            .goto(type) as unknown as  Enemy
+            .goto(type) as unknown as Enemy
     }
 }

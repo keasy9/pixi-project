@@ -1,4 +1,4 @@
-import {Container, type ContainerChild} from 'pixi.js';
+import {Container, type ContainerChild, Ticker} from 'pixi.js';
 
 export default abstract class AbstractScene<T extends ContainerChild = ContainerChild> extends Container<T> {
     public zIndex: number = 500;
@@ -6,10 +6,10 @@ export default abstract class AbstractScene<T extends ContainerChild = Container
         super();
     }
 
-    public update(dt: number): void {
+    public update(ticker: Ticker): void {
         this.children?.forEach(child => {
             if ('update' in child && (typeof child.update === 'function')) {
-                child.update(dt);
+                child.update(ticker);
             }
         });
     }

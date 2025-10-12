@@ -1,8 +1,8 @@
 import type {ExtendedSprite} from "@/game/factories/sprite/ExtendedSprite.ts";
-import type {Updateable} from "@/game/types/Updateable.ts";
+import type {Updatable} from "@/game/objects/interfaces/Updatable.ts";
 
 export type BodyUserData = {
     sprite?: ExtendedSprite,
-    object?: Updateable,
+    object?: Updatable,
 }
 

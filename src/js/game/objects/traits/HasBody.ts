@@ -1,29 +1,34 @@
-import {trait} from '@traits-ts/core';
 import type {Body} from 'planck';
 import {Game} from '@/game/managers/GameManager.ts';
-import type {Constructor} from '@/types.ts';
-import type {Positionable} from '@/game/types/Positionable.ts';
-import type {Rotateble} from '@/game/types/Rotateble.ts';
+import type {Positionable} from '@/game/objects/interfaces/Positionable.ts';
+import type {Rotateble} from '@/game/objects/interfaces/Rotateble.ts';
+import type {Class} from '@/types.ts';
 
-export const HasBody = trait((base: Constructor<Positionable & Rotateble>) => class HasBody extends base {
-    // @ts-ignore
-    protected body: Body;
 
-    protected syncPosition(): this {
-        const bodyPos = this.body.getPosition();
-        const shape = this.body.getFixtureList()?.getShape();
-        if (!shape) throw 'У этого объекта нет физической формы!';
+export default function HasBody<TBase extends Class<Positionable & Rotateble>>(Base: TBase) {
+    return class HasBody extends Base {
+        protected body!: Body;
 
-        if (shape.getType() === 'circle') {
-            this.x = Game.physics.worldToScreen(bodyPos.x - shape.getRadius());
-            this.y = Game.physics.worldToScreen(bodyPos.y - shape.getRadius());
+        constructor(...args: any[]) {
+            super(...args);
         }
 
-        return this;
-    }
+        protected syncPosition(): this {
+            const bodyPos = this.body.getPosition();
+            const shape = this.body.getFixtureList()?.getShape();
+            if (!shape) throw new Error('У этого объекта нет физической формы!');
 
-    protected syncRotation(): this {
-        this.rotation = this.body.getAngle();
-        return this;
-    }
-});
+            if (shape.getType() === 'circle') {
+                this.x = Game.physics.worldToScreen(bodyPos.x - shape.getRadius());
+                this.y = Game.physics.worldToScreen(bodyPos.y - shape.getRadius());
+            }
+
+            return this;
+        }
+
+        protected syncRotation(): this {
+            this.rotation = this.body.getAngle();
+            return this;
+        }
+    };
+}

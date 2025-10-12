@@ -1,5 +1,5 @@
 import AbstractScene from '@/game/scenes/AbstractScene.ts';
-import {Container, Sprite} from 'pixi.js';
+import {Container, Sprite, Ticker} from 'pixi.js';
 import {SpriteFactory} from "@/game/factories/sprite/SpriteFactory.ts";
 import {Game} from '@/game/managers/GameManager.ts';
 
@@ -31,9 +31,9 @@ export default class ParallaxBg extends AbstractScene<Container> {
         this.speed = .1  - speed * multiplier;
     }
 
-    public update(dt: number): void {
+    public update(ticker: Ticker): void {
         this.children.forEach((layer, index) => {
-            layer.y += (index + 1 * (index + 1)) * this.speed * dt;
+            layer.y += (index + 1 * (index + 1)) * this.speed * ticker.deltaTime;
 
             if (layer.y >= layer.height / 2) layer.y -= layer.height / 2;
         });

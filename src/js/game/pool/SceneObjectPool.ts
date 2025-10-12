@@ -1,4 +1,4 @@
-import type {Recyclable} from '@/game/types/Recyclable.ts';
+import type {Recyclable} from '@/game/objects/interfaces/Recyclable.ts';
 import type {Constructor} from '@/types.ts';
 import ObjectPool from '@/game/pool/ObjectPool.ts';
 import type AbstractScene from '@/game/scenes/AbstractScene.ts';
